@@ -66,9 +66,9 @@ This problem is well suited to a computational approach as it can be solved usin
 
 **Procedural thinking & decomposition** – The problem can be decomposed into a set of much smaller problems, using procedural thinking I will develop a solution to each of these in turn.
 
-<img src="media\image1.png" style="width:5.51181in;height:3.87795in" />
+<img src="media\image1.png" style="width:6.26389in;height:2.52014in" />
 
-This set of small problems will allow me to possibly use test harnesses during development to isolate certain parts of the program during the development process. This structure will make the overall solution easier to work with and will make the entire process more efficient.
+This set of problems will allow me to possibly use test harnesses during development to isolate certain parts of the program during the development process. This structure will make the overall solution easier to work with and will make the entire process more efficient.
 
 **Thinking concurrently** – Through the use of concurrent processing, I will make the server-side program more efficient by processing each user’s requests on a virtual thread. This will mean that the program can deal with requests from multiple users and the same time, which is important as if they were acted on procedurally the bandwidth of the system would be dramatically reduced leading to very high latency.
 

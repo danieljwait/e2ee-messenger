@@ -10,9 +10,9 @@
 
 [1.1.3 Computational methods that the solution lends itself to 2][]
 
-[1.2 Stakeholder Survey 3][]
+[1.2 Stakeholders 3][]
 
-[1.2.1 Stakeholders 3][]
+[1.2.1 Identification 3][]
 
 [1.2.2 Questions and methodology 4][]
 
@@ -26,11 +26,11 @@
 
 [1.3.2 Existing solution – Internet Relay Chat (IRC) 6][]
 
-[1.4 Requirements 8][]
+[1.4 Requirements 7][]
 
-[1.4.1 Software requirements 8][]
+[1.4.1 Stakeholder requirements 7][]
 
-[1.4.2 Stakeholder requirements 8][]
+[1.4.2 Software requirements 7][]
 
 [1.5 Success Criteria 8][]
 
@@ -176,9 +176,36 @@ In my solution, I will also try to create a lightweight protocol that only requi
 
 ## Requirements
 
+### Stakeholder requirements
+
+### Limitations
+
+**Hardcoded server IP:**
+
+When a client tries to connect to the server, it will use a hardcoded IP address as its target. This means that the IP address of the server must be static and cannot be moved onto another network. For this limitation to be fixed the server would have to be added to a DNS server so that the domain can dynamically point to the server. However, this is beyond the scope of the project.
+
+**Group messaging:**
+
+Group messaging – the most chosen “favourite feature” and rated the third most important feature from the stakeholders’ survey – will not be implemented in the solution. This is down to the vast increase in complexity from individual end-to-end encrypted messaging to group end-to-end encrypted messaging; implementing such a feature will take up too much time and would require the redesign of many of the procedures of the solution. For these reasons, I will be unable to implement the feature.
+
 ### Software requirements
 
-### Stakeholder requirements
+For simplicity, I will only be building a Windows x86 version of the solution for development and the final evaluation. However, using the dotnet compiler, executables for all the following operating systems can be built from the source.
+
+| OS         | Version                    | Architectures     |
+|------------|----------------------------|-------------------|
+| Windows    | 7 SP1+, 8.1                | x64, x86          |
+| Windows 10 | 1607+                      | x64, x86          |
+| Mac OS X   | 10.13+                     | x64               |
+| Fedora     | 32+                        | x64               |
+| Debian     | 9+                         | x64, ARM32, ARM64 |
+| Ubuntu     | 20.10, 20.04, 18.04, 16.04 | x64, ARM32, ARM64 |
+
+*Information from the .NET Core GitHub repository* *\[6\]*
+
+The final user of the program will not be required to install the .NET runtime as the solution will be published self-contained. This means that the download will be larger as it will contain the .NET libraries, runtime and dependencies needed.
+
+Internet access will be required to run the program as the client program needs to communicate with the server.
 
 ## Success Criteria
 
@@ -196,28 +223,29 @@ In my solution, I will also try to create a lightweight protocol that only requi
 |     |     |
 |     |     |
 |     |     |
+|     |     |
 
-\[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[3\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[4\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[5\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993.
+\[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[3\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[4\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[5\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993. \[6\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].
 
   [1 Analysis 2]: #analysis
   [1.1 Problem Identification 2]: #problem-identification
   [1.1.1 Problem outline 2]: #problem-outline
   [1.1.2 How can the problem be solved by computational methods? 2]: #how-can-the-problem-be-solved-by-computational-methods
   [1.1.3 Computational methods that the solution lends itself to 2]: #computational-methods-that-the-solution-lends-itself-to
-  [1.2 Stakeholder Survey 3]: #stakeholders
-  [1.2.1 Stakeholders 3]: #_Toc65940219
+  [1.2 Stakeholders 3]: #stakeholders
+  [1.2.1 Identification 3]: #identification
   [1.2.2 Questions and methodology 4]: #questions-and-methodology
   [1.2.3 Results analysis 5]: #results-analysis
   [1.2.4 Conclusion 5]: #conclusion
   [1.3 Research 5]: #research
   [1.3.1 Existing program – Discord 5]: #existing-program-discord
   [1.3.2 Existing solution – Internet Relay Chat (IRC) 6]: #existing-solution-internet-relay-chat-irc
-  [1.4 Requirements 8]: #requirements
-  [1.4.1 Software requirements 8]: #software-requirements
-  [1.4.2 Stakeholder requirements 8]: #stakeholder-requirements
+  [1.4 Requirements 7]: #requirements
+  [1.4.1 Stakeholder requirements 7]: #stakeholder-requirements
+  [1.4.2 Software requirements 7]: #software-requirements
   [1.5 Success Criteria 8]: #success-criteria
   [2 Design 8]: #design
   [3 Development 8]: #development
   [4 Evaluation 8]: #evaluation
-  [5 References 9]: #_Toc65940233
+  [5 References 9]: #_Toc66882721
   [WeeChat.org]: https://weechat.org/about/screenshots/

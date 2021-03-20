@@ -11,6 +11,7 @@ namespace MessengerAppServer
     {
         // Dict of identifier and socket
         public Dictionary<string, Socket> ClientSockets = new Dictionary<string, Socket>();
+        public Dictionary<Socket, string> ClientSocketsInverse = new Dictionary<Socket, string>();
         public const int BACKLOG = 5;
 
         // Starts listening
@@ -49,6 +50,7 @@ namespace MessengerAppServer
         {
             Socket clientSocket = Socket.EndAccept(asyncResult);
             ClientSockets.Add(clientSocket.RemoteEndPoint.ToString(), clientSocket);
+            ClientSocketsInverse.Add(clientSocket, clientSocket.RemoteEndPoint.ToString());
 
             PrintMessage($"Client {clientSocket.RemoteEndPoint} connected");
 
@@ -64,8 +66,22 @@ namespace MessengerAppServer
         {
             // Gets socket from the async result
             Socket clientSocket = (Socket)asyncResult.AsyncState;
+
             // The amount of data received
-            int received = clientSocket.EndReceive(asyncResult);
+            int received;
+            // Only ends receive when client is still connected
+            if (SocketBase.IsConnected(clientSocket))
+            {
+                received = clientSocket.EndReceive(asyncResult);
+            }
+            else
+            {
+                // Removes from connected clients dicts
+                ClientSockets.Remove(ClientSocketsInverse[clientSocket]);
+                ClientSocketsInverse.Remove(clientSocket);
+                PrintMessage($"Client {ClientSocketsInverse[clientSocket]} has disconnected");
+                return;
+            }
 
             byte[] dataBuffer = new byte[received];
             // Copy received bytes to data buffer

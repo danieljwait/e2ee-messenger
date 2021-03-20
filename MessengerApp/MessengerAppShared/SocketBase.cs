@@ -21,6 +21,16 @@ namespace MessengerAppShared
             Socket = new Socket(EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
 
+        public static bool IsConnected(Socket socket)
+        {
+            try
+            {
+                // return true if client socket responds to poll and data is available to receive
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException) { return false; }
+        }
+
         // Starts receive from socket
         public void Receive(Socket socket)
         {

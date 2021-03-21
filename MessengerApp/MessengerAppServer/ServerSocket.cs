@@ -77,9 +77,9 @@ namespace MessengerAppServer
             else
             {
                 // Removes from connected clients dicts
+                PrintMessage($"Client {ClientSocketsInverse[clientSocket]} has disconnected");
                 ClientSockets.Remove(ClientSocketsInverse[clientSocket]);
                 ClientSocketsInverse.Remove(clientSocket);
-                PrintMessage($"Client {ClientSocketsInverse[clientSocket]} has disconnected");
                 return;
             }
 

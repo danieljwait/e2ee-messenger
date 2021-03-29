@@ -86,29 +86,37 @@ Secondly, there will be stakeholders who are people less familiar with computers
 
 To help me better understand the requirements of the stakeholders, I have created a survey to send to them (since in-person interviews are not possible at this time).
 
-My first aim for this survey is to investigate the stakeholders’ current use patterns with messaging apps as I believe that this will give me a good insight into standards and expectations. This is especially relevant for my stakeholders whose needs involve an easy-to-use platform as I will research some of the most used platforms and see what makes their user interface so accessible.
+**Aims for the survey:**
+
+Firstly, I want to investigate the stakeholders’ current use patterns with messaging apps. I believe this will give me a good insight into standards and expectations. This is especially relevant for my stakeholders whose needs involve an easy-to-use platform as I will research some of the most used platforms and see what makes their user interface so accessible.
 
 Secondly, I wanted to hear the stakeholders’ opinions on some common features of messaging apps. This information from the stakeholders will be crucial as I will use it to inform my decision of whether a feature is worth including in my final solution.
 
-<img src="media\image2.png" style="width:6.19519in;height:0.50069in" />
-
-<img src="media\image3.png" style="width:6.19514in;height:0.38403in" />
-
-<img src="media\image4.png" style="width:6.19514in;height:0.43958in" />
-
-<img src="media\image5.png" style="width:6.19514in;height:0.41389in" />
-
-<img src="media\image6.png" style="width:6.19514in;height:0.4875in" />
-
-<img src="media\image7.png" style="width:6.19514in;height:0.6875in" />
-
-<img src="media\image8.png" style="width:6.19514in;height:0.64028in" />
-
-<img src="media\image9.png" style="width:6.19514in;height:0.42222in" />
-
-<img src="media\image10.png" style="width:6.19685in;height:0.76276in" />
-
 ### Results analysis
+
+**Question 1 – “How much time do you spend on messaging apps each day?”**
+
+<img src="media\image2.png" style="width:5.01389in;height:3.01389in" />
+
+**Question 2 – “What is your most used messaging app?”**
+
+<img src="media\image3.png" style="width:4.38681in;height:3.54028in" />
+
+**Question 3 – “What is your favourite feature of messaging apps?”**
+
+<img src="media\image4.png" style="width:5.01389in;height:3.01389in" />
+
+**Question 4 – “What is your least favourite feature of messaging apps?”**
+
+<img src="media\image5.png" style="width:5.01389in;height:3.01389in" />
+
+**Question 5 – “How important are the following features?”**
+
+<img src="media\image6.png" style="width:5.79815in;height:4.67847in" />
+
+The data from this question showed me that the stakeholders do not think that the following features make a messaging app: in-app sounds, emojis, “typing…” indicators, and unsending messages. From this I can see that these features are non-essential so I will not consider these for the list of necessary features for my solution.
+
+The data also showed me that there are four features that are generally deemed core features: group messages, individual messages, encryption, and file sharing. As these are important for the stakeholders, I will consider these for the list of features that must be in the final solution.
 
 ### Conclusion
 
@@ -118,7 +126,7 @@ Secondly, I wanted to hear the stakeholders’ opinions on some common features 
 
 Discord is a free instant messaging and VoIP platform created in 2015 centred around enabling communities to connect through guilds: collections of chat rooms and voice channels. In 2019 the platform saw 250 million users with a total of 25 billion messages being sent per month \[1\] making it one of the largest gaming-focused communications platforms available.
 
-<img src="media\image11.png" style="width:6.25417in;height:2.90764in" />
+<img src="media\image7.png" style="width:6.25417in;height:2.90764in" />
 
 **Features:**
 
@@ -138,7 +146,7 @@ Discord is not a privacy-focused platform and users are expected to forfeit thei
 
 Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005, at the height of IRC the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[2\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[3\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
 
-<img src="media\image12.png" style="width:5.0199in;height:3.1106in" />
+<img src="media\image8.png" style="width:5.0199in;height:3.1106in" />
 
 *Image via [WeeChat.org][]*
 

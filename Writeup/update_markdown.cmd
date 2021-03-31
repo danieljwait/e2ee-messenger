@@ -4,6 +4,7 @@ TITLE Update Markdown
 
 SET input=writeup.docx
 SET output=README.md
+SET media_dir=media
 
 REM Checks if the document exists
 IF NOT EXIST %input% (
@@ -12,7 +13,12 @@ IF NOT EXIST %input% (
     GOTO CommonExit
 )
 
-REM Runs the command to update the markdown 
+REM Empties old media directory if it exists
+IF EXIST %media_dir% (
+    RMDIR /S /Q %media_dir%
+)
+
+REM Runs the command to update the markdown
 pandoc %input% ^
     --standalone ^
     --extract-media . ^

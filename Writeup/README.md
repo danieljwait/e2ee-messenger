@@ -14,33 +14,35 @@
 
 [1.2.1 Identification 3][]
 
-[1.2.2 Questions and methodology 4][]
+[1.2.2 Questions and methodology 3][]
 
-[1.2.3 Results analysis 5][]
+[1.2.3 Results analysis 4][]
 
-[1.2.4 Conclusion 5][]
+[1.2.4 Conclusion 6][]
 
-[1.3 Research 5][]
+[1.3 Research 6][]
 
-[1.3.1 Existing program – Discord 5][]
+[1.3.1 Existing program – Discord 6][]
 
-[1.3.2 Existing solution – Internet Relay Chat (IRC) 6][]
+[1.3.2 Existing solution – Internet Relay Chat (IRC) 7][]
 
-[1.4 Requirements 7][]
+[1.4 Requirements 9][]
 
-[1.4.1 Stakeholder requirements 7][]
+[1.4.1 Stakeholder requirements 9][]
 
-[1.4.2 Software requirements 7][]
+[1.4.2 Limitations 9][]
 
-[1.5 Success Criteria 8][]
+[1.4.3 Software requirements 9][]
 
-[2 Design 8][]
+[1.5 Success Criteria 10][]
 
-[3 Development 8][]
+[2 Design 11][]
 
-[4 Evaluation 8][]
+[3 Development 11][]
 
-[5 References 9][]
+[4 Evaluation 11][]
+
+[5 References 12][]
 
 # Analysis
 
@@ -235,6 +237,8 @@ Internet access will be required to run the program as the client program needs 
 
 \[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[3\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[4\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[5\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993. \[6\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].
 
+\\
+
   [1 Analysis 2]: #analysis
   [1.1 Problem Identification 2]: #problem-identification
   [1.1.1 Problem outline 2]: #problem-outline
@@ -242,18 +246,19 @@ Internet access will be required to run the program as the client program needs 
   [1.1.3 Computational methods that the solution lends itself to 2]: #computational-methods-that-the-solution-lends-itself-to
   [1.2 Stakeholders 3]: #stakeholders
   [1.2.1 Identification 3]: #identification
-  [1.2.2 Questions and methodology 4]: #questions-and-methodology
-  [1.2.3 Results analysis 5]: #results-analysis
-  [1.2.4 Conclusion 5]: #conclusion
-  [1.3 Research 5]: #research
-  [1.3.1 Existing program – Discord 5]: #existing-program-discord
-  [1.3.2 Existing solution – Internet Relay Chat (IRC) 6]: #existing-solution-internet-relay-chat-irc
-  [1.4 Requirements 7]: #requirements
-  [1.4.1 Stakeholder requirements 7]: #stakeholder-requirements
-  [1.4.2 Software requirements 7]: #software-requirements
-  [1.5 Success Criteria 8]: #success-criteria
-  [2 Design 8]: #design
-  [3 Development 8]: #development
-  [4 Evaluation 8]: #evaluation
-  [5 References 9]: #_Toc66882721
+  [1.2.2 Questions and methodology 3]: #questions-and-methodology
+  [1.2.3 Results analysis 4]: #results-analysis
+  [1.2.4 Conclusion 6]: #conclusion
+  [1.3 Research 6]: #research
+  [1.3.1 Existing program – Discord 6]: #existing-program-discord
+  [1.3.2 Existing solution – Internet Relay Chat (IRC) 7]: #existing-solution-internet-relay-chat-irc
+  [1.4 Requirements 9]: #requirements
+  [1.4.1 Stakeholder requirements 9]: #stakeholder-requirements
+  [1.4.2 Limitations 9]: #limitations
+  [1.4.3 Software requirements 9]: #software-requirements
+  [1.5 Success Criteria 10]: #success-criteria
+  [2 Design 11]: #design
+  [3 Development 11]: #development
+  [4 Evaluation 11]: #evaluation
+  [5 References 12]: #_Toc68090056
   [WeeChat.org]: https://weechat.org/about/screenshots/

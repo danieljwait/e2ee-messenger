@@ -14,15 +14,15 @@
 
 [1.2.1 Identification 3][]
 
-[1.2.2 Questions and methodology 3][]
+[1.2.2 Questions and methodology 4][]
 
 [1.2.3 Results analysis 4][]
 
-[1.2.4 Conclusion 6][]
+[1.2.4 Conclusion 7][]
 
-[1.3 Research 6][]
+[1.3 Research 7][]
 
-[1.3.1 Existing program – Discord 6][]
+[1.3.1 Existing program – Discord 7][]
 
 [1.3.2 Existing solution – Internet Relay Chat (IRC) 7][]
 
@@ -56,7 +56,7 @@ For this solution to work, the following features are required: only the endpoin
 
 ### How can the problem be solved by computational methods?
 
-This problem is well suited to a computational approach as it can be solved using computational methods. This is because the process of encrypting, sending then decrypting messages over a network can be greatly abstracted for the user so that they do not need any prior technical knowledge to use the program. The solution will also have many algorithms to carry out processes without the need for complex input from the user.
+This problem is well suited to a computational approach as it can be solved using computational methods. This is because the processes of encrypting, sending then decrypting messages over a network can be greatly abstracted for the user so that they do not need any prior technical knowledge to use the program. The solution will also have many algorithms to carry out processes without the need for complex input from the user.
 
 ### Computational methods that the solution lends itself to
 
@@ -80,9 +80,9 @@ This set of problems will allow me to possibly use test harnesses during develop
 
 ### Identification
 
-The target audience of this program is split into two categories. Firstly, there will be privacy-conscious stakeholders who are choosing their instant messaging platform based on the security that the program provides to their information. The requirements for these stakeholders will be the following: all the communications on the program will be encrypted; the only parties that can view the plaintext messages are the endpoint users; all sensitive passwords stored on the server will be hashed. These stakeholders will make use of the program through business, gaming, or everyday communications to name a few use cases as all the needs are satisfied as part of the program’s essential features.
+The first group of potential stakeholders are the users who will prioritise privacy and security. The needs of this group are that all communications are encrypted so they cannot be read while passing through the server and that their sensitive information (e.g., passwords and keys) are protected while they are being stored. This group will most likely use the solution for everyday use as their main communication platform; for this reason, the solution must be robust enough for that use case. I have selected a user to represent this group of stakeholders: Ethan S. He is a student who believes that privacy is very important, especially online where he makes a conscious effort to minimise his digital footprint by limiting any personally identifiable information about himself. For these reasons, I believe that he will be a fair representative for this group’s needs.
 
-Secondly, there will be stakeholders who are people less familiar with computers that are looking for an easily accessible instant messaging platform. The requirements for these users will be an intuitive user interface with little to no prior setup needed for them to start using the program. They will make use of the program to keep in touch will family and friends; therefore, the program must be easy to use as to not deter them.
+The second group of potential stakeholders are the users who want a messenger app that is lightweight and easy to use. The needs of this group are that all components of the user interface are intuitive and clearly labelled and that the program requires no prior setup or configuration so the program can easily be installed and immediately used. This group will most likely only infrequently use the solution to keep in touch with friends and family; for this reason, the solution must have an easy system for finding contacts and have a low barrier of use as to not discourage them. I have selected a user to represent this group of stakeholders: \[to be added\]
 
 ### Questions and methodology
 
@@ -277,11 +277,11 @@ Internet access will be required to run the program as the client program needs 
   [1.1.3 Computational methods that the solution lends itself to 2]: #computational-methods-that-the-solution-lends-itself-to
   [1.2 Stakeholders 3]: #stakeholders
   [1.2.1 Identification 3]: #identification
-  [1.2.2 Questions and methodology 3]: #questions-and-methodology
+  [1.2.2 Questions and methodology 4]: #questions-and-methodology
   [1.2.3 Results analysis 4]: #results-analysis
-  [1.2.4 Conclusion 6]: #conclusion
-  [1.3 Research 6]: #research
-  [1.3.1 Existing program – Discord 6]: #existing-program-discord
+  [1.2.4 Conclusion 7]: #conclusion
+  [1.3 Research 7]: #research
+  [1.3.1 Existing program – Discord 7]: #existing-program-discord
   [1.3.2 Existing solution – Internet Relay Chat (IRC) 7]: #existing-solution-internet-relay-chat-irc
   [1.4 Requirements 9]: #requirements
   [1.4.1 Stakeholder requirements 9]: #stakeholder-requirements
@@ -291,5 +291,5 @@ Internet access will be required to run the program as the client program needs 
   [2 Design 11]: #design
   [3 Development 11]: #development
   [4 Evaluation 11]: #evaluation
-  [5 References 12]: #_Toc68113673
+  [5 References 12]: #_Toc68198221
   [WeeChat.org]: https://weechat.org/about/screenshots/

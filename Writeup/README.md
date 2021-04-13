@@ -144,17 +144,31 @@ Discord is not a privacy-focused platform and users are expected to forfeit thei
 
 2.  I also think that Discord’s feature of activity statuses for each user would be a good addition to my solution. This would not be an essential feature but, if I have enough time to add it, it will improve the overall experience of the user by enabling them to see who is also online while they are using the program.
 
+<img src="media\image8.png" style="width:1.49861in;height:1.71042in" /> **Splash Screen:**
+
+When starting Discord, a splash screen appears showing the user that processes are occurring behind the scenes. This is useful as it gives visual feedback to the user and gives the program time to connect to the server and load all the required resources into the RAM.
+
+I will include this feature in my solution as it will give my program time to establish a server connection before the user can try to log in without appearing to the user as the program has frozen.
+
+**Logging In**
+
+To use Discord, users must first log in. This can be done with an email or phone number and password. In my solution, I will also require the user to sign in to their account before they can use the program. This is because protecting messages behind a password improves privacy which is one of the requirements for the program. A login system will also be useful as it provides each user with a unique identifier not tied to the computer that the user is logging in from which can be used when addressing messages
+
+**Creating an account**
+
+When creating a Discord account the password requirements for Discord are very lenient: “Must be between 6 and 128 characters long” \[2\]. For my solution, I will implement further requirements on the strength of passwords. This is because the privacy given by the end-to-end encryption will be undermined by an easily guessed password.
+
 ### Existing solution – Internet Relay Chat (IRC)
 
-Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005, at the height of IRC the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[2\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[3\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
+Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005, at the height of IRC the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[3\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[4\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
 
-<img src="media\image8.png" style="width:5.0199in;height:3.1106in" />
+<img src="media\image9.png" style="width:5.0199in;height:3.1106in" />
 
 *Image via [WeeChat.org][]*
 
 **Networking:**
 
-The structure of an IRC network is a spanning tree, in which clients will connect to one of the multiple servers that all share the same state \[4\]. This introduces the first limitation of IRC: the fact that the networks are distributed becomes extremely inefficient with large networks as all the servers need to know about all the other servers, clients and channels every time something happens. The second limitation is that if one of the server-server connections was to go down, the network would split in half and many users will appear to have disconnected in what is called a netsplit.
+The structure of an IRC network is a spanning tree, in which clients will connect to one of the multiple servers that all share the same state. This introduces the first limitation of IRC: the fact that the networks are distributed becomes extremely inefficient with large networks as all the servers need to know about all the other servers, clients and channels every time something happens. The second limitation is that if one of the server-server connections was to go down, the network would split in half and many users will appear to have disconnected in what is called a netsplit.
 
 **Difference:**
 
@@ -162,7 +176,7 @@ In my solution, I will use a centralised network. This means that I will not hav
 
 **Group Messaging:**
 
-To access IRC channels, users must first install an IRC client and select the domain name for the network they want to connect to. Once connected they will have to choose a display name. This is because users do not need to register to use IRC, only supply a short identifier in the form of a nickname \[5\]. Finally, once they join a network’s channel, the network’s server they are connected to will relay all the messages they send to all the other users connected to the channel, and vice versa.
+To access IRC channels, users must first install an IRC client and select the domain name for the network they want to connect to. Once connected they will have to choose a display name. This is because users do not need to register to use IRC, only supply a short identifier in the form of a nickname. Finally, once they join a network’s channel, the network’s server they are connected to will relay all the messages they send to all the other users connected to the channel, and vice versa.
 
 **Difference:**
 
@@ -211,7 +225,7 @@ For simplicity, I will only be building a Windows x86 version of the solution fo
 | Debian     | 9+                         | x64, ARM32, ARM64 |
 | Ubuntu     | 20.10, 20.04, 18.04, 16.04 | x64, ARM32, ARM64 |
 
-*Information from the .NET Core GitHub repository* *\[6\]*
+*Information from the .NET Core GitHub repository* \[5\]
 
 The final user of the program will not be required to install the .NET runtime as the solution will be published self-contained. This means that the download will be larger as it will contain the .NET libraries, runtime and dependencies needed.
 
@@ -224,8 +238,8 @@ Internet access will be required to run the program as the client program needs 
 | 1   | Client sockets connect to server at start-up of the program                       | The app needs a connection to the server so it should connect while the app starts to minimise waiting time | Discord (splash screen)                       |
 | 2   | Client socket tells the server it is closing before the app is closed             | Prevents any errors from occurring and begins the client disconnect procedure                               |                                               |
 | 3   | The socket sends heartbeats to the server to show that it is still open           | Stops the possibility that a client has disconnected without the server realising which will lead to errors | IRC (PING)                                    |
-| 4   | User must log in to their account to access the program                           | Ensures that only people with valid credentials can view an account’s messages                              | IRC (?)                                       |
-| 5   | New users can create an account                                                   | New users need a way of accessing the app                                                                   | IRC (?)                                       |
+| 4   | User must log in to their account to access the program                           | Ensures that only people with valid credentials can view an account’s messages                              | IRC (?) or Stakeholders                       |
+| 5   | New users can create an account                                                   | New users need a way of accessing the app                                                                   | IRC (?) or Stakeholders                       |
 | 6   | Users are not allowed to try to log in if the socket cannot connect               | With no connection, logins cannot be authorised so the login process cannot be done                         |                                               |
 | 7   | Usernames must be unique                                                          | Prevents situations where two people can accidentally share credentials                                     | Existing solution - Internet Relay Chat (IRC) |
 | 8   | Password must be of a minimum strength (upper, lower, digits, special characters) | Makes sure the password is not a security flaw for the user                                                 | Discord (account creation)                    |
@@ -265,10 +279,9 @@ Internet access will be required to run the program as the client program needs 
 |     |     |
 |     |     |
 |     |     |
+|     |     |
 
-\[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[3\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[4\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[5\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993. \[6\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].
-
-\\
+\[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Schmelyun, “Password requirements for Discord,” \[Online\]. Available: https://passhints.co/discord/. \[Accessed 13 April 2021\].\[3\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[4\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[5\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].\[6\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[7\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993.
 
   [1 Analysis 2]: #analysis
   [1.1 Problem Identification 2]: #problem-identification

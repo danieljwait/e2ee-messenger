@@ -24,25 +24,25 @@
 
 [1.3.1 Existing program – Discord 7][]
 
-[1.3.2 Existing solution – Internet Relay Chat (IRC) 7][]
+[1.3.2 Existing solution – Internet Relay Chat (IRC) 10][]
 
-[1.4 Requirements 9][]
+[1.4 Requirements 11][]
 
-[1.4.1 Stakeholder requirements 9][]
+[1.4.1 Stakeholder requirements 11][]
 
-[1.4.2 Limitations 9][]
+[1.4.2 Limitations 11][]
 
-[1.4.3 Software requirements 9][]
+[1.4.3 Software requirements 11][]
 
-[1.5 Success Criteria 10][]
+[1.5 Success Criteria 12][]
 
-[2 Design 11][]
+[2 Design 13][]
 
-[3 Development 11][]
+[3 Development 13][]
 
-[4 Evaluation 11][]
+[4 Evaluation 13][]
 
-[5 References 12][]
+[5 References 14][]
 
 # Analysis
 
@@ -144,25 +144,85 @@ Discord is not a privacy-focused platform and users are expected to forfeit thei
 
 2.  I also think that Discord’s feature of activity statuses for each user would be a good addition to my solution. This would not be an essential feature but, if I have enough time to add it, it will improve the overall experience of the user by enabling them to see who is also online while they are using the program.
 
-<img src="media\image8.png" style="width:1.49861in;height:1.71042in" /> **Splash Screen:**
+<img src="media\image8.png" style="width:1.49306in;height:1.75417in" />**Splash Screen:**
 
 When starting Discord, a splash screen appears showing the user that processes are occurring behind the scenes. This is useful as it gives visual feedback to the user and gives the program time to connect to the server and load all the required resources into the RAM.
 
-I will include this feature in my solution as it will give my program time to establish a server connection before the user can try to log in without appearing to the user as the program has frozen.
+I will consider this feature for my solution as it will give my program time to establish a server connection before the user can try to log in without appearing to the user as the program has frozen.
 
 **Logging In**
 
-To use Discord, users must first log in. This can be done with an email or phone number and password. In my solution, I will also require the user to sign in to their account before they can use the program. This is because protecting messages behind a password improves privacy which is one of the requirements for the program. A login system will also be useful as it provides each user with a unique identifier not tied to the computer that the user is logging in from which can be used when addressing messages
+To use Discord, users must first log in. This can be done with an email and password or by scanning a QR code from the Discord mobile app. In my solution, I will also require the user to log into an account before they can use the program. This is because protecting messages behind a password improves privacy which is one of the requirements for the program. A login system will also be useful as it provides each user with a unique identifier that can be used when addressing messages and viewing contacts.
+
+<img src="media\image9.png" style="width:1.81667in;height:1.62083in" />**Two-factor authentication**
+
+Discord has the option to enable two-factor authentication. This means that when logging in to your account you need both the correct credentials and access to another method of proving your identity. Common methods are SMS message, email or a dedicated authenticator app, Discord chose the latter.
+
+I will consider this feature for my program as it will add more security to the login process which would further satisfy the stakeholders’ requirements.
 
 **Creating an account**
 
-When creating a Discord account the password requirements for Discord are very lenient: “Must be between 6 and 128 characters long” \[2\]. For my solution, I will implement further requirements on the strength of passwords. This is because the privacy given by the end-to-end encryption will be undermined by an easily guessed password.
+When creating a Discord account, usernames are case sensitive and are automatically postfixed with a number after a ‘\#’ called a discriminator. This robust naming system is done to allow up to ten thousand people to have the same username. I will consider implementing this feature in my solution as preventing username collisions improves the experience for the user by allowing them to continue using their username from any other service.
+
+Discord’s password requirements are on the other hand very lenient: “Must be between 6 and 128 characters long” \[2\]. Therefore, it is up to the user to choose a sufficiently broad character pool for their password which many users will forgo in exchange for convenience. So, for my solution, I will consider implementing some further requirements for the strength of passwords. This is since the privacy given by the end-to-end encryption will be undermined by an easily guessed password.
+
+**Adding friends**
+
+To add a friend (contact), you enter their complete Discord Tag (username) and send them a Friend Request. A complete username is needed as there are many users of Discord who have the same username so the only thing that differentiates these users is their discriminator. The recipient of this request can then accept or decline this request.
+
+In my solution, I will consider a similar method of adding contacts by searching their username. However, since my user base will be much smaller than that of Discord, I may give the user feedback to similar names to what they entered by pattern matching the string they want to search and a list of all registered accounts.
+
+<img src="media\image10.png" style="width:5.25441in;height:1.11055in" />
+
+**Home page**
+
+The default home page for Discord is a list of the user’s online friends. This page consists of four tabs: “Online” the default; “All” which includes offline friends; “Pending” which are accounts that the user has sent friend requests to and “Blocked”. Upon clicking on a friend in either of the first two tabs, a DM (direct message) thread is opened. This gives users quick access to all their DM threads as well as giving them a helpful overview of who is currently online.
+
+I will consider having a similar homepage in my solution as immediate, easy access to conversations will greatly improve the flow of the program for the user. The online statuses and overview of online friends will also be a helpful addition to the program.
+
+**Direct Messages**
+
+DM threads on Discord are the conversations between users. These can show historic conversations if the users have sent each other messages in the past or empty when beginning a conversation. The messages that users send each other can be generalised as one of two formats:
+
+1.  Text, up to 2000 characters
+
+    -   Emojis
+
+    -   Embeds
+
+    -   Colouring
+
+    -   Code blocks with syntax highlighting
+
+    -   All the other Markdown formatting features
+
+2.  Files, up to 8MB (100MB with subscription)
+
+    -   Images (including GIFs) with previews
+
+    -   Playable audio files and videos with picture-in-picture
+
+    -   All other file types must be downloaded
+
+        -   Executable files cannot be sent for security reasons
+
+<img src="media\image11.png" style="width:6.24792in;height:0.50493in" />
+
+In my solution, I will consider including the feature of viewing historic messages since if messages were lost after being viewed this would not make the program very helpful for the user. Secondly, I will consider including the ability to send multiple types of messages. This is because limiting the program to only text would be restrictive for the users when compared to alternative programs.
+
+<img src="media\image12.png" style="width:3.06667in;height:2.33194in" />**Navigation**
+
+Discord has many shortcuts which are helpfully listed on a dedicated help screen in the program. This streamlines the experience for power-users of the program while allowing regular users to continue using their normal cursor orientated navigation.
+
+Many parts of the Discord UI are divided into groups of tabs: servers, DM threads and channels are all formatted as such. This makes the program very friendly for most users as tab-based navigation is a common UI style in websites, mobile apps, and desktop applications.
+
+For my solution, I will consider also using tab-based navigation as it is well established and fits well with messaging apps and their lists of contacts/conversations. I may also consider giving the user the option to operate some features in my program via keyboard shortcuts, albeit on a smaller scale to Discord as complete keyboard navigation is not a requirement.
 
 ### Existing solution – Internet Relay Chat (IRC)
 
 Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005, at the height of IRC the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[3\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[4\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
 
-<img src="media\image9.png" style="width:5.0199in;height:3.1106in" />
+<img src="media\image13.png" style="width:5.0199in;height:3.1106in" />
 
 *Image via [WeeChat.org][]*
 
@@ -295,14 +355,14 @@ Internet access will be required to run the program as the client program needs 
   [1.2.4 Conclusion 7]: #conclusion
   [1.3 Research 7]: #research
   [1.3.1 Existing program – Discord 7]: #existing-program-discord
-  [1.3.2 Existing solution – Internet Relay Chat (IRC) 7]: #existing-solution-internet-relay-chat-irc
-  [1.4 Requirements 9]: #requirements
-  [1.4.1 Stakeholder requirements 9]: #stakeholder-requirements
-  [1.4.2 Limitations 9]: #limitations
-  [1.4.3 Software requirements 9]: #software-requirements
-  [1.5 Success Criteria 10]: #success-criteria
-  [2 Design 11]: #design
-  [3 Development 11]: #development
-  [4 Evaluation 11]: #evaluation
-  [5 References 12]: #_Toc68198221
+  [1.3.2 Existing solution – Internet Relay Chat (IRC) 10]: #existing-solution-internet-relay-chat-irc
+  [1.4 Requirements 11]: #requirements
+  [1.4.1 Stakeholder requirements 11]: #stakeholder-requirements
+  [1.4.2 Limitations 11]: #limitations
+  [1.4.3 Software requirements 11]: #software-requirements
+  [1.5 Success Criteria 12]: #success-criteria
+  [2 Design 13]: #design
+  [3 Development 13]: #development
+  [4 Evaluation 13]: #evaluation
+  [5 References 14]: #_Toc69405428
   [WeeChat.org]: https://weechat.org/about/screenshots/

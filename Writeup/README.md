@@ -14,35 +14,37 @@
 
 [1.2.1 Identification 3][]
 
-[1.2.2 Questions and methodology 4][]
+[1.2.2 Interview with Ethan Sandy 4][]
 
-[1.2.3 Results analysis 4][]
+[1.2.3 Questions and methodology 6][]
 
-[1.2.4 Conclusion 7][]
+[1.2.4 Results analysis 6][]
 
-[1.3 Research 7][]
+[1.2.5 Conclusion 9][]
 
-[1.3.1 Existing program – Discord 7][]
+[1.3 Research 9][]
 
-[1.3.2 Existing solution – Internet Relay Chat (IRC) 10][]
+[1.3.1 Existing program – Discord 9][]
 
-[1.4 Requirements 11][]
+[1.3.2 Existing solution – Internet Relay Chat (IRC) 12][]
 
-[1.4.1 Stakeholder requirements 11][]
+[1.4 Requirements 13][]
 
-[1.4.2 Limitations 11][]
+[1.4.1 Stakeholder requirements 13][]
 
-[1.4.3 Software requirements 11][]
+[1.4.2 Limitations 13][]
 
-[1.5 Success Criteria 12][]
+[1.4.3 Software requirements 13][]
 
-[2 Design 13][]
+[1.5 Success Criteria 14][]
 
-[3 Development 13][]
+[2 Design 15][]
 
-[4 Evaluation 13][]
+[3 Development 15][]
 
-[5 References 14][]
+[4 Evaluation 15][]
+
+[5 References 16][]
 
 # Analysis
 
@@ -83,6 +85,110 @@ This set of problems will allow me to possibly use test harnesses during develop
 The first group of potential stakeholders are the users who will prioritise privacy and security. The needs of this group are that all communications are encrypted so they cannot be read while passing through the server and that their sensitive information (e.g., passwords and keys) are protected while they are being stored. This group will most likely use the solution for everyday use as their main communication platform; for this reason, the solution must be robust enough for that use case. I have selected a user to represent this group of stakeholders: Ethan S. He is a student who believes that privacy is very important, especially online where he makes a conscious effort to minimise his digital footprint by limiting any personally identifiable information about himself. For these reasons, I believe that he will be a fair representative for this group’s needs.
 
 The second group of potential stakeholders are the users who want a messenger app that is lightweight and easy to use. The needs of this group are that all components of the user interface are intuitive and clearly labelled and that the program requires no prior setup or configuration so the program can easily be installed and immediately used. This group will most likely only infrequently use the solution to keep in touch with friends and family; for this reason, the solution must have an easy system for finding contacts and have a low barrier of use as to not discourage them. I have selected a user to represent this group of stakeholders: \[to be added\]
+
+### Interview with Ethan Sandy
+
+This interview is being conducted to investigate the following: the opinion of the stakeholder on common features in messages apps; comments on some of the findings from the research into Discord and opinions on some decisions for features in my solution.
+
+**Topic: Discord research**
+
+1.  Do you use Discord?
+
+> Yes, often
+
+2.  Which features from Discord would you like to see in my program?
+
+> The ability to send different types of messages
+
+3.  Are there any message types in Discord that are not important?
+
+> They all have their uses, but files are sent the least
+
+4.  Can you rank the message types in Discord in descending order of importance?
+
+> Text, media, emojis, files
+
+5.  Which features from Discord would you like changed?
+
+> The Nitro[1] exclusive features (animated emojis and bigger file size limits)
+
+From question 1, it was established that Ethan has a lot of experience with messaging apps. Because of this, I know that his answers and opinions are based on previous experience rather than preconceptions.
+
+In question 2, he said that including a range of message types would benefit my solution. This agrees with what I found during the Discord research.
+
+Question 3 told me that all the types of messages found in Discord are important. This surprised me as I expected some formats to be neglected. However, by asking question 4 I was able to find out that there is a hierarchy of importance that I can investigate further.
+
+Lastly, in question 5, Ethan identified a shortcoming in Discord that I can consider implementing a solution for in my program: since there is no need for exclusive content in my solution as it will be completely free.
+
+**Topic: Program controls**
+
+1.  Do you use the keyboard shortcuts in apps?
+
+> No, I was not even aware Discord had shortcuts until now
+
+2.  Would you like to see keyboard shortcuts in my program?
+
+> No, they would likely not be used
+
+3.  Should messages be sent by pressing a send button or by pressing “Enter”?
+
+> “Enter” as it is the most common and intuitive
+
+Question 1 and 2 showed me that users often do not utilise keyboard shortcuts in programs and it will therefore be an unnecessary feature to include in my solution.
+
+For question 3, Ethan said that the pressing Enter method of sending messages is the most common and intuitive. Since being easy to use is important for the solution I make this the way users send messages.
+
+**Topic: Messages and conversations**
+
+1.  Do you want to be able to view old messages you have sent somebody?
+
+> Yes
+
+2.  How far back should the old messages go back?
+
+> All messages. If you are storing messages, it should be all or nothing
+
+3.  Should multiple conversations be tabs (like Discord) or individual pop-out windows (like Steam)?
+
+> Individual pop-out windows
+
+4.  Should messages be on both the left and right (like WhatsApp) or all on the left with usernames (like Discord)?
+
+> Along the left with usernames
+
+For question 1 and 2, Ethan said that having all past messages between two users visible would be a good feature to include in my program. I especially agree with his comment on including past messages being “all or nothing”.
+
+Next, the answers to question 3 and 4 gave me an idea of the design that he wants to see for the program. I will use these as the basis for my UI mock-up in the design section.
+
+**Topic: Accounts**
+
+1.  Should accounts be needed to use the program?
+
+> Yes
+
+2.  Should you have to be friends with someone to send them a message?
+
+> No, a friend system is not needed with so few users
+
+3.  Should usernames have a common structure or be completely custom?
+
+> Custom
+
+4.  Should there be requirements on the strength of account passwords?
+
+> Yes
+
+5.  Should the login process include two-factor authentication?
+
+> Yes, although it should be optional
+
+In question 1, Ethan says that accounts should be required for the program. This affirmed my expectations that accounts, and therefore accountability, are important for security-focused applications.
+
+For question 2, he said that – due to the small user base of the program – a friend system is not needed. For this reason, I will not prioritise this feature but will rather deem it a feature that could be added to the feature.
+
+Questions 3 and 4 showed me that no restrictions on usernames and restrictions on passwords are preferred. This is a common pair of rules for usernames and passwords and will be the rules I include in my program.
+
+Lastly, question 5 was about two-factor authentication. Ethan said that it should be included but not be forced upon the user. This is the industry standard when it comes to 2FA as many people forgo the security in exchange for convenience.
 
 ### Questions and methodology
 
@@ -343,6 +449,8 @@ Internet access will be required to run the program as the client program needs 
 
 \[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Schmelyun, “Password requirements for Discord,” \[Online\]. Available: https://passhints.co/discord/. \[Accessed 13 April 2021\].\[3\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[4\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[5\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].\[6\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[7\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993.
 
+[1] Nitro is Discord’s paid subscription service
+
   [1 Analysis 2]: #analysis
   [1.1 Problem Identification 2]: #problem-identification
   [1.1.1 Problem outline 2]: #problem-outline
@@ -350,19 +458,20 @@ Internet access will be required to run the program as the client program needs 
   [1.1.3 Computational methods that the solution lends itself to 2]: #computational-methods-that-the-solution-lends-itself-to
   [1.2 Stakeholders 3]: #stakeholders
   [1.2.1 Identification 3]: #identification
-  [1.2.2 Questions and methodology 4]: #questions-and-methodology
-  [1.2.3 Results analysis 4]: #results-analysis
-  [1.2.4 Conclusion 7]: #conclusion
-  [1.3 Research 7]: #research
-  [1.3.1 Existing program – Discord 7]: #existing-program-discord
-  [1.3.2 Existing solution – Internet Relay Chat (IRC) 10]: #existing-solution-internet-relay-chat-irc
-  [1.4 Requirements 11]: #requirements
-  [1.4.1 Stakeholder requirements 11]: #stakeholder-requirements
-  [1.4.2 Limitations 11]: #limitations
-  [1.4.3 Software requirements 11]: #software-requirements
-  [1.5 Success Criteria 12]: #success-criteria
-  [2 Design 13]: #design
-  [3 Development 13]: #development
-  [4 Evaluation 13]: #evaluation
-  [5 References 14]: #_Toc69405428
+  [1.2.2 Interview with Ethan Sandy 4]: #interview-with-ethan-sandy
+  [1.2.3 Questions and methodology 6]: #questions-and-methodology
+  [1.2.4 Results analysis 6]: #results-analysis
+  [1.2.5 Conclusion 9]: #conclusion
+  [1.3 Research 9]: #research
+  [1.3.1 Existing program – Discord 9]: #existing-program-discord
+  [1.3.2 Existing solution – Internet Relay Chat (IRC) 12]: #existing-solution-internet-relay-chat-irc
+  [1.4 Requirements 13]: #requirements
+  [1.4.1 Stakeholder requirements 13]: #stakeholder-requirements
+  [1.4.2 Limitations 13]: #limitations
+  [1.4.3 Software requirements 13]: #software-requirements
+  [1.5 Success Criteria 14]: #success-criteria
+  [2 Design 15]: #design
+  [3 Development 15]: #development
+  [4 Evaluation 15]: #evaluation
+  [5 References 16]: #_Toc69645088
   [WeeChat.org]: https://weechat.org/about/screenshots/

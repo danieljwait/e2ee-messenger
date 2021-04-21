@@ -8,7 +8,7 @@
 
 [1.1.2 How can the problem be solved by computational methods? 2][]
 
-[1.1.3 Computational methods that the solution lends itself to 2][]
+[1.1.3 Computational methods 2][]
 
 [1.1.4 Stakeholder Identification 3][]
 
@@ -22,29 +22,27 @@
 
 [1.3.1 Interview with Ethan Sandy 9][]
 
-[1.3.2 Questions and methodology 11][]
+[1.3.2 Survey Aims 11][]
 
-[1.3.3 Results analysis 11][]
+[1.3.3 Survey Results 11][]
 
-[1.3.4 Conclusion 14][]
+[1.4 Requirements 16][]
 
-[1.4 Requirements 15][]
+[1.4.1 Stakeholder requirements 16][]
 
-[1.4.1 Stakeholder requirements 15][]
+[1.4.2 Limitations 16][]
 
-[1.4.2 Limitations 15][]
+[1.4.3 Software requirements 16][]
 
-[1.4.3 Software requirements 15][]
+[1.5 Success Criteria 17][]
 
-[1.5 Success Criteria 16][]
+[2 Design 18][]
 
-[2 Design 17][]
+[3 Development 18][]
 
-[3 Development 17][]
+[4 Evaluation 18][]
 
-[4 Evaluation 17][]
-
-[5 References 18][]
+[5 References 19][]
 
 # Analysis
 
@@ -318,7 +316,7 @@ Next, the answers to question 3 and 4 gave me an idea of the design that he want
 
 > Yes, although it should be optional
 
-In question 1, Ethan says that accounts should be required for the program. This affirmed my expectations that accounts, and therefore accountability, are important for security-focused applications.
+In question 1, Ethan says that accounts should be required for the program. This confirmed my expectations that accounts, and therefore accountability, are important for security-focused applications.
 
 For question 2, he said that – due to the small user base of the program – a friend system is not needed. For this reason, I will not prioritise this feature but will rather deem it a feature that could be added to the feature.
 
@@ -340,27 +338,55 @@ Secondly, I wanted to hear the stakeholders’ opinions on some common features 
 
 **Question 1 – “How much time do you spend on messaging apps each day?”**
 
-<img src="media\image9.png" style="width:5.01389in;height:3.01389in" />
+<img src="media\image9.png" style="width:5.00069in;height:3in" />
+
+Question 1 told me that the respondents to this survey had an above average messaging app usage. The respondents had a modal class of 30-60 minutes and a (linearly interpolated) median of 55 minutes: these are much greater than the UK’s average of 28 minutes \[5\]. This is the best case for a group of respondents as it means that the survey was almost guaranteed to be completed using respondents’ experiences of features rather than their preconceptions.
 
 **Question 2 – “What is your most used messaging app?”**
 
-<img src="media\image10.png" style="width:4.38681in;height:3.54028in" />
+<img src="media\image10.png" style="width:4.37361in;height:3.52708in" />
+
+The results from this question showed me that the most used messaging app among the respondents was WhatsApp, a privacy focused end-to-end encrypted messaging app. This, along with the results from question 1, confirm to me that the respondents were suitable stakeholders for this program and therefore their opinions and decisions should be trusted.
 
 **Question 3 – “What is your favourite feature of messaging apps?”**
 
-<img src="media\image11.png" style="width:5.01389in;height:3.01389in" />
+<img src="media\image11.png" style="width:4.9403in;height:2.96207in" />
+
+This data showed me that the stakeholders deemed group messages and “Seen” receipts to be their favourite features. For this that reason I should consider these as features to prioritise in my solution.
 
 **Question 4 – “What is your least favourite feature of messaging apps?”**
 
-<img src="media\image12.png" style="width:5.01389in;height:3.01389in" />
+<img src="media\image12.png" style="width:5.00069in;height:3in" />
+
+This question was the direct inverse of question 4. It showed me that in-app sounds, un-sending messages and emojis are the three most disliked features of messages apps. Therefore, I will not be considering these to be included in my solution. The appearance of emojis is not a surprise here since it was also identified as the 2<sup>nd</sup> least used message type on Discord.
 
 **Question 5 – “How important are the following features?”**
 
 <img src="media\image13.png" style="width:5.79815in;height:4.67847in" />
 
-The data from this question showed me that the stakeholders do not think that the following features make a messaging app: in-app sounds, emojis, “typing…” indicators, and un-sending messages. From this, I can see that these features are non-essential so I will not consider these for the list of necessary features for my solution.
+The data from this question showed me that the stakeholders do not think that the following features make a significant impact in a messaging app: in-app sounds, emojis, “typing…” indicators, and un-sending messages. From this, along with the results from question 4, I can see that these features are non-essential so I will not consider these for the list of necessary features for my solution.
 
-The data also showed me that four features are generally deemed core features: group messages, individual messages, encryption, and file sharing. As these are important for the stakeholders, I will consider these for the list of features that must be in the final solution.
+The data also showed me that four features are generally deemed core features: group messages, individual messages, encryption, and media sharing. As these are important for the stakeholders, I will consider these for the list of features that must be in the final solution. These findings are supported by the results from question 3 as well as the interview with Ethan Sandy.
+
+**Question 6 – “What do you look for in a messaging app?”**
+
+<img src="media\image14.png" style="width:5.00069in;height:3in" />
+
+The top qualities for messaging apps were simplicity and ease of use. I will consider these when designing my UI.
+
+**Question 7 – “What do you mainly use messaging apps for?”**
+
+<img src="media\image15.png" style="width:5.00069in;height:3in" />
+
+The fact socialising and sharing media appeared at the top was not a surprise. However, two of the answers were: sharing links and work. To accommodate for the respondents who put down sharing links, I will investigate automatically hyperlinking text and opening browsers. I am unsure of how to accommodate the working users so may consider adding profanity filters unless any other features arise.
+
+**Question 8 – “What feature might you want to see added to messaging apps?”**
+
+<img src="media\image16.png" style="width:5.00069in;height:3in" />
+
+**Question 9 – “How important is privacy for you?”**
+
+<img src="media\image17.png" style="width:5.35347in;height:1.29375in" />
 
 ## Requirements
 
@@ -389,7 +415,7 @@ For simplicity, I will only be building a Windows x86 version of the solution fo
 | Debian     | 9+                         | x64, ARM32, ARM64 |
 | Ubuntu     | 20.10, 20.04, 18.04, 16.04 | x64, ARM32, ARM64 |
 
-*Information from the .NET Core GitHub repository* \[5\]
+*Information from the .NET Core GitHub repository* \[6\]
 
 The final user of the program will not be required to install the .NET runtime as the solution will be published self-contained. This means that the download will be larger as it will contain the .NET libraries, runtime and dependencies needed.
 
@@ -444,8 +470,9 @@ Internet access will be required to run the program as the client program needs 
 |     |     |
 |     |     |
 |     |     |
+|     |     |
 
-\[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: https://www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Schmelyun, “Password requirements for Discord,” \[Online\]. Available: https://passhints.co/discord/. \[Accessed 13 April 2021\].\[3\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: https://netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[4\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: https://netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[5\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].\[6\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[7\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993.
+\[1\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[2\] A. Schmelyun, “Password requirements for Discord,” \[Online\]. Available: passhints.co/discord/. \[Accessed 13 April 2021\].\[3\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[4\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[5\] J. Schwartz, “Messaging Apps: Average Usage Time Around the World,” SimilarWeb, 30 June 2016. \[Online\]. Available: www.similarweb.com/corp/blog/messaging-apps/. \[Accessed 18 April 2021\].\[6\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].\[7\] C. Kalt, *Internet Relay Chat: Architecture,* RFC 2810 ed., 2000. \[8\] J. Oikarinen and D. Reed, *Internet Relay Chat Protocol,* RFC 1459 ed., 1993.
 
 [1] Nitro is Discord’s paid subscription service
 
@@ -453,23 +480,22 @@ Internet access will be required to run the program as the client program needs 
   [1.1 Problem Identification 2]: #problem-identification
   [1.1.1 Problem outline 2]: #problem-outline
   [1.1.2 How can the problem be solved by computational methods? 2]: #how-can-the-problem-be-solved-by-computational-methods
-  [1.1.3 Computational methods that the solution lends itself to 2]: #computational-methods
+  [1.1.3 Computational methods 2]: #computational-methods
   [1.1.4 Stakeholder Identification 3]: #stakeholder-identification
   [1.2 Research 4]: #research
   [1.2.1 Existing program – Discord 4]: #existing-program-discord
   [1.2.2 Existing solution – Internet Relay Chat (IRC) 7]: #existing-solution-internet-relay-chat-irc
   [1.3 Stakeholders 9]: #stakeholders
   [1.3.1 Interview with Ethan Sandy 9]: #interview-with-ethan-sandy
-  [1.3.2 Questions and methodology 11]: #survey-aims
-  [1.3.3 Results analysis 11]: #survey-results
-  [1.3.4 Conclusion 14]: #_Toc69646060
-  [1.4 Requirements 15]: #requirements
-  [1.4.1 Stakeholder requirements 15]: #stakeholder-requirements
-  [1.4.2 Limitations 15]: #limitations
-  [1.4.3 Software requirements 15]: #software-requirements
-  [1.5 Success Criteria 16]: #success-criteria
-  [2 Design 17]: #design
-  [3 Development 17]: #development
-  [4 Evaluation 17]: #evaluation
-  [5 References 18]: #_Toc69646069
+  [1.3.2 Survey Aims 11]: #survey-aims
+  [1.3.3 Survey Results 11]: #survey-results
+  [1.4 Requirements 16]: #requirements
+  [1.4.1 Stakeholder requirements 16]: #stakeholder-requirements
+  [1.4.2 Limitations 16]: #limitations
+  [1.4.3 Software requirements 16]: #software-requirements
+  [1.5 Success Criteria 17]: #success-criteria
+  [2 Design 18]: #design
+  [3 Development 18]: #development
+  [4 Evaluation 18]: #evaluation
+  [5 References 19]: #_Toc69904715
   [WeeChat.org]: https://weechat.org/about/screenshots/

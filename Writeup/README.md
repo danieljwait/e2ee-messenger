@@ -36,13 +36,15 @@
 
 [1.5 Success Criteria 17][]
 
-[2 Design 18][]
+[2 Design 19][]
 
-[3 Development 18][]
+[2.1 System decomposition 19][]
 
-[4 Evaluation 18][]
+[3 Development 22][]
 
-[5 References 19][]
+[4 Evaluation 22][]
+
+[5 References 23][]
 
 # Analysis
 
@@ -66,11 +68,7 @@ This problem is well suited to a computational approach as it can be solved usin
 
 **Thinking ahead** – I have thought ahead by choosing C\# to write the program is since I expect the backend to require a lot more focus than the frontend; the GUI capabilities in C\# are much greater than Python for example (the language I am most familiar with), due to its support for WYSIWYG GUI builders in Visual Studio. I made this decision so that I can spend more time focusing on the development of the backend.
 
-**Procedural thinking & decomposition** – The problem can be decomposed into a set of much smaller problems, using procedural thinking I will develop a solution to each of these in turn.
-
-<img src="media\image1.png" style="width:6.26389in;height:2.52014in" />
-
-This set of problems will allow me to possibly use test harnesses during development to isolate certain parts of the program during the development process. This structure will make the overall solution easier to work with and will make the entire process more efficient.
+**Procedural thinking & decomposition** – The problem can be decomposed into a set of much smaller problems, using procedural thinking I will develop a solution to each of these in turn. This set of problems will allow me to possibly use test harnesses during development to isolate certain parts of the program during the development process. This structure will make the overall solution easier to work with and will make the entire process more efficient.
 
 **Thinking concurrently** – Through the use of concurrent processing, I will make the server-side program more efficient by processing each user’s requests on a virtual thread. This will mean that the program can deal with requests from multiple users and the same time, which is important as if they were acted on procedurally the bandwidth of the system would be dramatically reduced leading to very high latency.
 
@@ -88,7 +86,7 @@ The second group of potential stakeholders are the users who want a messenger ap
 
 Discord is a free instant messaging and VoIP platform created in 2015 centred around enabling communities to connect through guilds: collections of chat rooms and voice channels. In 2019 the platform saw 250 million users with a total of 25 billion messages being sent per month \[1\] making it one of the largest gaming-focused communications platforms available.
 
-<img src="media\image2.png" style="width:6.25417in;height:2.90764in" />
+<img src="media\image1.png" style="width:6.25417in;height:2.90764in" />
 
 **Features:**
 
@@ -104,7 +102,7 @@ Discord is not a privacy-focused platform and users are expected to forfeit thei
 
 2.  I also think that Discord’s feature of activity statuses for each user would be a good addition to my solution. This would not be an essential feature but, if I have enough time to add it, it will improve the overall experience of the user by enabling them to see who is also online while they are using the program.
 
-<img src="media\image3.png" style="width:1.49306in;height:1.75417in" />**Splash Screen:**
+<img src="media\image2.png" style="width:1.49306in;height:1.75417in" />**Splash Screen:**
 
 When starting Discord, a splash screen appears showing the user that processes are occurring behind the scenes. This is useful as it gives visual feedback to the user and gives the program time to connect to the server and load all the required resources into the RAM.
 
@@ -114,7 +112,7 @@ I will consider this feature for my solution as it will give my program time to 
 
 To use Discord, users must first log in. This can be done with an email and password or by scanning a QR code from the Discord mobile app. In my solution, I will also require the user to log into an account before they can use the program. This is because protecting messages behind a password improves privacy which is one of the requirements for the program. A login system will also be useful as it provides each user with a unique identifier that can be used when addressing messages and viewing contacts.
 
-<img src="media\image4.png" style="width:1.81667in;height:1.62083in" />**Two-factor authentication**
+<img src="media\image3.png" style="width:1.81667in;height:1.62083in" />**Two-factor authentication**
 
 Discord has the option to enable two-factor authentication. This means that when logging in to your account you need both the correct credentials and access to another method of proving your identity. Common methods are SMS message, email or a dedicated authenticator app, Discord chose the latter.
 
@@ -132,7 +130,7 @@ To add a friend (contact), you enter their complete Discord Tag (username) and s
 
 In my solution, I will consider a similar method of adding contacts by searching their username. However, since my user base will be much smaller than that of Discord, I may give the user feedback to similar names to what they entered by pattern matching the string they want to search and a list of all registered accounts.
 
-<img src="media\image5.png" style="width:5.25441in;height:1.11055in" />
+<img src="media\image4.png" style="width:5.25441in;height:1.11055in" />
 
 **Home page**
 
@@ -166,11 +164,11 @@ DM threads on Discord are the conversations between users. These can show histor
 
         -   Executable files cannot be sent for security reasons
 
-<img src="media\image6.png" style="width:6.24792in;height:0.50493in" />
+<img src="media\image5.png" style="width:6.24792in;height:0.50493in" />
 
 In my solution, I will consider including the feature of viewing historic messages since if messages were lost after being viewed this would not make the program very helpful for the user. Secondly, I will consider including the ability to send multiple types of messages. This is because limiting the program to only text would be restrictive for the users when compared to alternative programs.
 
-<img src="media\image7.png" style="width:3.06667in;height:2.33194in" />**Navigation**
+<img src="media\image6.png" style="width:3.06667in;height:2.33194in" />**Navigation**
 
 Discord has many shortcuts which are helpfully listed on a dedicated help screen in the program. This streamlines the experience for power-users of the program while allowing regular users to continue using their normal cursor orientated navigation.
 
@@ -182,7 +180,7 @@ For my solution, I will consider also using tab-based navigation as it is well e
 
 Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005, at the height of IRC the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[3\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[4\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
 
-<img src="media\image8.png" style="width:5.0199in;height:3.1106in" />
+<img src="media\image7.png" style="width:5.0199in;height:3.1106in" />
 
 *Image via [WeeChat.org][]*
 
@@ -284,7 +282,7 @@ For question 3, Ethan said that the pressing Enter method of sending messages is
 
 3.  Should multiple conversations be tabs (like Discord) or individual pop-out windows (like Steam)?
 
-> Individual pop-out windows
+> A tab per conversation
 
 4.  Should messages be on both the left and right (like WhatsApp) or all on the left with usernames (like Discord)?
 
@@ -338,31 +336,31 @@ Secondly, I wanted to hear the stakeholders’ opinions on some common features 
 
 **Question 1 – “How much time do you spend on messaging apps each day?”**
 
-<img src="media\image9.png" style="width:5.00069in;height:3in" />
+<img src="media\image8.png" style="width:5.00069in;height:3in" />
 
 Question 1 told me that the respondents to this survey had an above average messaging app usage. The respondents had a modal class of 30-60 minutes and a (linearly interpolated) median of 55 minutes: these are much greater than the UK’s average of 28 minutes \[5\]. This is the best case for a group of respondents as it means that the survey was almost guaranteed to be completed using respondents’ experiences of features rather than their preconceptions.
 
 **Question 2 – “What is your most used messaging app?”**
 
-<img src="media\image10.png" style="width:4.37361in;height:3.52708in" />
+<img src="media\image9.png" style="width:4.37361in;height:3.52708in" />
 
 The results from this question showed me that the most used messaging app among the respondents was WhatsApp, a privacy focused end-to-end encrypted messaging app. This, along with the results from question 1, confirm to me that the respondents were suitable stakeholders for this program and therefore their opinions and decisions should be trusted.
 
 **Question 3 – “What is your favourite feature of messaging apps?”**
 
-<img src="media\image11.png" style="width:4.9403in;height:2.96207in" />
+<img src="media\image10.png" style="width:4.9403in;height:2.96207in" />
 
 This data showed me that the stakeholders deemed group messages and “Seen” receipts to be their favourite features. For this that reason I should consider these as features to prioritise in my solution.
 
 **Question 4 – “What is your least favourite feature of messaging apps?”**
 
-<img src="media\image12.png" style="width:5.00069in;height:3in" />
+<img src="media\image11.png" style="width:5.00069in;height:3in" />
 
 This question was the direct inverse of question 4. It showed me that in-app sounds, un-sending messages and emojis are the three most disliked features of messages apps. Therefore, I will not be considering these to be included in my solution. The appearance of emojis is not a surprise here since it was also identified as the 2<sup>nd</sup> least used message type on Discord.
 
 **Question 5 – “How important are the following features?”**
 
-<img src="media\image13.png" style="width:5.79815in;height:4.67847in" />
+<img src="media\image12.png" style="width:5.79815in;height:4.67847in" />
 
 The data from this question showed me that the stakeholders do not think that the following features make a significant impact in a messaging app: in-app sounds, emojis, “typing…” indicators, and un-sending messages. From this, along with the results from question 4, I can see that these features are non-essential so I will not consider these for the list of necessary features for my solution.
 
@@ -370,23 +368,23 @@ The data also showed me that four features are generally deemed core features: g
 
 **Question 6 – “What do you look for in a messaging app?”**
 
-<img src="media\image14.png" style="width:5.00069in;height:3in" />
+<img src="media\image13.png" style="width:5.00069in;height:3in" />
 
 The top qualities for messaging apps were simplicity and ease of use. I will consider these when designing my UI.
 
 **Question 7 – “What do you mainly use messaging apps for?”**
 
-<img src="media\image15.png" style="width:5.00069in;height:3in" />
+<img src="media\image14.png" style="width:5.00069in;height:3in" />
 
 The fact socialising and sharing media appeared at the top was not a surprise. However, two of the answers were: sharing links and work. To accommodate for the respondents who put down sharing links, I will investigate automatically hyperlinking text and opening browsers. I am unsure of how to accommodate the working users so may consider adding profanity filters unless any other features arise.
 
 **Question 8 – “What feature might you want to see added to messaging apps?”**
 
-<img src="media\image16.png" style="width:5.00069in;height:3in" />
+<img src="media\image15.png" style="width:5.00069in;height:3in" />
 
 **Question 9 – “How important is privacy for you?”**
 
-<img src="media\image17.png" style="width:5.35347in;height:1.29375in" />
+<img src="media\image16.png" style="width:5.35347in;height:1.29375in" />
 
 ## Requirements
 
@@ -456,6 +454,62 @@ Internet access will be required to run the program as the client program needs 
 
 # Design
 
+## System decomposition
+
+<img src="media\image17.png" style="width:6.26806in;height:3.38889in" />
+
+***Networking – Sockets***
+
+**Asynchronous:** Using sockets, I will be able to do asynchronous operations as to not block the program’s GUI for the user. This is paramount for the networking as if the operations are synchronous the IO will almost always be blocked for the user due to the constant communication with the server. To implement this part of the program I will need to implement callback functions and threading.
+
+**TCP streams:** By using TCP, a connection orientated protocol, the server and client will have a dedicated stream to communicate via. The retransmission of lost packets is also important for the user as waiting longer for a message is better than receiving a malformed or incomplete message. In comparison, using UDP does have faster speeds but that is not necessary for this application and the unreliability is too significant to ignore. To implement this part of the program I will need to bind a socket to a port on the server and infinitely listen, I will then need to bind a socket to the same port on the server’s IP on the client.
+
+**Client-server heartbeat:** A constant heartbeat message that will be pinged between the client and server will be used to give both parties up-to-date information about whether either party has ungracefully disconnected. This needs to be in the program as either socket may not get the opportunity to send a proper close message (such as in the event of the ethernet cable being pulled out) so the client/server will only find out when they try to send a transmission and never get a reply. To implement this part of the program I will need to send a message at a constant interval between the client and server, then if one of the parties does not get the message after a certain time it can be assumed that the other party has ungracefully closed.
+
+***Networking – Protocol***
+
+**Standardised encoding:** Using a standardised character encoding across all my transmissions will ensure that any text that is entered into one client will be displayed the same way in another client. This is included in response to the problems faced in IRC where character encoding was client determined and so some characters were different when viewed from a different client. To implement this part of the program I will pass all text inputs through the same encoder as part of the data validation process and the same decoder as part of the transmission receiving procedure.
+
+**Encryption:** Since the program requires end-to-end encryption, making sure that no messages can be read during transit is important. Therefore, all transmission data will be encrypted with the recipient’s public key and signed with the sender’s private key. This will be implemented as a part of the transmission creation and receiving procedure so that it is done to all messages.
+
+**Serialised object:** For easier sending and receiving of transmission, a common format that will be easy to read values from is needed. Since the transmission will be an object before its sent, I will create an object that will be serialised when sent. When the recipient gets the transmission, it can de-serialised and immediately used by the receiver. This part of the program will possibly be implemented by using JObjects, this is a JSON object that contains many tokens that will be used to transfer information between the client and server.
+
+**Flags determine command type:** Creating a general format for all transmission and then giving more information and specifying the purpose of the message via flags gives consistency to the transmission while not sacrificing functionality. These flags will declare the purpose of a request as, due to the structure of the transmission, I am unable to prefix messages with a command name so will need to integrate the request’s purpose into the object that will be sent. This part of the solution will most likely be done with Boolean values in the JObject or a token dedicated to holding a command name.
+
+***Encryption – Public-key Cryptography***
+
+**Asymmetric encryption vis RSA:** To encrypt the transmission, there are two routes to go down. Firstly, there is symmetric encryption which will require a Diffie-Helman key exchange to establish a shared secret key between two parties while the messages are being sent in plaintext through the server and then AES could be used once the secret key is established. The other is asymmetric encryption, this involves each party generating a random public key which is sent to the server to be available to all clients, and a private key which decrypts messages encrypted by the public key (the key is only known by the owner). I will implement the latter as symmetric encryption will require each time two clients communicate each client will need to fetch the key specifically for that pair whereas with asymmetric encryption the same key pair is used for all communications. I will implement this part of my solution by fetching or generating a key pair immediately after the login process.
+
+**Key generator seeded with RNG:** To generate an effective private key, it must use truly random data rather than pseudorandom (from a PRNG). This is because using non-random data can open the possibility for keys to be guessed easier which undermines all the program’s security. This part of the solution will be implemented by using an RNG to generate as close to a truly random seed for the key generator.
+
+**Key derivation functions:** To allow users to sign in to their account from any computer, their private keys must be stored on the server. However, this would be very poor practice if the key is stored in plaintext so it must be encrypted. However, the question of how you store the key to that encryption then arises. The solution is using a symmetric encryption algorithm that derives the key using the user’s password via a key derivation function (KDF). Using a KDF means that the key to decrypt a user’s password never makes its way out of a client’s memory let alone stored anywhere so the clients are not restricted to where they can log in from. This part of the program will be implemented by putting the user’s password through a KDF (possibly PBKDF2) after the log-in process, then fetching the encrypted private key from the server and decrypting it for use.
+
+**Digital signatures:** By storing all users’ public keys in a centralised server that also handles all the traffic, there is the possibility of man-in-the-middle (MITM) attacks. One way to prevent this is to authenticate all messages. This will involve encrypting a small bit of data with the sender’s private key and appending it to the message; this extra data is called the signature. The recipient can then decrypt this signature with the sender’s public key, if the resulting plaintext matches an agreed-upon value the message has successfully be authenticated, else it has not come from the sender it claims to have been from and is most likely the result of an attempted MITM attack. To implement this part of the program I will use RSA once again as it is asymmetrical and the generated key pair from message encryption can be used.
+
+***Interface – GUI***
+
+**Tab based navigation:** To move about the program, windows will be organised into tabs which the user can click on to view. This will mean that when a conversation is opened with another user the conversation view is opened in the same window as the contact list. To implement this part of the solution I will need to have a TabControl in the main view and a UserControl for each conversation.
+
+**Dynamic conversation view:** Since the nature of a messaging app means that messages will appear while the user is looking at a certain conversation, I will need to dynamically add controls to the UserControl in which the conversation is being displayed in. This part of the program will likely be implemented by creating a template for a message – time, content, shape to hold text, sender/recipient – which can then be filled out with the data of each incoming message and added to the view.
+
+**Login screen:** Upon opening the program, users will be required to sign in to an account or create an account. This means that a login screen will need to open first before the user can get access to the main part of the program. This will need to be done after connecting to the server since the login request will need to be sent from the socket. This part of the solution will be implemented by triggering a window to open only once the connection has been established, which will then lead to the main view being opened once a successful login has occurred.
+
+***Accounts – Log-in***
+
+**Input validation:** When the user inputs their username and password, a request will be sent off to the server to check the credentials against the database. This request should only go through when the form has been properly completed will valid data. Therefore, there must be checks in place to make sure inputs are completed and properly validated before being sent to the server. To implement this part of the program I will be doing some simple checks on the presence of data, the length of data and cleaning out whitespace and non-permitted characters from the input.
+
+**Hash password:** Since the communication channel between the client and server is insecure until the client logs into an account. There is the possibility of using an ephemeral key to temporarily encrypt these communications, but I do not think this added complexity will be necessary for this use case. Therefore, to protect the user’s credentials the password will be hashed before being sent. This will then be checked against the hash in the server’s database to make sure the password is correct. By hashing the password, the plaintext is unknown, but it can still be used to compare against other hashed values. This part of the program will be implemented using the SHA-256 hashing algorithm.
+
+**Fetch and decrypt private key:** As mentioned in the sections about KDFs, the user’s private key is stored on the server. Therefore, upon a successful log-in, the fetched encrypted private key must be decrypted. This part of the program will be implemented by putting the user’s plaintext password through the KDF and using the output as the decryption key. The private key will then only be stored in memory which will be wiped when the program is closed.
+
+***Accounts – Sign-in***
+
+**Postfix a discriminator:** Addressing the issue encountered in IRC and solved in Discord, username collisions will be prevented by postfixing a new user’s username with a two-digit number which Discord called the discriminator. This number will be automatically assigned so can add “uniqueness” to two otherwise identical usernames. This part of the solution will be implemented as a random number or as an automatically incrementing value (the latter being more likely) that will be in the format username\#discriminator.
+
+**Password strength check:** The weakest link in a system’s security chain is typically the endpoints and more specifically the user’s password. Therefore, to prevent all the encryption behind the scenes from being undermined I will force the user to have a strong password. This part of the solution will be implemented by only accepting new accounts with passwords that have both upper-case and lower-case letters, at least one letter, digit and special character and be at least 8 characters long.
+
+**Generate new key pair:** Before any encrypted messages are sent between users, the new user must generate a key pair for RSA. The public key will then need to be sent to the server so that it can be accessed by any other client. The public key on the other hand should not be accessible to any other client but should be accessible to the user when they sign in on another machine: so, will be encrypted and stored in the server. The user’s password will be passed through a KDF (possibly PBKDF2) to generate the key for a symmetric encryption algorithm (possible AES) which the private key will be passed through before being sent off to the server for storage.
+
 # Development
 
 # Evaluation
@@ -494,8 +548,9 @@ Internet access will be required to run the program as the client program needs 
   [1.4.2 Limitations 16]: #limitations
   [1.4.3 Software requirements 16]: #software-requirements
   [1.5 Success Criteria 17]: #success-criteria
-  [2 Design 18]: #design
-  [3 Development 18]: #development
-  [4 Evaluation 18]: #evaluation
-  [5 References 19]: #_Toc69904715
+  [2 Design 19]: #design
+  [2.1 System decomposition 19]: #system-decomposition
+  [3 Development 22]: #development
+  [4 Evaluation 22]: #evaluation
+  [5 References 23]: #_Toc70701581
   [WeeChat.org]: https://weechat.org/about/screenshots/

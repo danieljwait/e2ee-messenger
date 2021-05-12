@@ -40,11 +40,13 @@
 
 [2.1 System decomposition 19][]
 
-[3 Development 22][]
+[2.2 Algorithms 23][]
 
-[4 Evaluation 22][]
+[3 Development 26][]
 
-[5 References 23][]
+[4 Evaluation 26][]
+
+[5 References 27][]
 
 # Analysis
 
@@ -510,6 +512,34 @@ Internet access will be required to run the program as the client program needs 
 
 **Generate new key pair:** Before any encrypted messages are sent between users, the new user must generate a key pair for RSA. The public key will then need to be sent to the server so that it can be accessed by any other client. The public key on the other hand should not be accessible to any other client but should be accessible to the user when they sign in on another machine: so, will be encrypted and stored in the server. The user’s password will be passed through a KDF (possibly PBKDF2) to generate the key for a symmetric encryption algorithm (possible AES) which the private key will be passed through before being sent off to the server for storage.
 
+## Algorithms
+
+<img src="media\image18.png" style="width:6.26806in;height:5.69028in" />
+
+**Summary** – This algorithm will be executed when a new user wants to create an account. This is because all users will require an RSA key pair to facilitate encrypted communications and a pair of credentials to allow them to log in from any device.
+
+**Line 3 to 4** – The username and password will be fetched from text boxes in the UI. The submit button that will call the subroutine CreateAccount() will only be enabled when both fields because enabling it right away will lead to the possibility of empty strings being used in the function and the visual aid will guide the user.
+
+**Line 7 to 12** – The input validation for the username will require the username’s length to be between 3 and 128 characters long and does not contain any non-encodable characters. Due to the requirement of eliminating nickname collisions, a discriminator needs to be postfixed to prevent nickname collisions, this will be done on line 8 if the username is valid.
+
+**Line 13 to 17** – Due to the success criterion “strong minimum password strength”, the input validation for the password will require the following criteria to be satisfied:
+
+-   Both uppercase and lowercase characters
+
+-   A mix of letters and numbers
+
+-   At least one special characters
+
+-   Between 8 and 128 characters
+
+**Line 18** – To allow users to amend their credentials if they are not accepted, a “repeat…until” (or “do…while”) loop is used to continue requesting usernames and passwords until a valid pair is supplied. This will appear in the UI in the form of the invalid text box(es) being highlighted.
+
+**Line 26** – As addressed in 2.1 System decomposition, a key derivation function will be required to generate a symmetric key for AES to decrypt and encrypt the user’s private key that will be stored on the server. There are a few possible functions that the KDF in the pseudocode can be: KDF1, PBKDF2 or KBKDFVS. The final implementation will be chosen based on .NET implementation, security, and computation time.
+
+**Line 28** – Since all passwords need to be store securely, the password must be hashed first. This will be done via MD5 with the possibility of an added salt. The salt will be different for each user and will mean that even if two users have the same password, their password hashes will not be the same. This also has the benefit of helping to reduce the effectiveness of hash table attacks.
+
+**Line 29 to 30** – Lastly, all the new information to make the user’s account must be sent to the server. Even though this will be transmitted over an insecure channel, all the sensitive information has been either hashed or encrypted. Although, man-in-the-middle attacks are (very much) possible at this point, addressing this vulnerability is beyond the scope of this program so will have to remain in the program.
+
 # Development
 
 # Evaluation
@@ -550,7 +580,8 @@ Internet access will be required to run the program as the client program needs 
   [1.5 Success Criteria 17]: #success-criteria
   [2 Design 19]: #design
   [2.1 System decomposition 19]: #system-decomposition
-  [3 Development 22]: #development
-  [4 Evaluation 22]: #evaluation
-  [5 References 23]: #_Toc70701581
+  [2.2 Algorithms 23]: #_Toc71703040
+  [3 Development 26]: #development
+  [4 Evaluation 26]: #evaluation
+  [5 References 27]: #_Toc71703043
   [WeeChat.org]: https://weechat.org/about/screenshots/

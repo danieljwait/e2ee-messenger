@@ -42,11 +42,15 @@
 
 [2.2 Algorithms 23][]
 
-[3 Development 26][]
+[2.3 Usability Features 25][]
 
-[4 Evaluation 26][]
+[2.4 Wireframes – UX 26][]
 
-[5 References 27][]
+[3 Development 30][]
+
+[4 Evaluation 30][]
+
+[5 References 31][]
 
 # Analysis
 
@@ -558,6 +562,38 @@ To simplify the navigation, the main program will all be displayed in one window
 
 Quickly identifying the sender of a message is crucial to messaging apps. From 1.3.1 Interview with Ethan Sandy, it was decided that this will be achieved by using a similar conversation view to that found on Discord: all messages are left-aligned in the format \[time\]\[user\]\[message\]. This will help the users in three ways. Firstly, the timestamps on the left mean that finding messages from a certain time can be done by quickly scanning down the left column. Secondly, having the username displayed for each message means that the sender of the messages can be quickly identified. Lastly, the username can be padded with whitespace to ensure that all messages begin at the same point to improve readability for the user; this has the added benefit that in situations where the two users talking have different username lengths time to determine the sender will be reduced due to the visible difference.
 
+## Wireframes – UX
+
+Several low fidelity wireframes have been created for the different windows that will be shown in the program. These designs have incorporated the ideas from 1.3.1 Interview with Ethan Sandy as well as some alternative ideas I have come up inspired by the existing solutions seen in 1.2 Research. After getting feedback on these I will convert them to medium to high fidelity wireframes and prototypes to again send to the stakeholders for feedback.
+
+**Conversation View**
+
+<img src="media\image19.png" style="width:5.51181in;height:3.22958in" />
+
+<img src="media\image20.png" style="width:5.51181in;height:3.22958in" />
+
+<img src="media\image21.png" style="width:5.31496in;height:3.11424in" />
+
+<img src="media\image22.png" style="width:5.31496in;height:3.11424in" />
+
+<img src="media\image23.png" style="width:5.31496in;height:3.11424in" />
+
+**Login View**
+
+<img src="media\image24.png" style="width:2.55906in;height:3.19882in" /><img src="media\image25.png" style="width:3.54331in;height:2.07616in" />
+
+<img src="media\image26.png" style="width:3.54331in;height:2.07616in" />
+
+<img src="media\image27.png" style="width:2.55903in;height:3.19861in" /><img src="media\image28.png" style="width:3.54331in;height:2.07616in" />
+
+<img src="media\image29.png" style="width:3.54331in;height:2.07616in" />
+
+**Account creation views**
+
+<img src="media\image30.png" style="width:4.72441in;height:2.76821in" />
+
+<img src="media\image31.png" style="width:3.54331in;height:4.42889in" />
+
 # Development
 
 # Evaluation
@@ -598,8 +634,10 @@ Quickly identifying the sender of a message is crucial to messaging apps. From 1
   [1.5 Success Criteria 17]: #success-criteria
   [2 Design 19]: #design
   [2.1 System decomposition 19]: #system-decomposition
-  [2.2 Algorithms 23]: #_Toc71703040
-  [3 Development 26]: #development
-  [4 Evaluation 26]: #evaluation
-  [5 References 27]: #_Toc71703043
+  [2.2 Algorithms 23]: #algorithms
+  [2.3 Usability Features 25]: #usability-features
+  [2.4 Wireframes – UX 26]: #wireframes-ux
+  [3 Development 30]: #development
+  [4 Evaluation 30]: #evaluation
+  [5 References 31]: #_Toc72580915
   [WeeChat.org]: https://weechat.org/about/screenshots/

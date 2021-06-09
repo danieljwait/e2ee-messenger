@@ -31,8 +31,8 @@ namespace MessengerAppShared
             catch (SocketException) { return false; }
         }
 
-        // Starts receive from socket
-        public void Receive(Socket socket)
+        // Starts receive from socket, virtual so clientSocket can extend it
+        public virtual void Receive(Socket socket)
         {
             // Starts listening for data
             socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);

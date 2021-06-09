@@ -4,16 +4,24 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace MessengerAppClient.Model
 {
     public class ClientSocket : SocketBase
     {
         public List<string> ReceiveMessages = new List<string>();
+        public AutoResetEvent waitHandle = new AutoResetEvent(false);
 
         public void Connect()
         {
             Socket.Connect(EndPoint);
+        }
+
+        override public void Receive(Socket socket)
+        {
+            base.Receive(socket);
+            waitHandle.WaitOne();
         }
 
         // TODO: Receive message from server
@@ -32,6 +40,9 @@ namespace MessengerAppClient.Model
 
             // TODO: Change this to a queue
             ReceiveMessages.Add(text);
+
+            // Set flag
+            waitHandle.Set();
         }
     }
 }

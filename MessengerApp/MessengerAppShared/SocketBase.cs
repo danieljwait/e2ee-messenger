@@ -47,6 +47,9 @@ namespace MessengerAppShared
         // Ends receive from socket (child forced to override)
         public abstract void ReceiveCallback(IAsyncResult asyncResult);
 
+        // Handles the message after its been recieved
+        public abstract void HandleMessage(Socket socket, string message);
+
         // Starts send of string to socket
         public void Send(string text, Socket socket)
         {

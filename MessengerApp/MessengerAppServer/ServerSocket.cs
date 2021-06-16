@@ -89,13 +89,31 @@ namespace MessengerAppServer
             // Converts received byte[] to string
             string text = new Protocol(dataBuffer).Text;
 
-            PrintMessage($"Client {clientSocket.RemoteEndPoint} says \"{text}\"");
-            Send(text, clientSocket);
-            PrintMessage($"Client {clientSocket.RemoteEndPoint} is being sent \"{text}\"");
+            // Calls function to handle message contents
+            HandleMessage(clientSocket, text);
 
             // Loops back to start
             // TODO: Error after client disconnects; use try catch to check connection
             Receive(clientSocket);
+        }
+
+        public override void HandleMessage(Socket socket, string message)
+        {
+            PrintMessage($"Client {socket.RemoteEndPoint} says \"{message}\"");
+            string response;
+
+            if (message.StartsWith("ECHO ")) {
+                // Gets all message after the "ECHO "
+                response = message[5..];
+            }
+            else {
+                // When command is not recognised
+                response = "Invalid command";
+            }
+
+            Send(response, socket);
+            PrintMessage($"Client {socket.RemoteEndPoint} is being sent \"{response}\"");
+
         }
 
         // Neatly output messages to the server console

@@ -21,7 +21,7 @@ namespace MessengerAppClient.Model
         override public void Receive(Socket socket)
         {
             base.Receive(socket);
-            waitHandle.WaitOne();
+            waitHandle.WaitOne(); // Waits until the receive has finished before moving on
         }
 
         // TODO: Receive message from server
@@ -38,11 +38,17 @@ namespace MessengerAppClient.Model
             // Converts received byte[] to string
             string text = new Protocol(dataBuffer).Text;
 
-            // TODO: Change this to a queue
-            ReceiveMessages.Add(text);
+            // Calls the functions to handle the message contents
+            HandleMessage(clientSocket, text);
 
-            // Set flag
+            // Sets flag that receive has ended
             waitHandle.Set();
+        }
+
+        public override void HandleMessage(Socket socket, string message)
+        {
+            // TODO: Change this to a queue
+            ReceiveMessages.Add(message);
         }
     }
 }

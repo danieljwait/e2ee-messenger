@@ -33,7 +33,7 @@
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Button x:Name="Connect" Margin="5"
                     Content="Connect to server"/>
-            <TextBlock Text="[connection status]" Margin="5"/>
+            <TextBlock x:Name="ConnectionStatus" Text="[connection status]" Margin="5"/>
         </StackPanel>
 
         <!-- Row 2 -->

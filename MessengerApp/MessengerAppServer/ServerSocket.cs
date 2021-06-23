@@ -97,23 +97,144 @@ namespace MessengerAppServer
             Receive(clientSocket);
         }
 
-        public override void HandleMessage(Socket socket, string message)
+        public override void HandleMessage(Socket senderSocket, string message)
         {
-            PrintMessage($"Client {socket.RemoteEndPoint} says \"{message}\"");
+            string cleaned = message.Replace("\n", "");
             string response;
 
-            if (message.StartsWith("ECHO ")) {
-                // Gets all message after the "ECHO "
-                response = message[5..];
+            PrintMessage($"From {senderSocket.RemoteEndPoint} - {message}");
+
+            if (String.IsNullOrWhiteSpace(message))
+            {
+                response = "Invalid message: IsNullOrWhiteSpace";
             }
-            else {
-                // When command is not recognised
-                response = "Invalid command";
+            else
+            {
+                string[] parts = cleaned.Split(' ');
+                string command = parts[0];
+
+                if (command.ToUpper() == "ECHO")
+                {
+                    response = Command_ECHO(parts);
+                }
+                else if (command.ToUpper() == "SEND")
+                {
+                    response = Command_SEND(parts, senderSocket);
+                }
+                else
+                {
+                    response = $"Invalid command: Command \"{parts[0]}\" not found";
+                }
+
             }
 
-            Send(response, socket);
-            PrintMessage($"Client {socket.RemoteEndPoint} is being sent \"{response}\"");
+            PrintMessage($"To   {senderSocket.RemoteEndPoint} - {response}");
+            Send(response, senderSocket);
+        }
 
+        private string Command_ECHO(string[] message)  // Format: ECHO [message]
+        {
+            string response;
+
+            // If there is a [message]
+            if (message.Length >= 2)
+            {
+                // Gets all of [message] to be ECHOed back
+                string arg_message = String.Join(' ', message, 1, message.Length - 1);
+                
+                // If [message] is whitespace
+                if (String.IsNullOrWhiteSpace(arg_message))
+                {
+                    response = "Invalid ECHO: [message] IsNullOrWhiteSpace";
+                }
+                // If [message] is not whitespace
+                else
+                {
+                    response = arg_message;
+                }
+            }
+
+            // If there is no [message]
+            else
+            {
+                response = "Invalid ECHO: Missing argument [message]";
+            }
+
+            return response;
+        }
+
+        private string Command_SEND(string[] message, Socket senderSocket)  // Format: SEND [recipient] [message]
+        {
+            string response;
+
+            // If there are no [recipient] and [message]
+            if (message.Length == 1)
+            {
+                response = "Invalid SEND: Missing arguments [recipient] and [message]";
+            }
+
+            // If just [recipient]
+            else if (message.Length == 2)
+            {
+                // Gets [recipient]
+                string arg_recipient = message[1];
+
+                // If [recipient] is in dictionary
+                if (ClientSockets.ContainsKey(arg_recipient))
+                {
+                    response = "Invalid SEND: Missing argument [message]";
+                }
+                // If [recipient] is not in dictionary
+                else
+                {
+                    response = $"Invalid SEND: Invalid [recipient] \"{arg_recipient}\" and missing [message]";
+                }
+            }
+            
+            // If [recipient] and [message]
+            else if (message.Length >= 3)
+            {
+                // Gets [recipient]
+                string arg_recipient = message[1];
+
+                // If [recipient] is valid
+                if (ClientSockets.ContainsKey(arg_recipient))
+                {
+                    // Get socket of recipient
+                    Socket recipientSocket = ClientSockets[arg_recipient];
+
+                    // Gets all of [message]
+                    string arg_message = String.Join(' ', message, 2, message.Length - 2);
+
+                    // When [message] is whitespace
+                    if (String.IsNullOrWhiteSpace(arg_message))
+                    {
+                        response = "Invalid SEND: [message] IsNullOrWhiteSpace";
+                    }
+                    // When [message] is not whitespace
+                    else
+                    {
+                        // Does the SEND
+                        string recipientResponse = "MESSAGE " + recipientSocket.RemoteEndPoint + " " + arg_message;
+                        Send(recipientResponse, recipientSocket);
+                        PrintMessage($"To   {recipientSocket.RemoteEndPoint} - {recipientResponse}");
+
+                        response = "SUCCESSFUL SEND";
+                    }
+                }
+                // If [recipient] is invalid
+                else
+                {
+                    response = $"Invalid SEND: Invalid [recipient] \"{arg_recipient}\"";
+                }
+            }
+
+            else
+            {
+                response = "Invalid SEND: Unexpected error";
+            }
+
+            return response;
         }
 
         // Neatly output messages to the server console

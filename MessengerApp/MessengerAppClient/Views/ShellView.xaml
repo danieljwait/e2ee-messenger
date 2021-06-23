@@ -10,7 +10,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="170
+                              "/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -33,7 +34,7 @@
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Button x:Name="Connect" Margin="5"
                     Content="Connect to server"/>
-            <TextBlock x:Name="ConnectionStatus" Text="[connection status]" Margin="5"/>
+            <TextBlock x:Name="ConnectionStatus" Text="[connection status]" Margin="5" HorizontalAlignment="Center"/>
         </StackPanel>
 
         <!-- Row 2 -->

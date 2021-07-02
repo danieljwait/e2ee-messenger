@@ -1,72 +1,112 @@
 # Contents
 
-[1 Analysis 2][]
+[1 Analysis 3][]
 
-[1.1 Problem Identification 2][]
+[1.1 Problem Identification 3][]
 
-[1.1.1 Problem outline 2][]
+[1.1.1 Problem Outline 3][]
 
-[1.1.2 How can the problem be solved by computational methods? 2][]
+[1.1.2 How can the Problem be Solved by Computational Methods? 3][]
 
-[1.1.3 Computational methods 2][]
+[1.1.3 Computational Methods 3][]
 
-[1.1.4 Stakeholder Identification 3][]
+[1.1.4 Stakeholder Identification 4][]
 
-[1.2 Research 4][]
+[1.2 Research 5][]
 
-[1.2.1 Existing program – Discord 4][]
+[1.2.1 Existing Program – Discord 5][]
 
-[1.2.2 Existing solution – Internet Relay Chat (IRC) 7][]
+[1.2.2 Existing Solution – Internet Relay Chat (IRC) 8][]
 
-[1.3 Stakeholders 9][]
+[1.3 Stakeholders 10][]
 
-[1.3.1 Interview with Ethan Sandy 9][]
+[1.3.1 Interview with Ethan Sandy 10][]
 
-[1.3.2 Survey Aims 11][]
+[1.3.2 Survey Aims 12][]
 
-[1.3.3 Survey Results 11][]
+[1.3.3 Survey Results 12][]
 
-[1.4 Requirements 16][]
+[1.4 Requirements 17][]
 
-[1.4.1 Stakeholder requirements 16][]
+[1.4.1 Stakeholder Requirements 17][]
 
-[1.4.2 Limitations 16][]
+[1.4.2 Limitations 17][]
 
-[1.4.3 Software requirements 16][]
+[1.4.3 Software Requirements 17][]
 
-[1.5 Success Criteria 17][]
+[1.5 Success Criteria 18][]
 
-[2 Design 19][]
+[2 Design 20][]
 
-[2.1 System decomposition 19][]
+[2.1 System Decomposition 20][]
 
-[2.2 Algorithms 23][]
+[2.2 User Design Requirements 24][]
 
-[2.3 Usability Features 25][]
+[2.2.1 Primary User Requirements 24][]
 
-[2.4 Wireframes – UX 26][]
+[2.2.2 Secondary User Requirements 24][]
 
-[3 Development 30][]
+[2.3 Initial Design 25][]
 
-[4 Evaluation 30][]
+[2.3.1 Design Specification 25][]
 
-[5 References 31][]
+[2.3.2 Initial Designs 25][]
+
+[2.4 Interface Design 26][]
+
+[2.4.1 Interface Designs 26][]
+
+[2.4.2 Interface Feedback 30][]
+
+[2.4.3 Improved Interface 30][]
+
+[2.5 Interface Features 31][]
+
+[2.5.1 User Experience 31][]
+
+[2.5.2 Usability Features 32][]
+
+[2.5.3 Input Validation 33][]
+
+[2.6 Internal Structures 34][]
+
+[2.6.1 Algorithms 34][]
+
+[2.6.2 File Organisation 36][]
+
+[2.6.3 Variables 36][]
+
+[2.6.4 Class Diagrams 36][]
+
+[2.7 Final Design 37][]
+
+[2.7.1 Final Design 37][]
+
+[2.7.2 System Walkthrough 37][]
+
+[2.8 Testing Strategy 38][]
+
+[3 Development 39][]
+
+[4 Evaluation 39][]
+
+[5 References 40][]
 
 # Analysis
 
 ## Problem Identification
 
-### Problem outline
+### Problem Outline
 
 Currently, the encryption in-transit system is widely used in instant messaging apps. This means that a user’s messages will be in plaintext in the service provider’s server, which allows the service provider to read users’ conversations breaching their privacy. These companies are then also susceptible to potential attackers accessing confidential information through this potential backdoor. Therefore, I will be making a solution to this problem of user privacy by making an end-to-end encrypted instant messaging program.
 
 For this solution to work, the following features are required: only the endpoint users have access to the plaintext private keys for the asymmetric encryption algorithm to qualify the system as end-to-end encryption; an easy-to-use GUI so that anyone can navigate and use the program; a login/sign-up system to authenticate users’ identities to the server to facilitate historic message viewing; networking capabilities in order send and receive messages from different networks with a low enough latency to be a viable ‘instant’ messaging platform.
 
-### How can the problem be solved by computational methods?
+### How can the Problem be Solved by Computational Methods?
 
 This problem is well suited to a computational approach as it can be solved using computational methods. This is because the processes of encrypting, sending, then decrypting messages over a network can be greatly abstracted for the user so that they do not need any prior technical knowledge to use the program. The solution will also have many algorithms to carry out processes without the need for complex input from the user.
 
-### Computational methods
+### Computational Methods
 
 **Problem recognition** – The general problem is creating a program where sensitive information can be exchanged through a server in real-time. However, the more specific problems are the following:
 
@@ -98,7 +138,7 @@ The second group of potential stakeholders are the users who want a messenger ap
 
 ## Research
 
-### Existing program – Discord
+### Existing Program – Discord
 
 Discord is a free instant messaging and VoIP platform created in 2015 centred around enabling communities to connect through guilds: collections of chat rooms and voice channels. The platform also offers direct messages (DMs) between individual users which will be focused on in this research. In 2019 the platform saw 250 million users with a total of 25 billion messages being sent per month \[1\] making it the largest gaming-focused communications platforms available; this large, vocal, userbase means that all features of the platform have been rigorously tested and are therefore a good source of information on how to approach my solution.
 
@@ -184,7 +224,7 @@ Many parts of the Discord UI are divided into groups of tabs: servers, DM thread
 
 For my solution, I will consider also using tab-based navigation as it is well established and fits well with messaging apps and their lists of contacts/conversations. I may also consider giving the user the option to operate some features in my program via keyboard shortcuts, albeit on a smaller scale to Discord as complete keyboard navigation is not a requirement.
 
-### Existing solution – Internet Relay Chat (IRC)
+### Existing Solution – Internet Relay Chat (IRC)
 
 Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005 at the height of IRC, the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[3\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[4\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
 
@@ -284,7 +324,7 @@ Lastly, in question 5, Ethan identified a shortcoming in Discord that I can cons
 
 > “Enter” as it is the most common and intuitive
 
-Question 1 and 2 showed me that users often do not utilise keyboard shortcuts in programs and it will therefore be an unnecessary feature to include in my solution.
+Question 1 and 2 showed me that users often do not utilise keyboard shortcuts in programs, and it will therefore be an unnecessary feature to include in my solution.
 
 For question 3, Ethan said that the pressing Enter method of sending messages is the most common and intuitive. Since being easy to use is important for the solution I make this the way users send messages.
 
@@ -384,7 +424,7 @@ The data from this question showed me that the stakeholders do not think that th
 
 The data also showed me that four features are generally deemed core features: group messages, individual messages, encryption, and media sharing. As these are important for the stakeholders, I will consider these for the list of features that must be in the final solution. These findings are supported by the results from question 3 as well as the interview with Ethan Sandy.
 
-**Question 6 – “What do you look for in a messaging app?”**
+**Question 6 –** **“What do you look for in a messaging app?”**
 
 <img src="media\image13.png" style="width:5.00069in;height:3in" />
 
@@ -400,13 +440,13 @@ The fact socialising and sharing media appeared at the top was not a surprise. H
 
 <img src="media\image15.png" style="width:5.00069in;height:3in" />
 
-**Question 9 – “How important is privacy for you?”**
+**Question 9 –** **“How important is privacy for you?”**
 
 <img src="media\image16.png" style="width:5.35347in;height:1.29375in" />
 
 ## Requirements
 
-### Stakeholder requirements
+### Stakeholder Requirements
 
 ### Limitations
 
@@ -418,7 +458,7 @@ When a client tries to connect to the server, it will use a hardcoded IP address
 
 Group messaging – the most chosen “favourite feature” and rated the third most important feature from the stakeholders’ survey – will not be implemented in the solution. This is down to the vast increase in complexity from individual end-to-end encrypted messaging to group end-to-end encrypted messaging; implementing such a feature will take up too much time and would require the redesign of many of the procedures of the solution. For these reasons, I will be unable to implement the feature.
 
-### Software requirements
+### Software Requirements
 
 For simplicity, I will only be building a Windows x86 version of the solution for development and the final evaluation. However, using the dotnet compiler, executables for all the following operating systems can be built from the source.
 
@@ -472,7 +512,7 @@ Internet access will be required to run the program as the client program needs 
 
 # Design
 
-## System decomposition
+## System Decomposition
 
 <img src="media\image17.png" style="width:6.26806in;height:3.38889in" />
 
@@ -528,9 +568,85 @@ Internet access will be required to run the program as the client program needs 
 
 **Generate new key pair:** Before any encrypted messages are sent between users, the new user must generate a key pair for RSA. The public key will then need to be sent to the server so that it can be accessed by any other client. The public key on the other hand should not be accessible to any other client but should be accessible to the user when they sign in on another machine: so, will be encrypted and stored in the server. The user’s password will be passed through a KDF (possibly PBKDF2) to generate the key for a symmetric encryption algorithm (possible AES) which the private key will be passed through before being sent off to the server for storage.
 
-## Algorithms
+## User Design Requirements
 
-<img src="media\image18.png" style="width:6.26806in;height:5.69028in" />
+### Primary User Requirements
+
+### Secondary User Requirements
+
+## Initial Design
+
+### Design Specification
+
+### Initial Designs
+
+## Interface Design
+
+### Interface Designs
+
+Several low fidelity wireframes have been created for the different windows that will be shown in the program. These designs have incorporated the ideas from *1.3.1* *Interview with Ethan Sandy* as well as some alternative ideas I have come up with inspired by the existing solutions seen in *1.2* *Research*. After getting feedback on these I will convert them to medium to high fidelity wireframes and prototypes to again send to the stakeholders for feedback.
+
+**Conversation View**
+
+<img src="media\image18.png" style="width:5.51181in;height:3.22958in" alt="Table Description automatically generated with medium confidence" />
+
+<img src="media\image19.png" style="width:5.51181in;height:3.22958in" alt="Graphical user interface, application Description automatically generated" />
+
+<img src="media\image20.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
+
+<img src="media\image21.png" style="width:5.31496in;height:3.11424in" alt="Table Description automatically generated with medium confidence" />
+
+<img src="media\image22.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
+
+**Login View**
+
+<img src="media\image23.png" style="width:2.55906in;height:3.19882in" /><img src="media\image24.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
+
+<img src="media\image25.png" style="width:3.54331in;height:2.07616in" alt="A picture containing graphical user interface Description automatically generated" />
+
+<img src="media\image26.png" style="width:2.55903in;height:3.19861in" /><img src="media\image27.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
+
+<img src="media\image28.png" style="width:3.54331in;height:2.07616in" alt="Diagram Description automatically generated with medium confidence" />
+
+**Account creation views**
+
+<img src="media\image29.png" style="width:4.72441in;height:2.76821in" alt="Text Description automatically generated" />
+
+<img src="media\image30.png" style="width:3.54331in;height:4.42889in" alt="Diagram Description automatically generated with medium confidence" />
+
+### Interface Feedback 
+
+### Improved Interface
+
+## Interface Features
+
+### User Experience
+
+### Usability Features
+
+**Descriptive input fields**
+
+To help aid the user in using the login screen, I will have descriptive labels on all the input boxes. These will be non-intrusive as to not get in the way for users who do not need them, but still visible enough so that it's clear as to which input box they describe. Also, highlighted labels will be added when an incorrect username or password is entered to give feedback to the user as to which fields they need to amend and, in the case of account creation, how.
+
+**Pop-up error dialogues**
+
+In the event of an error, the program will display an error dialogue to the user to tell them what has happened. If these were not shown to the user the program would just freeze, causing the user to not know what is going on. I will also play an error tone when this box appears to audibly inform the user that something has gone wrong. This box will most likely only have buttons to close the program or restart the program as the error would have to be irrecoverable for an error dialogue to be needed.
+
+**Intuitive navigation**
+
+To simplify the navigation, the main program will all be displayed in one window (login screen and error dialogues are the exception) where the user can choose which user to send a message using the tabs. This was determined during *1.3.1* *Interview with Ethan Sandy* in response to seeing the navigation style in the research of Discord. Since this style is common in many programs, the user will likely find it very natural and intuitive to use. Limiting the program to only one window also reduces the risk of users who do not use computer programs often getting “lost” or being confused by the child-parent relationship of pop-out windows (the alternative navigation method proposed to the stakeholder during the interview).
+
+**Conversation view**
+
+Quickly identifying the sender of a message is crucial to messaging apps. From *1.3.1* *Interview with Ethan Sandy,* it was decided that this will be achieved by using a similar conversation view to that found on Discord: all messages are left-aligned in the format \[time\]\[user\]\[message\]. This will help the users in three ways. Firstly, the timestamps on the left mean that finding messages from a certain time can be done by quickly scanning down the left column. Secondly, having the username displayed for each message means that the sender of the messages can be quickly identified. Lastly, the username can be padded with whitespace to ensure that all messages begin at the same point to improve readability for the user; this has the added benefit that in situations where the two users talking have different username lengths time to determine the sender will be reduced due to the visible difference.
+
+### Input Validation
+
+## Internal Structures
+
+### Algorithms
+
+<img src="media\image31.png" style="width:6.26806in;height:5.69028in" />
 
 **Summary** – This algorithm will be executed when a new user wants to create an account. This is because all users will require an RSA key pair to facilitate encrypted communications and a pair of credentials to allow them to log in from any device.
 
@@ -556,55 +672,21 @@ Internet access will be required to run the program as the client program needs 
 
 **Line 29 to 30** – Lastly, all the new information to make the user’s account must be sent to the server. Even though this will be transmitted over an insecure channel, all the sensitive information has been either hashed or encrypted. Although, man-in-the-middle attacks are (very much) possible at this point, addressing this vulnerability is beyond the scope of this program so will have to remain in the program.
 
-## Usability Features
+### File Organisation
 
-**Descriptive input fields**
+### Variables
 
-To help aid the user in using the login screen, I will have descriptive labels on all the input boxes. These will be non-intrusive as to not get in the way for users who do not need them, but still visible enough so that it's clear as to which input box they describe. Also, highlighted labels will be added when an incorrect username or password is entered to give feedback to the user as to which fields they need to amend and, in the case of account creation, how.
+### Class Diagrams
 
-**Pop-up error dialogues**
+## Final Design
 
-In the event of an error, the program will display an error dialogue to the user to tell them what has happened. If these were not shown to the user the program would just freeze, causing the user to not know what is going on. I will also play an error tone when this box appears to audibly inform the user that something has gone wrong. This box will most likely only have buttons to close the program or restart the program as the error would have to be irrecoverable for an error dialogue to be needed.
+### Final Design
 
-**Intuitive navigation**
+### System Walkthrough
 
-To simplify the navigation, the main program will all be displayed in one window (login screen and error dialogues are the exception) where the user can choose which user to send a message using the tabs. This was determined during *1.3.1* *Interview with Ethan Sandy* in response to seeing the navigation style in the research of Discord. Since this style is common in many programs, the user will likely find it very natural and intuitive to use. Limiting the program to only one window also reduces the risk of users who do not use computer programs often getting “lost” or being confused by the child-parent relationship of pop-out windows (the alternative navigation method proposed to the stakeholder during the interview).
+## Testing Strategy
 
-**Conversation view**
-
-Quickly identifying the sender of a message is crucial to messaging apps. From *1.3.1* *Interview with Ethan Sandy,* it was decided that this will be achieved by using a similar conversation view to that found on Discord: all messages are left-aligned in the format \[time\]\[user\]\[message\]. This will help the users in three ways. Firstly, the timestamps on the left mean that finding messages from a certain time can be done by quickly scanning down the left column. Secondly, having the username displayed for each message means that the sender of the messages can be quickly identified. Lastly, the username can be padded with whitespace to ensure that all messages begin at the same point to improve readability for the user; this has the added benefit that in situations where the two users talking have different username lengths time to determine the sender will be reduced due to the visible difference.
-
-## Wireframes – UX
-
-Several low fidelity wireframes have been created for the different windows that will be shown in the program. These designs have incorporated the ideas from *1.3.1* *Interview with Ethan Sandy* as well as some alternative ideas I have come up with inspired by the existing solutions seen in *1.2* *Research*. After getting feedback on these I will convert them to medium to high fidelity wireframes and prototypes to again send to the stakeholders for feedback.
-
-**Conversation View**
-
-<img src="media\image19.png" style="width:5.51181in;height:3.22958in" />
-
-<img src="media\image20.png" style="width:5.51181in;height:3.22958in" />
-
-<img src="media\image21.png" style="width:5.31496in;height:3.11424in" />
-
-<img src="media\image22.png" style="width:5.31496in;height:3.11424in" />
-
-<img src="media\image23.png" style="width:5.31496in;height:3.11424in" />
-
-**Login View**
-
-<img src="media\image24.png" style="width:2.55906in;height:3.19882in" /><img src="media\image25.png" style="width:3.54331in;height:2.07616in" />
-
-<img src="media\image26.png" style="width:3.54331in;height:2.07616in" />
-
-<img src="media\image27.png" style="width:2.55903in;height:3.19861in" /><img src="media\image28.png" style="width:3.54331in;height:2.07616in" />
-
-<img src="media\image29.png" style="width:3.54331in;height:2.07616in" />
-
-**Account creation views**
-
-<img src="media\image30.png" style="width:4.72441in;height:2.76821in" />
-
-<img src="media\image31.png" style="width:3.54331in;height:4.42889in" />
+s
 
 # Development
 
@@ -626,30 +708,50 @@ Several low fidelity wireframes have been created for the different windows that
 
 [1] Nitro is Discord’s paid subscription service
 
-  [1 Analysis 2]: #analysis
-  [1.1 Problem Identification 2]: #problem-identification
-  [1.1.1 Problem outline 2]: #problem-outline
-  [1.1.2 How can the problem be solved by computational methods? 2]: #how-can-the-problem-be-solved-by-computational-methods
-  [1.1.3 Computational methods 2]: #computational-methods
-  [1.1.4 Stakeholder Identification 3]: #stakeholder-identification
-  [1.2 Research 4]: #research
-  [1.2.1 Existing program – Discord 4]: #existing-program-discord
-  [1.2.2 Existing solution – Internet Relay Chat (IRC) 7]: #existing-solution-internet-relay-chat-irc
-  [1.3 Stakeholders 9]: #stakeholders
-  [1.3.1 Interview with Ethan Sandy 9]: #interview-with-ethan-sandy
-  [1.3.2 Survey Aims 11]: #survey-aims
-  [1.3.3 Survey Results 11]: #survey-results
-  [1.4 Requirements 16]: #requirements
-  [1.4.1 Stakeholder requirements 16]: #stakeholder-requirements
-  [1.4.2 Limitations 16]: #limitations
-  [1.4.3 Software requirements 16]: #software-requirements
-  [1.5 Success Criteria 17]: #success-criteria
-  [2 Design 19]: #design
-  [2.1 System decomposition 19]: #system-decomposition
-  [2.2 Algorithms 23]: #algorithms
-  [2.3 Usability Features 25]: #usability-features
-  [2.4 Wireframes – UX 26]: #wireframes-ux
-  [3 Development 30]: #development
-  [4 Evaluation 30]: #evaluation
-  [5 References 31]: #_Toc75041607
+  [1 Analysis 3]: #analysis
+  [1.1 Problem Identification 3]: #problem-identification
+  [1.1.1 Problem Outline 3]: #problem-outline
+  [1.1.2 How can the Problem be Solved by Computational Methods? 3]: #how-can-the-problem-be-solved-by-computational-methods
+  [1.1.3 Computational Methods 3]: #computational-methods
+  [1.1.4 Stakeholder Identification 4]: #stakeholder-identification
+  [1.2 Research 5]: #research
+  [1.2.1 Existing Program – Discord 5]: #existing-program-discord
+  [1.2.2 Existing Solution – Internet Relay Chat (IRC) 8]: #existing-solution-internet-relay-chat-irc
+  [1.3 Stakeholders 10]: #stakeholders
+  [1.3.1 Interview with Ethan Sandy 10]: #interview-with-ethan-sandy
+  [1.3.2 Survey Aims 12]: #survey-aims
+  [1.3.3 Survey Results 12]: #survey-results
+  [1.4 Requirements 17]: #requirements
+  [1.4.1 Stakeholder Requirements 17]: #stakeholder-requirements
+  [1.4.2 Limitations 17]: #limitations
+  [1.4.3 Software Requirements 17]: #software-requirements
+  [1.5 Success Criteria 18]: #success-criteria
+  [2 Design 20]: #design
+  [2.1 System Decomposition 20]: #system-decomposition
+  [2.2 User Design Requirements 24]: #user-design-requirements
+  [2.2.1 Primary User Requirements 24]: #primary-user-requirements
+  [2.2.2 Secondary User Requirements 24]: #secondary-user-requirements
+  [2.3 Initial Design 25]: #initial-design
+  [2.3.1 Design Specification 25]: #design-specification
+  [2.3.2 Initial Designs 25]: #initial-designs
+  [2.4 Interface Design 26]: #interface-design
+  [2.4.1 Interface Designs 26]: #interface-designs
+  [2.4.2 Interface Feedback 30]: #interface-feedback
+  [2.4.3 Improved Interface 30]: #improved-interface
+  [2.5 Interface Features 31]: #interface-features
+  [2.5.1 User Experience 31]: #user-experience
+  [2.5.2 Usability Features 32]: #usability-features
+  [2.5.3 Input Validation 33]: #input-validation
+  [2.6 Internal Structures 34]: #internal-structures
+  [2.6.1 Algorithms 34]: #algorithms
+  [2.6.2 File Organisation 36]: #file-organisation
+  [2.6.3 Variables 36]: #variables
+  [2.6.4 Class Diagrams 36]: #class-diagrams
+  [2.7 Final Design 37]: #final-design
+  [2.7.1 Final Design 37]: #final-design-1
+  [2.7.2 System Walkthrough 37]: #system-walkthrough
+  [2.8 Testing Strategy 38]: #testing-strategy
+  [3 Development 39]: #development
+  [4 Evaluation 39]: #evaluation
+  [5 References 40]: #_Toc76146551
   [WeeChat.org]: https://weechat.org/about/screenshots/

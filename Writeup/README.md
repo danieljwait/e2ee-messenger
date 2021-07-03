@@ -644,7 +644,7 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 
 ## Internal Structures
 
-### Algorithms
+### Algorithm – Creating a new user account
 
 <img src="media\image31.png" style="width:6.26806in;height:5.69028in" />
 
@@ -652,7 +652,7 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 
 **Line 3 to 4** – The username and password will be fetched from text boxes in the UI. The submit button that will call the subroutine CreateAccount() will only be enabled when both fields because enabling it right away will lead to the possibility of empty strings being used in the function and the visual aid will guide the user.
 
-**Line 7 to 12** – The input validation for the username will require the username’s length to be between 3 and 128 characters long and does not contain any non-encodable characters. Due to the requirement of eliminating nickname collisions, a discriminator needs to be postfixed to prevent nickname collisions, this will be done on line 8 if the username is valid.
+**Line 7 to 12** – The input validation for the username will require the username’s length to be between 5 and 128 characters long and does not contain any non-encodable characters. Due to the requirement of eliminating nickname collisions, a discriminator needs to be postfixed to prevent nickname collisions, this will be done on line 8 if the username is valid.
 
 **Line 13 to 17** – Due to the success criterion “strong minimum password strength”, the input validation for the password will require the following criteria to be satisfied:
 
@@ -686,7 +686,21 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 
 ## Testing Strategy
 
-s
+### Testing algorithms
+
+**1 – GetValidCredentials**
+
+|            |                                                                                    |
+|------------|------------------------------------------------------------------------------------|
+| Procedure  | GetValidCredentials, from *2.6.1* *Algorithm – Creating a new user account*        |
+| Parameters | None; (string) username and (string) password are fetched from UI during execution |
+| Returns    | (string) username and (string) password                                            |
+
+When a new account is created, GetValidCredentials is called. The function firstly gets the username and password the user entered into the UI. These credentials will then be checked against the requirements of the program, as specified by the stakeholders, to ensure their strength and correct length. The output of this function will be used in the subroutine CreateAccount that generates a keypair for the user, hashes the password, encrypts the private key, and sends all the necessary data associated with the account to the server.
+
+The credentials supplied to CreateAccount must be valid as if they are empty or malformed, they will cause errors that may crash the client’s program, crash the server’s program, or make the login process vulnerable by storing incorrect usernames and passwords. Therefore, it is important to have test cases for each form of normal (N), erroneous (E) and boundary (B) data.
+
+<table><thead><tr class="header"><th>ID</th><th>Test</th><th>Type</th><th>Data</th><th>Expected</th></tr></thead><tbody><tr class="odd"><td>1.1</td><td>Valid username and password</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.2</td><td>Empty variable from UI</td><td>E</td><td><p>username = “”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.3</td><td>Null variable from UI</td><td>E</td><td><p>username = null</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.4</td><td>Username contains invalid character</td><td>N</td><td><p>username = “Dan iel”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.5</td><td>Username length lower bound</td><td>B</td><td><p>username = 5 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.6</td><td>Username length upper bound</td><td>B</td><td><p>username = 128 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.7</td><td>Password does not contain upper and lower case</td><td>N</td><td><p>username = “Daniel”</p><p>password = “password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.8</td><td>Password contains no number</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.9</td><td>Password contains no special character</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.10</td><td>Password length lower bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 8 valid chars</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.11</td><td>Password length upper bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 128 valid chars</p></td><td>username + # + discriminator and password returned</td></tr></tbody></table>
 
 # Development
 
@@ -743,7 +757,7 @@ s
   [2.5.2 Usability Features 32]: #usability-features
   [2.5.3 Input Validation 33]: #input-validation
   [2.6 Internal Structures 34]: #internal-structures
-  [2.6.1 Algorithms 34]: #algorithms
+  [2.6.1 Algorithms 34]: #algorithm-creating-a-new-user-account
   [2.6.2 File Organisation 36]: #file-organisation
   [2.6.3 Variables 36]: #variables
   [2.6.4 Class Diagrams 36]: #class-diagrams

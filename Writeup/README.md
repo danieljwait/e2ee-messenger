@@ -392,57 +392,65 @@ Secondly, I wanted to hear the stakeholders’ opinions on some common features 
 
 ### Survey Results
 
-**Question 1 – “How much time do you spend on messaging apps each day?”**
+**Question 1 –** **“How much time do you spend on messaging apps each day?”**
 
 <img src="media\image8.png" style="width:5.00069in;height:3in" />
 
-Question 1 told me that the respondents to this survey had above average messaging app usage. The respondents had a modal class of 30-60 minutes and a (linearly interpolated) median of 55 minutes: these are much greater than the UK’s average of 28 minutes \[5\]. This is the best case for a group of respondents as it means that the survey was almost guaranteed to be completed using respondents’ experiences of features rather than their preconceptions.
+The results of question 1 tell me that the respondents to this survey had above average messaging app usage. The data had a modal class of 30-60 minutes and a (linearly interpolated) median of 55 minutes: these are much greater than the UK’s average of 28 minutes \[5\]. This is the best case for a group of respondents as it means that the survey was more likely to be completed using respondents’ actual experiences, rather than their preconceptions, meaning more accurate results.
 
 **Question 2 – “What is your most used messaging app?”**
 
 <img src="media\image9.png" style="width:4.37361in;height:3.52708in" />
 
-The results from this question showed me that the most used messaging app among the respondents was WhatsApp – a privacy-focused end-to-end encrypted messaging app. This, along with the results from question 1, confirm to me that the respondents were suitable stakeholders for this program and therefore their opinions and decisions should be trusted.
+The results from this question show me that the most used messaging app among the respondents was WhatsApp (42%), followed by Snapchat (33%) – both privacy-focused, end-to-end encrypted messaging apps with Snapchat defaulting to deleting users’ messages after 24 hours. This, along with the results from question 1, confirm to me that the respondents are suitable representative for the solution’s stakeholders. Also of note is the fact that Discord (17%) came in 3<sup>rd</sup>. This means that *1.2.1* *Existing Program – Discord* was a suitable investigation as it is relevant to at least 17% of the survey’s respondents and, by extension, solution stakeholders.
 
 **Question 3 – “What is your favourite feature of messaging apps?”**
 
 <img src="media\image10.png" style="width:4.9403in;height:2.96207in" />
 
-This data showed me that the stakeholders deemed group messages and “Seen” receipts to be their favourite features. For this reason, I should consider these as features to prioritise in my solution.
+The results of this question show me that the stakeholders’ favourite features are group messages (33%) and “Seen” receipts (25%). Therefore, I will consider including these features in my solution. However, group messaging may be outside of the solution’s scope. I only chose to include it as an option in this survey as it is too important of a feature in modern messaging apps to exclude. I will make a final decision on the feature when deciding the solution’s requirement and success criteria.
 
 **Question 4 – “What is your least favourite feature of messaging apps?”**
 
 <img src="media\image11.png" style="width:5.00069in;height:3in" />
 
-This question was the direct inverse of question 4. It showed me that in-app sounds, un-sending messages and emojis are the three most disliked features of messages apps. Therefore, I will not be considering these to be included in my solution. The appearance of emojis is not a surprise here since it was also identified as the 2<sup>nd</sup> least used message type on Discord.
+This question was the direct inverse of question 4. Its results show me that in-app sounds (37%), un-sending messages (18%) and emojis (18%) are the most disliked features. Therefore, I will not consider including these in my solution. The dislike of emojis by 17% of respondents is not a surprise here since it was identified as the 2<sup>nd</sup> least used message type on Discord in *1.3.1* *Interview with Ethan Sandy*.
 
 **Question 5 – “How important are the following features?”**
 
 <img src="media\image12.png" style="width:5.79815in;height:4.67847in" />
 
-The data from this question showed me that the stakeholders do not think that the following features make a significant impact in a messaging app: in-app sounds, emojis, “typing…” indicators, and un-sending messages. From this, along with the results from question 4, I can see that these features are non-essential so I will not consider these for the list of necessary features for my solution.
+The results of this question show me that the stakeholders do not think the following features make a significant impact on a messaging app: in-app sounds, emojis, “typing…” indicator, and un-sending messages. From this, along with the results from question 4, I can see that these features are non-essential. Therefore, I will not consider these for the list of necessary features for my solution.
 
-The data also showed me that four features are generally deemed core features: group messages, individual messages, encryption, and media sharing. As these are important for the stakeholders, I will consider these for the list of features that must be in the final solution. These findings are supported by the results from question 3 as well as the interview with Ethan Sandy.
+Another finding from the data is the four most important features: group messages, individual messages, encryption, and media sharing. Since these are important to the stakeholders, I will consider these for the list of features for the final solution. These findings are supported by the results from question 3 as well as in *1.3.1* *Interview with Ethan Sandy*.
 
-**Question 6 –** **“What do you look for in a messaging app?”**
+**Question 6 – “What do you look for in a messaging app?”**
 
 <img src="media\image13.png" style="width:5.00069in;height:3in" />
 
-The top qualities of messaging apps were simplicity and ease of use. I will consider these when designing my UI.
+Question 6 shows me the simplicity (33%) is by far the most important quality of a messaging app with ease of use (17%) coming in second. I will try to reflect these qualities in my solution by considering them while designing my UI and by asking the stakeholders for feedback on my designs
 
 **Question 7 – “What do you mainly use messaging apps for?”**
 
 <img src="media\image14.png" style="width:5.00069in;height:3in" />
 
-The fact socialising and sharing media appeared at the top was not a surprise. However, two of the answers were: sharing links and work. To accommodate for the respondents who put down sharing links, I will investigate automatically hyperlinking text and opening browsers. I am unsure of how to accommodate the working users so may consider adding profanity filters unless any other features arise.
+Socialising (60%) and sharing media (20%) appearing at the top of question 7’s ranking which was expected. However, the other two answers were surprising: work (13%) and sharing links (7%). To accommodate for the stakeholders who put down sharing links, I will investigate automatically hyperlinking text and opening browsers. However, I am unsure of how to accommodate the working users so may consider adding profanity filters unless any other features arise. Also of note is the fact that neither of these surprising answers got a higher percentage of votes, therefore, adding such features should not be a priority.
 
 **Question 8 – “What feature might you want to see added to messaging apps?”**
 
 <img src="media\image15.png" style="width:5.00069in;height:3in" />
 
-**Question 9 –** **“How important is privacy for you?”**
+Next, the findings from question 8 are that many stakeholders want to see voice notes (50%) added to messaging apps. However, I think that this feature is beyond the scope of the project as it will require file storage and microphone access. I may still consider the feature but do not expect it to reach the final list of requirements and the success criteria. The joint second-highest scoring features are bigger file limits (25%) and “Notification read at …” (25%). Including a bigger file size limit could be done by raising the cap above 8MB for example (Discord’s cap for non-paying members as found in *1.2.1* *Existing Program – Discord*) so will be considered as a feature to potentially including in my solution. “Notification read at …” on the other hand will not be possible to be considered as it is beyond the project’s scope: it would require me to firstly send notifications to the user and secondly somehow track when this notification has been read.
+
+**Question 9 – “How important is privacy for you?”**
 
 <img src="media\image16.png" style="width:5.35347in;height:1.29375in" />
+
+Lastly, to further confirm the suitability of the respondents, there was an average rating of 4.3/5 for how important privacy to them is. Privacy is very important for this project as it aims to make a secure, end-to-end encrypted instant messaging program for users who care about who is viewing their data, so having stakeholders who are conscious about their privacy is paramount.
+
+**Conclusion**
+
+Overall, I am satisfied with the results of the survey. The respondents have been proven through many metrics that they are appropriate representatives of the stakeholders, which allows me to trust the survey’s results. In addition, I now have a list of several features to consider for the solution and a general guide for how to approach the UI design.
 
 ## Requirements
 

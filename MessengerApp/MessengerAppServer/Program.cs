@@ -6,18 +6,16 @@ namespace MessengerAppServer
     {
         static void Main()
         {
+            // Sets the title of the console's window
             Console.Title = "Messenger Server";
 
+            // Creates a new server socket and starts it running
             ServerSocket serverSocket = new ServerSocket();
             serverSocket.Start();
 
-            // TODO: Fix pos of cursor after enter for pretty console output
-            Console.ReadLine();
-
             // User presses enter to close the server
+            Console.ReadLine();
             serverSocket.Stop();
-
-            // TODO: Add commands from server console
         }
     }
 }

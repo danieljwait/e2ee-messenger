@@ -12,12 +12,15 @@ namespace MessengerAppShared
         public IPEndPoint EndPoint;
         public Socket Socket;
 
+        // Buffer to hold read in data, maximum of 2048 bytes
         public byte[] Buffer = new byte[2048];
 
-        // Constructor asigns endpoint and creates socket
+        // Constructor creates socket
         public SocketBase(int port = 31416)
         {
+            // Endpoint on local interface (not open Internet)
             EndPoint = new IPEndPoint(IPAddress.Loopback, port);
+            // New TCP socket
             Socket = new Socket(EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
 
@@ -25,44 +28,54 @@ namespace MessengerAppShared
         {
             try
             {
-                // return true if client socket responds to poll and data is available to receive
+                // True if client socket responds to poll and data is available to receive
                 return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
             }
             catch (SocketException) { return false; }
         }
 
-        // Starts receive from socket, virtual so clientSocket can extend it
+        // Starts to receive data from socket, virtual so can be extended
         public virtual void Receive(Socket socket)
         {
-            // Starts listening for data
+            // Starts reading data into Buffer array, starting at index 0 for a max of Buffer.Length bytes (2048)
             socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
         }
 
-        //public void Receive(SocketBase socketObject)
-        //{
-        //    // Starts listening for data
-        //    socketObject.Socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socketObject);
-        //}
+        // Ends receive from socket, child will extend if needed
+        public virtual void ReceiveCallback(IAsyncResult asyncResult)
+        {
+            // Recreates socket to handle connection
+            Socket socketHandler = (Socket)asyncResult.AsyncState;
 
-        // Ends receive from socket (child forced to override)
-        public abstract void ReceiveCallback(IAsyncResult asyncResult);
+            // Reads data to buffer, gets the number of bytes received
+            int received = socketHandler.EndReceive(asyncResult);
+            // Creates array to hold the data received
+            byte[] dataBuffer = new byte[received];
+            // Copy received bytes to actual binary array
+            Array.Copy(Buffer, dataBuffer, received);
+            // Converts received binary to text via predefined protocol
+            string text = new Protocol(dataBuffer).Text;
 
-        // Handles the message after its been recieved
+            // Handles message contents
+            HandleMessage(socketHandler, text);
+        }
+
+        // Handles the message after its been received
         public abstract void HandleMessage(Socket socket, string message);
 
         // Starts send of string to socket
         public void Send(string text, Socket socket)
         {
-            // Converts string to bytes
+            // Converts text to binary via predefined protocol
             byte[] data = new Protocol(text).Data;
-            // Sends the message, callback called when finished
+            // Sends data
             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
         }
 
         // Ends send of string to socket
         public void SendCallback(IAsyncResult asyncResult)
         {
-            // Gets socket from the async result
+            // Recreates socket
             Socket socket = (Socket)asyncResult.AsyncState;
             // Completes send
             socket.EndSend(asyncResult);

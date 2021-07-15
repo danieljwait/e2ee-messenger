@@ -17,12 +17,14 @@ namespace MessengerAppClient.ViewModels
         private string _messageReceived;
         private string _connectionStatus = "Not connected";
         
+        // TODO: Allow message to be sent with enter
         public string MessageToSend
         {
             get { return _messageToSend; }
             set { _messageToSend = value; }
         }
 
+        // TODO: Replace single textblock with conversation
         public string MessageReceived
         {
             get { return _messageReceived; }
@@ -40,37 +42,38 @@ namespace MessengerAppClient.ViewModels
             }
         }
 
-        public ShellViewModel()
-        {
-            // TODO: Wire-up buttons
-            // TODO: Dynamic add TextBlocks to StackPanel
-        }
-
-        // Boolean to control state of Connect button
+        // Controls state of Connect button
         public bool CanConnect => (ConnectionStatus == "Not connected");
 
+        // Connects program to the server
         public void Connect()
         {
+            // Local socket starts connection with server
             socket.Connect();
+
+            // Update UI
             ConnectionStatus = "Connected";
             NotifyOfPropertyChange(() => ConnectionStatus);
 
-            // TODO: Begins a loop to receive
+            // TODO: Infinite receive loop
         }
 
+        // Sends a message to server and gets response
         public void SendMessage()
         {
+            // Sends message to server
             socket.Send(MessageToSend, socket.Socket);
+            // Gets server's response
             socket.Receive(socket.Socket);
 
-            // Display the received message
-            // TODO: Wait for ReceiveCallback return before running this
+            // Displays the received message (if available)
             if (socket.ReceiveMessages.Count != 0)
             {
-                MessageReceived = socket.ReceiveMessages[socket.ReceiveMessages.Count - 1];
+                // Last message to be appended to list
+                MessageReceived = socket.ReceiveMessages[^1];
+                // Updates UI
                 NotifyOfPropertyChange(() => MessageReceived);
             }
-
         }
     }
 }

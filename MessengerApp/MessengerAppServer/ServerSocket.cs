@@ -9,21 +9,28 @@ namespace MessengerAppServer
 {
     public class ServerSocket : SocketBase
     {
-        // Dict of identifier and socket
+        // Dictionaries of identifier:socket relations (and vice versa)
         public Dictionary<string, Socket> ClientSockets = new Dictionary<string, Socket>();
         public Dictionary<Socket, string> ClientSocketsInverse = new Dictionary<Socket, string>();
+
+        // Maximum length of the connection queue for new clients
         public const int BACKLOG = 5;
 
-        // Starts listening
+        // Starts socket listening on a port, begins accept client loop
         public void Start()
         {
             PrintMessage("Starting server...");
 
+            // Socket binds to a port on the computer
             Socket.Bind(EndPoint);
+
+            // Socket starts listening for data from the port
+            // BACKLOG is the maximum length of the connection queue
             Socket.Listen(BACKLOG);
 
             PrintMessage("Server started");
 
+            // Start of infinite accepting clients loop
             Socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
 
@@ -32,11 +39,12 @@ namespace MessengerAppServer
         {
             PrintMessage("Stopping server...");
 
+            // Try used in case errors are thrown
             try
             {
-                // Disables sending and receiving
+                // Disables sending and receiving from the socket
                 Socket.Shutdown(SocketShutdown.Both);
-                // Ends connection
+                // Closes the socket and releases all its resources
                 Socket.Close();
             }
             // TODO: Find cause of exception causing clients to disconnect
@@ -48,149 +56,146 @@ namespace MessengerAppServer
         // Accepts incoming client connection
         public void AcceptCallback(IAsyncResult asyncResult)
         {
+            // Creates a socket for the new client to handle the connection
             Socket clientSocket = Socket.EndAccept(asyncResult);
+            // Adds the new client's info to dictionaries indexing name:socket relations
             ClientSockets.Add(clientSocket.RemoteEndPoint.ToString(), clientSocket);
             ClientSocketsInverse.Add(clientSocket, clientSocket.RemoteEndPoint.ToString());
 
             PrintMessage($"Client {clientSocket.RemoteEndPoint} connected");
 
-            // Starts listening for data from the client just connected
+            // Starts listening for data from the new client
             Receive(clientSocket);
 
-            // Starts accepting the next client
+            // Starts accepting the next client (continues infinite loop)
             Socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
 
-        // Receives message and echoes it back to client
+        // Finishes receiving data from client, passes message to handler
         public override void ReceiveCallback(IAsyncResult asyncResult)
         {
-            // Gets socket from the async result
+            // Recreates client socket to handle connection
             Socket clientSocket = (Socket)asyncResult.AsyncState;
 
-            // The amount of data received
-            int received;
-            // Only ends receive when client is still connected
-            if (SocketBase.IsConnected(clientSocket))
+            // Stops infinite receive loop when client disconnects
+            if (!SocketBase.IsConnected(clientSocket))
             {
-                received = clientSocket.EndReceive(asyncResult);
-            }
-            else
-            {
-                // Removes from connected clients dicts
                 PrintMessage($"Client {ClientSocketsInverse[clientSocket]} has disconnected");
+
+                // Removes client from dictionaries of connected clients
                 ClientSockets.Remove(ClientSocketsInverse[clientSocket]);
                 ClientSocketsInverse.Remove(clientSocket);
+
                 return;
             }
 
-            byte[] dataBuffer = new byte[received];
-            // Copy received bytes to data buffer
-            Array.Copy(Buffer, dataBuffer, received);
-            // Converts received byte[] to string
-            string text = new Protocol(dataBuffer).Text;
+            // Parent method called to finish receiving data and call handler
+            base.ReceiveCallback(asyncResult);
 
-            // Calls function to handle message contents
-            HandleMessage(clientSocket, text);
-
-            // Loops back to start
-            // TODO: Error after client disconnects; use try catch to check connection
+            // Continues infinite receive loop
             Receive(clientSocket);
         }
 
+        // Handles message from client
         public override void HandleMessage(Socket senderSocket, string message)
         {
-            string cleaned = message.Replace("\n", "");
             string response;
+            // Removes trailing and leading whitespace
+            message = message.Trim();
+            // Split the messaging into words
+            string[] parts = message.Split(' ');
 
+            // Output debugging message to console: message received from client
             PrintMessage($"From {senderSocket.RemoteEndPoint} - {message}");
 
-            if (String.IsNullOrWhiteSpace(message))
+            // Switch on the first word (command) of message
+            // ?? causes switch on empty string if LHS is null
+            switch (parts[0].ToUpper() ?? String.Empty)
             {
-                response = "Invalid message: IsNullOrWhiteSpace";
-            }
-            else
-            {
-                string[] parts = cleaned.Split(' ');
-                string command = parts[0];
-
-                if (command.ToUpper() == "ECHO")
-                {
+                case "ECHO":
                     response = Command_ECHO(parts);
-                }
-                else if (command.ToUpper() == "SEND")
-                {
-                    response = Command_SEND(parts, senderSocket);
-                }
-                else
-                {
-                    response = $"Invalid command: Command \"{parts[0]}\" not found";
-                }
+                    break;
 
+                case "SEND":
+                    response = Command_SEND(parts);
+                    break;
+
+                // When there is no command
+                case "":
+                    response = "Invalid message: Is null Or whitespace";
+                    break;
+
+                // When no matches have been made
+                default:
+                    response = $"Invalid command: Command \"{parts[0]}\" not found";
+                    break;
             }
 
+            // Output debugging message to console: what the client is being sent
             PrintMessage($"To   {senderSocket.RemoteEndPoint} - {response}");
+            // Sends the message to the client
             Send(response, senderSocket);
         }
 
-        private string Command_ECHO(string[] message)  // Format: ECHO [message]
+        // Format: ECHO [message]
+        private string Command_ECHO(string[] message)
         {
             string response;
 
-            // If there is a [message]
-            if (message.Length >= 2)
+            // If there is no [message] parameter, send error to client
+            if (message.Length <= 1)
             {
-                // Gets all of [message] to be ECHOed back
+                response = "Invalid ECHO: Missing argument [message]";
+            }
+            // If there is a [message] parameter, process message
+            else
+            {
+                // Gets all of [message] to be echoed back
                 string arg_message = String.Join(' ', message, 1, message.Length - 1);
-                
-                // If [message] is whitespace
+
+                // If [message] is whitespace, send error to client
                 if (String.IsNullOrWhiteSpace(arg_message))
                 {
                     response = "Invalid ECHO: [message] IsNullOrWhiteSpace";
                 }
-                // If [message] is not whitespace
+                // If [message] is not whitespace, echo message to client
                 else
                 {
                     response = arg_message;
                 }
             }
 
-            // If there is no [message]
-            else
-            {
-                response = "Invalid ECHO: Missing argument [message]";
-            }
-
             return response;
         }
 
-        private string Command_SEND(string[] message, Socket senderSocket)  // Format: SEND [recipient] [message]
+
+        // Format: SEND [recipient] [message]
+        private string Command_SEND(string[] message)
         {
             string response;
 
-            // If there are no [recipient] and [message]
+            // If there are no [recipient] and [message] parameters, send error to client
             if (message.Length == 1)
             {
                 response = "Invalid SEND: Missing arguments [recipient] and [message]";
             }
-
-            // If just [recipient]
+            // If just [recipient], send appropriate error to client
             else if (message.Length == 2)
             {
-                // Gets [recipient]
+                // Gets [recipient] parameter
                 string arg_recipient = message[1];
 
-                // If [recipient] is in dictionary
+                // If [recipient] is in dictionary, tell client that just message is missing
                 if (ClientSockets.ContainsKey(arg_recipient))
                 {
                     response = "Invalid SEND: Missing argument [message]";
                 }
-                // If [recipient] is not in dictionary
+                // If [recipient] is not in dictionary, tell client recipient is invalid and message is missing
                 else
                 {
                     response = $"Invalid SEND: Invalid [recipient] \"{arg_recipient}\" and missing [message]";
                 }
             }
-            
             // If [recipient] and [message]
             else if (message.Length >= 3)
             {
@@ -202,7 +207,6 @@ namespace MessengerAppServer
                 {
                     // Get socket of recipient
                     Socket recipientSocket = ClientSockets[arg_recipient];
-
                     // Gets all of [message]
                     string arg_message = String.Join(' ', message, 2, message.Length - 2);
 
@@ -214,11 +218,13 @@ namespace MessengerAppServer
                     // When [message] is not whitespace
                     else
                     {
-                        // Does the SEND
+                        // Creates string to be sent to recipient
                         string recipientResponse = "MESSAGE " + recipientSocket.RemoteEndPoint + " " + arg_message;
+                        // Sends message
                         Send(recipientResponse, recipientSocket);
+                        // Outputs debug message to console: what the recipient is being sent
                         PrintMessage($"To   {recipientSocket.RemoteEndPoint} - {recipientResponse}");
-
+                        // Sender client will receive confirmation message
                         response = "SUCCESSFUL SEND";
                     }
                 }
@@ -228,7 +234,6 @@ namespace MessengerAppServer
                     response = $"Invalid SEND: Invalid [recipient] \"{arg_recipient}\"";
                 }
             }
-
             else
             {
                 response = "Invalid SEND: Unexpected error";
@@ -280,7 +285,7 @@ namespace MessengerAppServer
                     message = message.Remove(0, writeable);
                 }
 
-                // Prints remainer
+                // Prints remainder
                 Console.SetCursorPosition(prefix.Length, Console.CursorTop);
                 Console.WriteLine(message);
             }

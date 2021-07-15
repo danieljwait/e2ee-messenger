@@ -13,38 +13,32 @@ namespace MessengerAppClient.Model
         public List<string> ReceiveMessages = new List<string>();
         public AutoResetEvent waitHandle = new AutoResetEvent(false);
 
+        // Connects the client's socket to the server
         public void Connect()
         {
             Socket.Connect(EndPoint);
         }
 
-        override public void Receive(Socket socket)
+        // Receives data from the server, awaits completion
+        public override void Receive(Socket socket)
         {
+            // Minimal override needed so parent method is called first
             base.Receive(socket);
-            waitHandle.WaitOne(); // Waits until the receive has finished before moving on
+            // BaseSocket's receive is asynchronous, so must wait for reply before ending call
+            waitHandle.WaitOne();
         }
 
-        // TODO: Receive message from server
+        // Finishes receiving data from server, passes message to handler
         public override void ReceiveCallback(IAsyncResult asyncResult)
         {
-            // Gets socket from the async result
-            Socket clientSocket = (Socket)asyncResult.AsyncState;
-            // The amount of data received
-            int received = clientSocket.EndReceive(asyncResult);
-
-            byte[] dataBuffer = new byte[received];
-            // Copy received bytes to data buffer
-            Array.Copy(Buffer, dataBuffer, received);
-            // Converts received byte[] to string
-            string text = new Protocol(dataBuffer).Text;
-
-            // Calls the functions to handle the message contents
-            HandleMessage(clientSocket, text);
+            // Minimal override needed so parent method is called first
+            base.ReceiveCallback(asyncResult);
 
             // Sets flag that receive has ended
             waitHandle.Set();
         }
 
+        // Handles messages from the server
         public override void HandleMessage(Socket socket, string message)
         {
             // TODO: Change this to a queue

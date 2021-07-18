@@ -70,7 +70,7 @@
 
 [2.6 Internal Structures 34][]
 
-[2.6.1 Algorithms 34][]
+[2.6.1 Algorithm – Creating a new user account 34][]
 
 [2.6.2 File Organisation 36][]
 
@@ -86,11 +86,55 @@
 
 [2.8 Testing Strategy 38][]
 
+[2.8.1 Testing algorithms 38][]
+
 [3 Development 39][]
 
-[4 Evaluation 39][]
+[3.1 Iteration 1, Shared Networking 39][]
 
-[5 References 40][]
+[3.1.1 SocketBase class 39][]
+
+[3.1.2 Protocol 39][]
+
+[3.1.3 Creating the socket 40][]
+
+[3.1.4 Receiving a message 40][]
+
+[3.1.5 Sending a message 41][]
+
+[3.2 Iteration 1, Server Networking 41][]
+
+[3.2.1 Starting the server 41][]
+
+[3.2.2 Stopping the server 42][]
+
+[3.2.3 Accepting a new client 42][]
+
+[3.2.4 Receiving a message from a client 43][]
+
+[3.2.5 Handling a message from a client 44][]
+
+[3.2.6 ECHO command handling 45][]
+
+[3.2.7 SEND command handling 46][]
+
+[3.3 Iteration 1, Client Networking 47][]
+
+[3.3.1 Connecting to the server 47][]
+
+[3.3.2 Sending a message to the server 48][]
+
+[3.4 Iteration 1, Client UI 48][]
+
+[3.5 Iteration 1, Tests 49][]
+
+[3.5.1 Testing plans 49][]
+
+[3.5.2 Testing results 50][]
+
+[4 Evaluation 51][]
+
+[5 References 52][]
 
 # Analysis
 
@@ -140,7 +184,7 @@ The second group of potential stakeholders are the users who want a messenger ap
 
 ### Existing Program – Discord
 
-Discord is a free instant messaging and VoIP platform created in 2015 centred around enabling communities to connect through guilds: collections of chat rooms and voice channels. The platform also offers direct messages (DMs) between individual users which will be focused on in this research. In 2019 the platform saw 250 million users with a total of 25 billion messages being sent per month \[1\] making it the largest gaming-focused communications platforms available; this large, vocal, userbase means that all features of the platform have been rigorously tested and are therefore a good source of information on how to approach my solution.
+Discord is a free instant messaging and VoIP platform created in 2015 centred around enabling communities to connect through guilds: collections of chat rooms and voice channels. The platform also offers direct messages (DMs) between individual users which will be focused on in this research. In 2019 the platform saw 250 million users with a total of 25 billion messages being sent per month \[1\] making it the largest gaming-focused communication platform available; this large, vocal, userbase means that all features of the platform have been rigorously tested and are therefore a good source of information on how to approach my solution.
 
 <img src="media\image1.png" style="width:6.25417in;height:2.90764in" />
 
@@ -264,7 +308,7 @@ The UI for many IRC clients is the following: channels on the left, a nickname l
 
 I will consider using this tried and tested UI format for my solutions; since if users are used to it from other platforms, it will make using my solutions even easier and more natural for them.
 
-Another form of IRC client is one which is integrated into another program: Opera had a client attached to Opera Mail and Firefox had a client called ChatZilla. These differ from those mentioned at the start of the research as these lack the abstraction layer found in these modern integrated use cases and offered users the full IRC experience. IRC being used as an add-on to an existing program is testament to IRC being a lightweight protocol with not many needs besides a socket to run off.
+Another form of IRC client is integrated into another program: Opera had a client attached to Opera Mail and Firefox had a client called ChatZilla. These differ from those mentioned at the start of the research as these lack the abstraction layer found in these modern integrated use cases and offered users the full IRC experience. IRC being used as an add-on to an existing program is a testament to IRC being a lightweight protocol with not many needs besides a socket to run off.
 
 In my solution, I will also be trying to create a lightweight protocol that only requires a single socket as it is a requirement from my stakeholders for my solution to be lightweight.
 
@@ -346,9 +390,9 @@ For question 3, Ethan said that the pressing Enter method of sending messages is
 
 > Along the left with usernames
 
-For question 1 and 2, Ethan said that having all past messages between two users visible would be a good feature to include in my program. I especially agree with his comment on including past messages being “all or nothing”.
+For questions 1 and 2, Ethan said that having all past messages between two users visible would be a good feature to include in my program. I especially agree with his comment on including past messages being “all or nothing”.
 
-Next, the answers to question 3 and 4 gave me an idea of the design that he wants to see for the program. I will use these as the basis for my UI mock-up in the design section.
+Next, the answers to questions 3 and 4 gave me an idea of the design that he wants to see for the program. I will use these as the basis for my UI mock-up in the design section.
 
 **Topic: Accounts**
 
@@ -492,7 +536,7 @@ Internet access will be required to run the program as the client program needs 
 | 1   | Client sockets connect to server at start-up of the program                       | The app needs a connection to the server so it should connect while the app starts to minimise waiting time | Discord (splash screen)                       |
 | 2   | Client socket tells the server it is closing before the app is closed             | Prevents any errors from occurring and begins the client disconnect procedure                               |                                               |
 | 3   | The socket sends heartbeats to the server to show that it is still open           | Stops the possibility that a client has disconnected without the server realising which will lead to errors | IRC (PING)                                    |
-| 4   | User must log in to their account to access the program                           | Ensures that only people with valid credentials can view an account’s messages                              | IRC (?) or Stakeholders                       |
+| 4   | Users must log in to their account to access the program                          | Ensures that only people with valid credentials can view an account’s messages                              | IRC (?) or Stakeholders                       |
 | 5   | New users can create an account                                                   | New users need a way of accessing the app                                                                   | IRC (?) or Stakeholders                       |
 | 6   | Users are not allowed to try to log in if the socket cannot connect               | With no connection, logins cannot be authorised so the login process cannot be done                         |                                               |
 | 7   | Usernames must be unique                                                          | Prevents situations where two people can accidentally share credentials                                     | Existing solution - Internet Relay Chat (IRC) |
@@ -538,7 +582,7 @@ Internet access will be required to run the program as the client program needs 
 
 **Encryption:** Since the program requires end-to-end encryption, making sure that no messages can be read during transit is important. Therefore, all transmission data will be encrypted with the recipient’s public key and signed with the sender’s private key. This will be implemented as a part of the transmission creation and receiving procedure so that it is done to all messages.
 
-**Serialised object:** For easier sending and receiving of transmission, a common format that will be easy to read values from is needed. Since the transmission will be an object before its sent, I will create an object that will be serialised when sent. When the recipient gets the transmission, it can de-serialised and immediately used by the receiver. This part of the program will possibly be implemented by using JObjects, this is a JSON object that contains many tokens that will be used to transfer information between the client and server.
+**Serialised object:** For easier sending and receiving of transmission, a common format that will be easy to read values from is needed. Since the transmission will be an object before its sent, I will create an object that will be serialised when sent. When the recipient gets the transmission, it can be de-serialised and immediately used by the receiver. This part of the program will possibly be implemented by using JObjects, this is a JSON object that contains many tokens that will be used to transfer information between the client and server.
 
 **Flags determine command type:** Creating a general format for all transmission and then giving more information and specifying the purpose of the message via flags gives consistency to the transmission while not sacrificing functionality. These flags will declare the purpose of a request as, due to the structure of the transmission, I am unable to prefix messages with a command name so will need to integrate the request’s purpose into the object that will be sent. This part of the solution will most likely be done with Boolean values in the JObject or a token dedicated to holding a command name.
 
@@ -674,7 +718,7 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 
 **Line 18** – To allow users to amend their credentials if they are not accepted, a “repeat…until” (or “do…while”) loop is used to continue requesting usernames and passwords until a valid pair is supplied. This will appear in the UI in the form of the invalid text box(es) being highlighted.
 
-**Line 26** – As addressed in 2.1 System decomposition, a key derivation function will be required to generate a symmetric key for AES to decrypt and encrypt the user’s private key that will be stored on the server. There are a few possible functions that the KDF in the pseudocode can be: KDF1, PBKDF2 or KBKDFVS. The final implementation will be chosen based on .NET implementation, security, and computation time.
+**Line 26** – As addressed in 2.1 System DecompositionSystem Decomposition, a key derivation function will be required to generate a symmetric key for AES to decrypt and encrypt the user’s private key that will be stored on the server. There are a few possible functions that the KDF in the pseudocode can be: KDF1, PBKDF2 or KBKDFVS. The final implementation will be chosen based on .NET implementation, security, and computation time.
 
 **Line 28** – Since all passwords need to be store securely, the password must be hashed first. This will be done via MD5 with the possibility of an added salt. The salt will be different for each user and will mean that even if two users have the same password, their password hashes will not be the same. This also has the benefit of helping to reduce the effectiveness of hash table attacks.
 
@@ -711,6 +755,204 @@ The credentials supplied to CreateAccount must be valid as if they are empty or 
 <table><thead><tr class="header"><th>ID</th><th>Test</th><th>Type</th><th>Data</th><th>Expected</th></tr></thead><tbody><tr class="odd"><td>1.1</td><td>Valid username and password</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.2</td><td>Empty variable from UI</td><td>E</td><td><p>username = “”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.3</td><td>Null variable from UI</td><td>E</td><td><p>username = null</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.4</td><td>Username contains invalid character</td><td>N</td><td><p>username = “Dan iel”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.5</td><td>Username length lower bound</td><td>B</td><td><p>username = 5 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.6</td><td>Username length upper bound</td><td>B</td><td><p>username = 128 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.7</td><td>Password does not contain upper and lower case</td><td>N</td><td><p>username = “Daniel”</p><p>password = “password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.8</td><td>Password contains no number</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.9</td><td>Password contains no special character</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.10</td><td>Password length lower bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 8 valid chars</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.11</td><td>Password length upper bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 128 valid chars</p></td><td>username + # + discriminator and password returned</td></tr></tbody></table>
 
 # Development
+
+## Iteration 1, Shared Networking
+
+### SocketBase class
+
+Both the client and server require a socket to be networked together, to do this I used the System.Net.Sockets library and have created an abstract class called SocketBase. SocketBase houses all the shared socket functionality which is extended in a specific client and server child class. This solves the problem of duplicate client-server code and reduces the change of error since there is no chance of variable names or values being different.
+
+**Features of SocketBase**
+
+-   Properties
+
+    -   Port number: 31416
+
+    -   IP address: localhost for now
+
+    -   Socket type: TCP stream
+
+    -   Buffer: Empty 2048-byte array
+
+-   Methods
+
+    -   Constructor
+
+    -   Sending data (begin and end asynchronous)
+
+-   Abstract and virtual methods
+
+    -   Receiving data (begin and end asynchronous)
+
+    -   Handling messages
+
+Since some methods will need to be implemented but will have different implementations depending on whether it is for the client or server, some methods have been declared but not defined. These are the abstract methods of the class as they will need to be defined by the child classes.
+
+### Protocol
+
+<img src="media\image32.png" style="width:2.90347in;height:3.41667in" />To allow communication between the client and server to be consistent, I have created a Protocol class that encodes text in a standardised way (UTF-8). This was done to address the problem found of incompatible character encodings from *1.2.2* *Existing Solution – Internet Relay Chat (IRC)*.
+
+I have used two constructors in this class as an instance of the Protocol needs be able to be created from a string (when being converted to binary for transmission) or from binary (when being converted to string from a transmission).
+
+In future iterations, this is where I will put the code used to encrypt and decrypt messages since the process must be identical for all users to be consistent.
+
+### Creating the socket
+
+<img src="media\image33.png" style="width:5.07148in;height:1.68843in" />
+
+Figure 2. MessengerAppShared.SocketBase.SocketBase
+
+I have chosen the size of the socket’s buffer to be 2048 bytes as now 2KiB of data is enough for the text that is being transferred. Once multimedia messages are implemented, this buffer could be increased.
+
+Secondly, the server is currently only available to the computer it is running on (as seen in IPAddress.Loopback). This has been done as opening it up to the Internet is both insecure and unnecessary during this phase of development. To open the program to the Internet the user would need to open a firewall port for inbound and outbound traffic, which leaves the chance for vulnerabilities to be introduced to whichever network I am testing on as that port needs to be closed once testing is over.
+
+### Receiving a message
+
+<img src="media\image34.png" style="width:6.26806in;height:0.98333in" />
+
+Figure 3. MessengerAppShared.Receive
+
+<img src="media\image35.png" style="width:3.73881in;height:2.53258in" />Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. The methods are also both virtual as the child classes may extend them.
+
+In future iterations, the decoding of the message into text and passing to the message handler will have to be moved out of the shared method and into the child-specific overrides as decryption keys will need to be used by the client.
+
+### Sending a message
+
+<img src="media\image36.png" style="width:6.26806in;height:2.69375in" />
+
+Figure 5. MessengerAppShared.SocketBase.Send and MessengerAppShared.SocketBase.SendCallback
+
+For the moment, sending data is simpler than receiving the data. Therefore, there is no need for it to be virtual as all its functionality can be defined in the shared socket base. Once encryption is introduced to the solution, encryption keys will need to be used by the client so the methods will need to be made abstract to allow the child classes to define their specific processes.
+
+## Iteration 1, Server Networking
+
+### <img src="media\image37.png" style="width:2.96042in;height:0.59792in" />Starting the server
+
+<img src="media\image38.png" style="width:1.62222in;height:0.83264in" /><img src="media\image39.png" style="width:3.40417in;height:2.20764in" /><img src="media\image40.png" style="width:3.21429in;height:1.83577in" />
+
+Inside the server program’s main function, a socket (ServerSocket is a child of SocketBase) is created and set to start. This will begin an infinite loop that accepts new connections from clients and creates a virtual thread for each client which has begins an infinite loop of receiving data.
+
+This code should not need to change for the rest of the development since the connection process will be the same even after adding user authentication and encryption.
+
+### Stopping the server
+
+<img src="media\image41.png" style="width:4.36319in;height:2.87361in" />To stop the server, enter must be pressed. In future iterations, this could be made more secure by requiring a passcode to be entered however it is not crucial so is not important now.
+
+Currently, there are two issues with the shutdown process. Firstly, the clients connected to the server are not notified that the server has been shut down. Which can cause fatal errors for the client if they try to send anything to the server. This problem can be solved by sending a shutdown notice to all connected clients before closing the socket. Secondly, a non-fatal error is thrown in the server program during the shutdown process, but I am yet to figure out the cause.
+
+<img src="media\image42.png" style="width:6.26806in;height:0.51528in" />
+
+Figure 11. Server console output after \[enter\] is pressed
+
+### Accepting a new client
+
+<img src="media\image43.png" style="width:5.37662in;height:2.76218in" />
+
+Figure 12. MessengerAppServer.ServerSocket.AcceptCallback
+
+This method is called at the end of ServerSocket.Start (*Figure 7*) to finalise the new client connection and will call ServerSocket.Start once it has finished, continuing the infinite loop.
+
+In future iterations of the solution, this method will be extended by adding the user login system which will, in turn, improve the name and socket relations system in use here. It currently consists of two dictionaries: one for IP to socket lookups and one for the socket to IP lookups. This will be replaced with usernames as each socket’s unique identifier as to send a user a message now, the exact IP and port need to be entered, which is not user-friendly enough for the final solution.
+
+### Receiving a message from a client
+
+<img src="media\image44.png" style="width:5.9913in;height:4.02139in" />
+
+Figure 13. MessengerAppServer.ServerSocket.ReceiveCallback
+
+<img src="media\image45.png" style="width:2.77361in;height:1.05417in" />During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to makes sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
+
+In the future, I may move the client disconnect process to a separate method. This is because the process will only get longer and methods should only do one thing: just finish receiving the data, not also remove disconnected clients.
+
+### Handling a message from a client
+
+<img src="media\image46.png" style="width:5.20314in;height:6.384in" />
+
+Figure 15. MessengerAppServer.ServerSocket.HandleMessages
+
+This method is called after receiving any data from the client. Firstly, data sanitation removes leading and trailing whitespace to ensure that all command word and parameter matches are accurate. Secondly, the string is exploded into an array of words which has been done to make reading specific parts of the message easier.
+
+To determine which command the message contains, the first words are matched against several cases. To avoid errors when the message is empty or null, the null coalescing operator (??) is used. This operator returns the left-hand side if it does not equal null, and the right-hand side if it is. This could have been done in an if statement before the switch but combining the two pieces of logic reduces code duplication and makes the method easier to maintain in the future.
+
+In future iterations, this switch case block may have to be modified as the plan for the commands was not to be text-based: current ideas are JObjects and XML. However, the same principle will remain.
+
+### ECHO command handling
+
+<img src="media\image47.png" style="width:5in;height:4.6571in" />
+
+Figure 16. MessengerAppServer.ServerSocket.Command\_ECHO
+
+This method will not be part of the final solution, instead, I am using it to test the sending of data between the client and server. By echoing any data sent back to the client, I can see immediately what data was transmitted, its form and therefore any problems, without the need to do variable watches in debugging.
+
+<img src="media\image48.png" style="width:6.26806in;height:1.67847in" />
+
+Figure 17. ECHO command as seen from client's and server's perspective
+
+At this point in development, the server can see all messages in plaintext. This is not an issue as I am yet to implement the encryption process. In a future iteration when encryption has been implemented, the above situation should produce the same results on the client’s side while not showing “Hello World!” on the server’s side.
+
+### SEND command handling
+
+<img src="media\image49.png" style="width:6.00662in;height:9.22222in" />
+
+Figure . MessengerAppClient.ServerSocket.Command\_SEND
+
+One difficulty faced when writing this method was the command’s dependency on positional arguments. This required validation for the number of words in the message and tests of whether arguments were intended to be recipients or not, which meant there had to be many nested conditionals. This problem will be solved in future iterations where I will move away from a text-based protocol like this and into an object- or markup-based protocol as discussed in *2.1* *System Decomposition*.
+
+Another change I will make to this method in the future is changing the recipient argument into a username rather than an IP address and port. However, this can only be done once I have implemented user accounts. This will help the end-user by making the syntax easier and less likely to cause mistypes; although, in the final solution all commands will be generated by the client program so this improvement will lose its effect.
+
+<img src="media\image50.png" style="width:5.22699in;height:2.49999in" />
+
+Figure . SEND message from left (port 1070) to right (port 1071)
+
+As seen above, when sending a message, it is not immediately displayed by the recipient. I believe that this is because the client programs do not have an infinite receive loop like the server program. This means that they only read in data from their socket after they send a message to the server. Having a message waiting to be read by the socket introduces a permanent one-message delay on all communications from that program, which increases for each further message they receive via a SEND. To solve this problem, I will create a virtual thread that continually listens for messages from the server to process/display them in real-time.
+
+## Iteration 1, Client Networking
+
+### <img src="media\image51.png" style="width:3.16389in;height:1.81944in" />Connecting to the server
+
+This method is used to interface the UI with the socket functions: pressing the “Connect to server” button will call this and once the socket has connected to the server, it will update the status label.
+
+One issue with this current method is that if the socket does not connect to the server successfully, the UI would still show “Connected” (currently the program crashes first, but if the crashing were fixed). This could be solved by adding a conditional to determine if the connection were successful.
+
+In future iterations of the solution, this method to begin the connection with the server would be where an infinitely looping receiving data thread would begin. This is needed in the program as it would solve the issue seen in *3.5.1* *Testing* with the SEND command not updating the received message field on the recipient’s program until they next communicate with the server.
+
+### Sending a message to the server
+
+<img src="media\image52.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
+
+I will solve this problem by adding an infinite receive loop like that seen in the server program. The consequences of not having this loop can be seen in the example from *3.2.7* *SEND command handling.*
+
+Another problem I faced when writing this method was how will I store the message received. Originally, I was going to have a string to hold the received message, but then I realised that there may be a situation where I need to access past messages. Therefore, I implemented a list that new messages are appended to. In the future, I will switch this to a queue as I need a FIFO data structure that can hold a backlog of messages while the current message is being processed.
+
+## Iteration 1, Client UI
+
+<img src="media\image53.png" style="width:3.94236in;height:2.21196in" />
+
+Figure . Client program's user interface
+
+The current UI has not been made for usability. It only has the essential components for testing and debugging the networking portion of the solution: my aim for this first iteration. In future iterations, I will focus more on recreating the designs which the stakeholders and I decided on. This includes adding the feature to send messages via pressing the enter key, connecting to the server automatically upon opening the program and most importantly, having the program write all the commands which are sent to the server, so the user only needs to write the message they want to send.
+
+Secondly, there are no limits on window size, taskbar icon and descriptive name. All of which are not important features but will need to be added to the final solution before it is sent out to stakeholders.
+
+## Iteration 1, Tests
+
+### Testing plans
+
+I will be testing this iteration through a predominantly black-box testing method – with some tests targeting specific conditionals like white-box testing. This is being used to see how the expected output to the user compares to the intended output. Most of the tests conducted will be for all the possible messages sent to the server from the client program, the rest will be seeing how the client program handles malformed messages and clicking buttons that cannot complete their intended actions.
+
+<table><thead><tr class="header"><th>ID</th><th>Testing</th><th>Input Data</th><th>Expected Output</th></tr></thead><tbody><tr class="odd"><td>1</td><td>ECHO, normal</td><td>“ECHO Test”</td><td>“Test”</td></tr><tr class="even"><td>2</td><td>ECHO, no message</td><td>“ECHO”</td><td>“Invalid ECHO: Missing argument [message]”</td></tr><tr class="odd"><td>3</td><td>ECHO, whitespace message</td><td>“ECHO ”</td><td>“Invalid ECHO: [message] IsNullOrWhiteSpace”</td></tr><tr class="even"><td>4</td><td>SEND, normal</td><td>“SEND 127.0.0.1:123 Test”</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: “MESSAGE 127.0.0.1:123 Test”</p></td></tr><tr class="odd"><td>5</td><td>SEND, no arguments</td><td>“SEND”</td><td>“Invalid SEND: Missing arguments [recipient] and [message]”</td></tr><tr class="even"><td>6</td><td>SEND, no message, valid recipient</td><td>“SEND 127.0.0.1:123”</td><td>“Invalid SEND: Missing argument [message]”</td></tr><tr class="odd"><td>7</td><td>SEND, no message, invalid recipient</td><td>“SEND 0.0.0.0:0”</td><td>“Invalid SEND: Invalid [recipient] “0.0.0.0:0” and missing [message]”</td></tr><tr class="even"><td>8</td><td>SEND, whitespace message, valid recipient</td><td>“SEND 127.0.0.1:123 “</td><td>“Invalid SEND: [message] IsNullOrWhiteSpace”</td></tr><tr class="odd"><td>9</td><td>SEND, valid message, invalid recipient</td><td>“SEND 0.0.0.0:0 Test”</td><td>“Invalid SEND: Invalid [recipient]”</td></tr><tr class="even"><td>10</td><td>No message</td><td>“”</td><td>“Invalid message: Is null or whitespace”</td></tr><tr class="odd"><td>11</td><td>Invalid command</td><td>“RUN Test”</td><td>“Invalid command: Command “RUN” not found”</td></tr><tr class="even"><td>12</td><td>Leading and trailing whitespace</td><td>“ ECHO Test ”</td><td>“Test”</td></tr><tr class="odd"><td>13</td><td>Extra whitespace between arguments</td><td>“SEND 127.0.0.1:123 Test”</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: “MESSAGE 127.0.0.1:123 Test”</p></td></tr><tr class="even"><td>14</td><td>Message longer than 2048 bytes</td><td>“ECHO &lt;more than 2043-byte string&gt;”</td><td>The string truncated to 2043 bytes</td></tr><tr class="odd"><td>15</td><td>Sending a message without connected to the server</td><td>“ECHO Test”</td><td>Not allowed</td></tr><tr class="even"><td>16</td><td>Sending a message after the server has closed</td><td>“ECHO Test”</td><td>Not allowed</td></tr><tr class="odd"><td>17</td><td>Connecting an already connected client</td><td>Press “Connect to server”</td><td>Not allowed</td></tr><tr class="even"><td>18</td><td>Connected when the server is not running</td><td>Press “Connect to server”</td><td>Not allowed</td></tr></tbody></table>
+
+### Testing results
+
+<table><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>2</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>3</td><td>Fail</td><td>“Invalid ECHO: Missing argument [message]”</td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: No message</p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server</td></tr><tr class="odd"><td>5</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>6</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>7</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>8</td><td>Fail</td><td>“Invalid SEND: Invalid [recipient] “0.0.0.0:0” and missing [message]”</td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="odd"><td>9</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>12</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>13</td><td>Fail</td><td>“Invalid SEND: Invalid [recipient] “””</td><td>When splitting the string on space characters, the position of the recipient was replaced by an empty string</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>(1<sup>st</sup>) “ECHO …”</p><p>(2<sup>nd</sup>, not shown) “Invalid command: Command “…” not found “</p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
+
+The failure of tests 3 and 8 was not a problem, they only failed because the data sanitisation did not allow the introduced malformations to reach the targeted conditionals. I will investigate removing these conditionals as if they are never reached there is no need to keep them in the code.
+
+Test 4 not producing the expected output was expected as the lack of a receive loop was identified in *3.2.7* *SEND command handling* as well as the necessary steps to solve the problem.
+
+The failure of tests 10, 15, 16 and 17 was all unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.s
+
+Lastly, test 14 failed. This can be solved by adding a limit on the maximum number of characters allowed in the client program so that no transmission is greater than 2048 bytes.
 
 # Evaluation
 
@@ -765,7 +1007,7 @@ The credentials supplied to CreateAccount must be valid as if they are empty or 
   [2.5.2 Usability Features 32]: #usability-features
   [2.5.3 Input Validation 33]: #input-validation
   [2.6 Internal Structures 34]: #internal-structures
-  [2.6.1 Algorithms 34]: #algorithm-creating-a-new-user-account
+  [2.6.1 Algorithm – Creating a new user account 34]: #algorithm-creating-a-new-user-account
   [2.6.2 File Organisation 36]: #file-organisation
   [2.6.3 Variables 36]: #variables
   [2.6.4 Class Diagrams 36]: #class-diagrams
@@ -773,7 +1015,29 @@ The credentials supplied to CreateAccount must be valid as if they are empty or 
   [2.7.1 Final Design 37]: #final-design-1
   [2.7.2 System Walkthrough 37]: #system-walkthrough
   [2.8 Testing Strategy 38]: #testing-strategy
+  [2.8.1 Testing algorithms 38]: #testing-algorithms
   [3 Development 39]: #development
-  [4 Evaluation 39]: #evaluation
-  [5 References 40]: #_Toc76146551
+  [3.1 Iteration 1, Shared Networking 39]: #iteration-1-shared-networking
+  [3.1.1 SocketBase class 39]: #socketbase-class
+  [3.1.2 Protocol 39]: #protocol
+  [3.1.3 Creating the socket 40]: #creating-the-socket
+  [3.1.4 Receiving a message 40]: #receiving-a-message
+  [3.1.5 Sending a message 41]: #sending-a-message
+  [3.2 Iteration 1, Server Networking 41]: #iteration-1-server-networking
+  [3.2.1 Starting the server 41]: #starting-the-server
+  [3.2.2 Stopping the server 42]: #stopping-the-server
+  [3.2.3 Accepting a new client 42]: #accepting-a-new-client
+  [3.2.4 Receiving a message from a client 43]: #receiving-a-message-from-a-client
+  [3.2.5 Handling a message from a client 44]: #handling-a-message-from-a-client
+  [3.2.6 ECHO command handling 45]: #echo-command-handling
+  [3.2.7 SEND command handling 46]: #send-command-handling
+  [3.3 Iteration 1, Client Networking 47]: #iteration-1-client-networking
+  [3.3.1 Connecting to the server 47]: #connecting-to-the-server
+  [3.3.2 Sending a message to the server 48]: #sending-a-message-to-the-server
+  [3.4 Iteration 1, Client UI 48]: #iteration-1-client-ui
+  [3.5 Iteration 1, Tests 49]: #iteration-1-tests
+  [3.5.1 Testing plans 49]: #testing-plans
+  [3.5.2 Testing results 50]: #testing-results
+  [4 Evaluation 51]: #evaluation
+  [5 References 52]: #_Toc77521679
   [WeeChat.org]: https://weechat.org/about/screenshots/

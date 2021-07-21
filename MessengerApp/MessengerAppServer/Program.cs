@@ -7,7 +7,7 @@ namespace MessengerAppServer
         static void Main()
         {
             // Sets the title of the console's window
-            Console.Title = "Messenger Server";
+            Console.Title = "MessengerApp Server";
 
             // Creates a new server socket and starts it running
             ServerSocket serverSocket = new ServerSocket();

@@ -166,7 +166,7 @@ Once these are overcome the rest of the solution is using those keys to do the e
 
 **Abstraction** – It is not necessary (or feasible) for the user to have hands-on control over every process that happens when sending their message. Therefore, abstraction will be used to hide most of the processes from the user to streamline their experience by only showing relevant detail. Some of the abstracted processes will be the following: encrypting and decrypting messages; sending and retrieving keys from the server and all the client-server networking.
 
-**Thinking ahead** – I have thought ahead by choosing to write the program in C\# with the WPF framework rather than Python (the language I am most familiar with). I expect the backend to require most of my focus in the project so will utilise C\#’s support for the Visual Studio WYSIWYG GUI builder (and more specifically WPF’s XAML) to quickly and easily build the frontend giving me more time to focus on the backend.
+**Thinking ahead** – I have thought ahead by choosing to write the program in C# with the WPF framework rather than Python (the language I am most familiar with). I expect the backend to require most of my focus in the project so will utilise C#’s support for the Visual Studio WYSIWYG GUI builder (and more specifically WPF’s XAML) to quickly and easily build the frontend giving me more time to focus on the backend.
 
 **Procedural thinking & decomposition** – The problem can be decomposed into a set of much smaller problems, using procedural thinking I will develop a solution to each of these in turn. This set of problems will also allow me to use test harnesses during development to isolate certain parts of the program during the development process. This structure will make the overall solution easier to work with by making the development and design process more efficient.
 
@@ -186,7 +186,7 @@ The second group of potential stakeholders are the users who want a messenger ap
 
 Discord is a free instant messaging and VoIP platform created in 2015 centred around enabling communities to connect through guilds: collections of chat rooms and voice channels. The platform also offers direct messages (DMs) between individual users which will be focused on in this research. In 2019 the platform saw 250 million users with a total of 25 billion messages being sent per month \[1\] making it the largest gaming-focused communication platform available; this large, vocal, userbase means that all features of the platform have been rigorously tested and are therefore a good source of information on how to approach my solution.
 
-<img src="media\image1.png" style="width:6.25417in;height:2.90764in" />
+<img src="./media/image1.png" style="width:6.25417in;height:2.90764in" />
 
 **Security**
 
@@ -194,7 +194,7 @@ Discord is not a privacy-focused platform and users are expected to forfeit thei
 
 My solution will use the opposite approach to security, by placing it in the hands of the user. End-to-end encryption instead of encryption in-transit, as well as the TCP protocol, will be in my solution. The e2ee will solve the problem of potential spying found in Discord while the TCP is being used as HTTPS is not suitable for this project.
 
-<img src="media\image2.png" style="width:1.49306in;height:1.75417in" />**Splash Screen**
+<img src="./media/image2.png" style="width:1.49306in;height:1.75417in" />**Splash Screen**
 
 When starting Discord, a splash screen appears showing the user that processes are occurring behind the scenes. This is useful as it gives visual feedback to the user and gives the program time to connect to the server and load all the required resources into the RAM.
 
@@ -204,7 +204,7 @@ I will consider this feature for my solution as it will give my program time to 
 
 To use Discord, users must first log in. This can be done with an email and password or by scanning a QR code from the Discord mobile app. In my solution, I will also require the user to log into an account before they can use the program. This is because protecting messages behind a password improves privacy which is one of the requirements for the program. A login system will also be useful as it provides each user with a unique identifier that can be used when addressing messages and viewing contacts.
 
-<img src="media\image3.png" style="width:1.81667in;height:1.62083in" />**Two-factor authentication**
+<img src="./media/image3.png" style="width:1.81667in;height:1.62083in" />**Two-factor authentication**
 
 Discord has the option to enable two-factor authentication. This means that when logging in to your account you need both the correct credentials and access to another method of proving your identity. Common methods are SMS message, email or a dedicated authenticator app, Discord chose the latter.
 
@@ -212,7 +212,7 @@ I will consider this feature for my program as it will add more security to the 
 
 **Creating an account**
 
-When creating a Discord account, usernames are case sensitive and are automatically postfixed with a number after a ‘\#’ called a discriminator. This robust naming system is done to allow up to ten thousand people to have the same username. I will consider implementing this feature in my solution as preventing username collisions improves the experience for the user by allowing them to continue using their username from any other service.
+When creating a Discord account, usernames are case sensitive and are automatically postfixed with a number after a ‘#’ called a discriminator. This robust naming system is done to allow up to ten thousand people to have the same username. I will consider implementing this feature in my solution as preventing username collisions improves the experience for the user by allowing them to continue using their username from any other service.
 
 Discord’s password requirements are on the other hand very lenient: “Must be between 6 and 128 characters long” \[2\]. Therefore, it is up to the user to choose a sufficiently broad character pool for their password which many users will forgo in exchange for convenience. So, for my solution, I will consider implementing some further requirements for the strength of passwords. This is since the privacy given by the end-to-end encryption will be undermined by an easily guessed password.
 
@@ -222,7 +222,7 @@ To add a friend (contact), you enter their complete Discord Tag (username) and s
 
 In my solution, I will consider a similar method of adding contacts by searching their username. However, since my user base will be much smaller than that of Discord, I may give the user feedback to similar names to what they entered by pattern matching the string they want to search and a list of all registered accounts.
 
-<img src="media\image4.png" style="width:5.25441in;height:1.11055in" />
+<img src="./media/image4.png" style="width:5.25441in;height:1.11055in" />
 
 **Home page**
 
@@ -256,11 +256,11 @@ DM threads on Discord are the conversations between users. These can show histor
 
         -   Executable files cannot be sent for security reasons
 
-<img src="media\image5.png" style="width:6.24792in;height:0.50493in" />
+<img src="./media/image5.png" style="width:6.24792in;height:0.50493in" />
 
 In my solution, I will consider including the feature of viewing historic messages since if messages were lost after being viewed this would not make the program very helpful for the user. Secondly, I will consider including the ability to send multiple types of messages. This is because limiting the program to only text would be restrictive for the users when compared to alternative programs.
 
-<img src="media\image6.png" style="width:3.06667in;height:2.33194in" />**Navigation**
+<img src="./media/image6.png" style="width:3.06667in;height:2.33194in" />**Navigation**
 
 Discord has many shortcuts which are helpfully listed on a dedicated help screen in the program. This streamlines the experience for power users of the program while allowing regular users to continue using their normal cursor orientated navigation.
 
@@ -272,7 +272,7 @@ For my solution, I will consider also using tab-based navigation as it is well e
 
 Internet Relay Chat is an internet protocol created in 1988 to allow group plaintext conversations with channels working on a client-server model or to individuals with private messages using the Direct Client-to-Client protocol (DCC). In February 2005 at the height of IRC, the largest network – QuakeNet – saw a peak user count of almost a quarter of a million users \[3\]. This has dramatically reduced since then and is now at an average of 10 thousand users \[4\]. However, the protocol is still used by some services today as a means of lightweight communication typically attached to a larger service: The Twitch IRC network is responsible for the live chat in a Twitch stream and some games such as Tabletop Simulator, StarCraft, and Unreal Tournament use IRC for their in-game chat.
 
-<img src="media\image7.png" style="width:5.0199in;height:3.1106in" />
+<img src="./media/image7.png" style="width:5.0199in;height:3.1106in" />
 
 *Image via [WeeChat.org][]*
 
@@ -314,7 +314,7 @@ In my solution, I will also be trying to create a lightweight protocol that only
 
 **Protocol**
 
-The IRC protocol is all done over ASCII encoded TCP with the structure “\[origin\] \[command\] \[parameters\]”. An example of a message would be “:daniel!test.domain.org PRIVMSG \#channel1 :This is a test”. The origin is formatted “:\[nickname\]!\[server\]” and is not in the message when it is sent, instead it is prepended by the server relaying the message. Commands can be either a word or a 3-digit value if it is a response from the server. Lastly, the parameters are all separated by a space except for the last which can be prefixed with a colon. Prefixing the last parameter with a colon means that all characters past the colon, including spaces, are part of the parameter. This allows parameters such as message bodies to contain spaces in them.
+The IRC protocol is all done over ASCII encoded TCP with the structure “\[origin\] \[command\] \[parameters\]”. An example of a message would be “:daniel!test.domain.org PRIVMSG #channel1 :This is a test”. The origin is formatted “:\[nickname\]!\[server\]” and is not in the message when it is sent, instead it is prepended by the server relaying the message. Commands can be either a word or a 3-digit value if it is a response from the server. Lastly, the parameters are all separated by a space except for the last which can be prefixed with a colon. Prefixing the last parameter with a colon means that all characters past the colon, including spaces, are part of the parameter. This allows parameters such as message bodies to contain spaces in them.
 
 In my solution, I will also use a text-based protocol over TCP. However, I will use the more common UTF-8 encoding. I will consider using the same origin, command, parameters format for messages although instead of the final parameter’s colon, wrapping in speech marks sounds like a better method as it allows messages to have multiple parameters which contain spaces and removes some of the ambiguity.
 
@@ -438,31 +438,31 @@ Secondly, I wanted to hear the stakeholders’ opinions on some common features 
 
 **Question 1 –** **“How much time do you spend on messaging apps each day?”**
 
-<img src="media\image8.png" style="width:5.00069in;height:3in" />
+<img src="./media/image8.png" style="width:3.27273in;height:2.10766in" />
 
 The results of question 1 tell me that the respondents to this survey had above average messaging app usage. The data had a modal class of 30-60 minutes and a (linearly interpolated) median of 55 minutes: these are much greater than the UK’s average of 28 minutes \[5\]. This is the best case for a group of respondents as it means that the survey was more likely to be completed using respondents’ actual experiences, rather than their preconceptions, meaning more accurate results.
 
 **Question 2 – “What is your most used messaging app?”**
 
-<img src="media\image9.png" style="width:4.37361in;height:3.52708in" />
+<img src="./media/image9.png" style="width:2.90909in;height:2.10372in" />
 
 The results from this question show me that the most used messaging app among the respondents was WhatsApp (42%), followed by Snapchat (33%) – both privacy-focused, end-to-end encrypted messaging apps with Snapchat defaulting to deleting users’ messages after 24 hours. This, along with the results from question 1, confirm to me that the respondents are suitable representative for the solution’s stakeholders. Also of note is the fact that Discord (17%) came in 3<sup>rd</sup>. This means that *1.2.1* *Existing Program – Discord* was a suitable investigation as it is relevant to at least 17% of the survey’s respondents and, by extension, solution stakeholders.
 
 **Question 3 – “What is your favourite feature of messaging apps?”**
 
-<img src="media\image10.png" style="width:4.9403in;height:2.96207in" />
+<img src="./media/image10.png" style="width:4.55549in;height:2.97159in" />
 
 The results of this question show me that the stakeholders’ favourite features are group messages (33%) and “Seen” receipts (25%). Therefore, I will consider including these features in my solution. However, group messaging may be outside of the solution’s scope. I only chose to include it as an option in this survey as it is too important of a feature in modern messaging apps to exclude. I will make a final decision on the feature when deciding the solution’s requirement and success criteria.
 
 **Question 4 – “What is your least favourite feature of messaging apps?”**
 
-<img src="media\image11.png" style="width:5.00069in;height:3in" />
+<img src="./media/image11.png" style="width:5.00069in;height:3in" />
 
 This question was the direct inverse of question 4. Its results show me that in-app sounds (37%), un-sending messages (18%) and emojis (18%) are the most disliked features. Therefore, I will not consider including these in my solution. The dislike of emojis by 17% of respondents is not a surprise here since it was identified as the 2<sup>nd</sup> least used message type on Discord in *1.3.1* *Interview with Ethan Sandy*.
 
 **Question 5 – “How important are the following features?”**
 
-<img src="media\image12.png" style="width:5.79815in;height:4.67847in" />
+<img src="./media/image12.png" style="width:5.79815in;height:4.67847in" />
 
 The results of this question show me that the stakeholders do not think the following features make a significant impact on a messaging app: in-app sounds, emojis, “typing…” indicator, and un-sending messages. From this, along with the results from question 4, I can see that these features are non-essential. Therefore, I will not consider these for the list of necessary features for my solution.
 
@@ -470,25 +470,25 @@ Another finding from the data is the four most important features: group message
 
 **Question 6 – “What do you look for in a messaging app?”**
 
-<img src="media\image13.png" style="width:5.00069in;height:3in" />
+<img src="./media/image13.png" style="width:5.00069in;height:3in" />
 
 Question 6 shows me the simplicity (33%) is by far the most important quality of a messaging app with ease of use (17%) coming in second. I will try to reflect these qualities in my solution by considering them while designing my UI and by asking the stakeholders for feedback on my designs
 
 **Question 7 – “What do you mainly use messaging apps for?”**
 
-<img src="media\image14.png" style="width:5.00069in;height:3in" />
+<img src="./media/image14.png" style="width:5.00069in;height:3in" />
 
 Socialising (60%) and sharing media (20%) appearing at the top of question 7’s ranking which was expected. However, the other two answers were surprising: work (13%) and sharing links (7%). To accommodate for the stakeholders who put down sharing links, I will investigate automatically hyperlinking text and opening browsers. However, I am unsure of how to accommodate the working users so may consider adding profanity filters unless any other features arise. Also of note is the fact that neither of these surprising answers got a higher percentage of votes, therefore, adding such features should not be a priority.
 
 **Question 8 – “What feature might you want to see added to messaging apps?”**
 
-<img src="media\image15.png" style="width:5.00069in;height:3in" />
+<img src="./media/image15.png" style="width:5.00069in;height:3in" />
 
 Next, the findings from question 8 are that many stakeholders want to see voice notes (50%) added to messaging apps. However, I think that this feature is beyond the scope of the project as it will require file storage and microphone access. I may still consider the feature but do not expect it to reach the final list of requirements and the success criteria. The joint second-highest scoring features are bigger file limits (25%) and “Notification read at …” (25%). Including a bigger file size limit could be done by raising the cap above 8MB for example (Discord’s cap for non-paying members as found in *1.2.1* *Existing Program – Discord*) so will be considered as a feature to potentially including in my solution. “Notification read at …” on the other hand will not be possible to be considered as it is beyond the project’s scope: it would require me to firstly send notifications to the user and secondly somehow track when this notification has been read.
 
 **Question 9 – “How important is privacy for you?”**
 
-<img src="media\image16.png" style="width:5.35347in;height:1.29375in" />
+<img src="./media/image16.png" style="width:5.35347in;height:1.29375in" />
 
 Lastly, to further confirm the suitability of the respondents, there was an average rating of 4.3/5 for how important privacy to them is. Privacy is very important for this project as it aims to make a secure, end-to-end encrypted instant messaging program for users who care about who is viewing their data, so having stakeholders who are conscious about their privacy is paramount.
 
@@ -566,7 +566,7 @@ Internet access will be required to run the program as the client program needs 
 
 ## System Decomposition
 
-<img src="media\image17.png" style="width:6.26806in;height:3.38889in" />
+<img src="./media/image17.png" style="width:6.26806in;height:3.38889in" />
 
 ***Networking – Sockets***
 
@@ -614,7 +614,7 @@ Internet access will be required to run the program as the client program needs 
 
 ***Accounts – Sign-in***
 
-**Postfix a discriminator:** Addressing the issue encountered in IRC and solved in Discord, username collisions will be prevented by postfixing a new user’s username with a two-digit number which Discord called the discriminator. This number will be automatically assigned so can add “uniqueness” to two otherwise identical usernames. This part of the solution will be implemented as a random number or as an automatically incrementing value (the latter being more likely) that will be in the format username\#discriminator.
+**Postfix a discriminator:** Addressing the issue encountered in IRC and solved in Discord, username collisions will be prevented by postfixing a new user’s username with a two-digit number which Discord called the discriminator. This number will be automatically assigned so can add “uniqueness” to two otherwise identical usernames. This part of the solution will be implemented as a random number or as an automatically incrementing value (the latter being more likely) that will be in the format username#discriminator.
 
 **Password strength check:** The weakest link in a system’s security chain is typically the endpoints and more specifically the user’s password. Therefore, to prevent all the encryption behind the scenes from being undermined I will force the user to have a strong password. This part of the solution will be implemented by only accepting new accounts with passwords that have both upper-case and lower-case letters, at least one letter, digit and special character and be at least 8 characters long.
 
@@ -640,31 +640,31 @@ Several low fidelity wireframes have been created for the different windows that
 
 **Conversation View**
 
-<img src="media\image18.png" style="width:5.51181in;height:3.22958in" alt="Table Description automatically generated with medium confidence" />
+<img src="./media/image18.png" style="width:5.51181in;height:3.22958in" alt="Table Description automatically generated with medium confidence" />
 
-<img src="media\image19.png" style="width:5.51181in;height:3.22958in" alt="Graphical user interface, application Description automatically generated" />
+<img src="./media/image19.png" style="width:5.51181in;height:3.22958in" alt="Graphical user interface, application Description automatically generated" />
 
-<img src="media\image20.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
+<img src="./media/image20.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
 
-<img src="media\image21.png" style="width:5.31496in;height:3.11424in" alt="Table Description automatically generated with medium confidence" />
+<img src="./media/image21.png" style="width:5.31496in;height:3.11424in" alt="Table Description automatically generated with medium confidence" />
 
-<img src="media\image22.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
+<img src="./media/image22.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
 
 **Login View**
 
-<img src="media\image23.png" style="width:2.55906in;height:3.19882in" /><img src="media\image24.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
+<img src="./media/image23.png" style="width:2.55906in;height:3.19882in" /><img src="./media/image24.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
 
-<img src="media\image25.png" style="width:3.54331in;height:2.07616in" alt="A picture containing graphical user interface Description automatically generated" />
+<img src="./media/image25.png" style="width:3.54331in;height:2.07616in" alt="A picture containing graphical user interface Description automatically generated" />
 
-<img src="media\image26.png" style="width:2.55903in;height:3.19861in" /><img src="media\image27.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
+<img src="./media/image26.png" style="width:2.55903in;height:3.19861in" /><img src="./media/image27.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
 
-<img src="media\image28.png" style="width:3.54331in;height:2.07616in" alt="Diagram Description automatically generated with medium confidence" />
+<img src="./media/image28.png" style="width:3.54331in;height:2.07616in" alt="Diagram Description automatically generated with medium confidence" />
 
 **Account creation views**
 
-<img src="media\image29.png" style="width:4.72441in;height:2.76821in" alt="Text Description automatically generated" />
+<img src="./media/image29.png" style="width:4.72441in;height:2.76821in" alt="Text Description automatically generated" />
 
-<img src="media\image30.png" style="width:3.54331in;height:4.42889in" alt="Diagram Description automatically generated with medium confidence" />
+<img src="./media/image30.png" style="width:3.54331in;height:4.42889in" alt="Diagram Description automatically generated with medium confidence" />
 
 ### Interface Feedback 
 
@@ -698,7 +698,7 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 
 ### Algorithm – Creating a new user account
 
-<img src="media\image31.png" style="width:6.26806in;height:5.69028in" />
+<img src="./media/image31.png" style="width:6.26806in;height:5.69028in" />
 
 **Summary** – This algorithm will be executed when a new user wants to create an account. This is because all users will require an RSA key pair to facilitate encrypted communications and a pair of credentials to allow them to log in from any device.
 
@@ -752,7 +752,7 @@ When a new account is created, GetValidCredentials is called. The function first
 
 The credentials supplied to CreateAccount must be valid as if they are empty or malformed, they will cause errors that may crash the client’s program, crash the server’s program, or make the login process vulnerable by storing incorrect usernames and passwords. Therefore, it is important to have test cases for each form of normal (N), erroneous (E) and boundary (B) data.
 
-<table><thead><tr class="header"><th>ID</th><th>Test</th><th>Type</th><th>Data</th><th>Expected</th></tr></thead><tbody><tr class="odd"><td>1.1</td><td>Valid username and password</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.2</td><td>Empty variable from UI</td><td>E</td><td><p>username = “”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.3</td><td>Null variable from UI</td><td>E</td><td><p>username = null</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.4</td><td>Username contains invalid character</td><td>N</td><td><p>username = “Dan iel”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.5</td><td>Username length lower bound</td><td>B</td><td><p>username = 5 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.6</td><td>Username length upper bound</td><td>B</td><td><p>username = 128 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.7</td><td>Password does not contain upper and lower case</td><td>N</td><td><p>username = “Daniel”</p><p>password = “password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.8</td><td>Password contains no number</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.9</td><td>Password contains no special character</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.10</td><td>Password length lower bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 8 valid chars</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.11</td><td>Password length upper bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 128 valid chars</p></td><td>username + # + discriminator and password returned</td></tr></tbody></table>
+<table><colgroup><col style="width: 7%" /><col style="width: 28%" /><col style="width: 6%" /><col style="width: 28%" /><col style="width: 28%" /></colgroup><thead><tr class="header"><th>ID</th><th>Test</th><th>Type</th><th>Data</th><th>Expected</th></tr></thead><tbody><tr class="odd"><td>1.1</td><td>Valid username and password</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.2</td><td>Empty variable from UI</td><td>E</td><td><p>username = “”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.3</td><td>Null variable from UI</td><td>E</td><td><p>username = null</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.4</td><td>Username contains invalid character</td><td>N</td><td><p>username = “Dan iel”</p><p>password = “Password123!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.5</td><td>Username length lower bound</td><td>B</td><td><p>username = 5 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="even"><td>1.6</td><td>Username length upper bound</td><td>B</td><td><p>username = 128 valid chars</p><p>password = “Password123!”</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.7</td><td>Password does not contain upper and lower case</td><td>N</td><td><p>username = “Daniel”</p><p>password = “password123!”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.8</td><td>Password contains no number</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password!”</p></td><td>Repeat credential input</td></tr><tr class="odd"><td>1.9</td><td>Password contains no special character</td><td>N</td><td><p>username = “Daniel”</p><p>password = “Password123”</p></td><td>Repeat credential input</td></tr><tr class="even"><td>1.10</td><td>Password length lower bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 8 valid chars</p></td><td>username + # + discriminator and password returned</td></tr><tr class="odd"><td>1.11</td><td>Password length upper bound</td><td>B</td><td><p>username = “Daniel”</p><p>password = 128 valid chars</p></td><td>username + # + discriminator and password returned</td></tr></tbody></table>
 
 # Development
 
@@ -790,7 +790,7 @@ Since some methods will need to be implemented but will have different implement
 
 ### Protocol
 
-<img src="media\image32.png" style="width:2.90347in;height:3.41667in" />To allow communication between the client and server to be consistent, I have created a Protocol class that encodes text in a standardised way (UTF-8). This was done to address the problem found of incompatible character encodings from *1.2.2* *Existing Solution – Internet Relay Chat (IRC)*.
+<img src="./media/image32.png" style="width:2.90347in;height:3.41667in" />To allow communication between the client and server to be consistent, I have created a Protocol class that encodes text in a standardised way (UTF-8). This was done to address the problem found of incompatible character encodings from *1.2.2* *Existing Solution – Internet Relay Chat (IRC)*.
 
 I have used two constructors in this class as an instance of the Protocol needs be able to be created from a string (when being converted to binary for transmission) or from binary (when being converted to string from a transmission).
 
@@ -798,7 +798,7 @@ In future iterations, this is where I will put the code used to encrypt and decr
 
 ### Creating the socket
 
-<img src="media\image33.png" style="width:5.07148in;height:1.68843in" />
+<img src="./media/image33.png" style="width:5.07148in;height:1.68843in" />
 
 Figure 2. MessengerAppShared.SocketBase.SocketBase
 
@@ -808,17 +808,17 @@ Secondly, the server is currently only available to the computer it is running o
 
 ### Receiving a message
 
-<img src="media\image34.png" style="width:6.26806in;height:0.98333in" />
+<img src="./media/image34.png" style="width:6.26806in;height:0.98333in" />
 
 Figure 3. MessengerAppShared.Receive
 
-<img src="media\image35.png" style="width:3.73881in;height:2.53258in" />Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. The methods are also both virtual as the child classes may extend them.
+<img src="./media/image35.png" style="width:3.73881in;height:2.53258in" />Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. The methods are also both virtual as the child classes may extend them.
 
 In future iterations, the decoding of the message into text and passing to the message handler will have to be moved out of the shared method and into the child-specific overrides as decryption keys will need to be used by the client.
 
 ### Sending a message
 
-<img src="media\image36.png" style="width:6.26806in;height:2.69375in" />
+<img src="./media/image36.png" style="width:6.26806in;height:2.69375in" />
 
 Figure 5. MessengerAppShared.SocketBase.Send and MessengerAppShared.SocketBase.SendCallback
 
@@ -826,9 +826,9 @@ For the moment, sending data is simpler than receiving the data. Therefore, ther
 
 ## Iteration 1, Server Networking
 
-### <img src="media\image37.png" style="width:2.96042in;height:0.59792in" />Starting the server
+### <img src="./media/image37.png" style="width:2.96042in;height:0.59792in" />Starting the server
 
-<img src="media\image38.png" style="width:1.62222in;height:0.83264in" /><img src="media\image39.png" style="width:3.40417in;height:2.20764in" /><img src="media\image40.png" style="width:3.21429in;height:1.83577in" />
+<img src="./media/image38.png" style="width:1.62222in;height:0.83264in" /><img src="./media/image39.png" style="width:3.40417in;height:2.20764in" /><img src="./media/image40.png" style="width:3.21429in;height:1.83577in" />
 
 Inside the server program’s main function, a socket (ServerSocket is a child of SocketBase) is created and set to start. This will begin an infinite loop that accepts new connections from clients and creates a virtual thread for each client which has begins an infinite loop of receiving data.
 
@@ -836,17 +836,17 @@ This code should not need to change for the rest of the development since the co
 
 ### Stopping the server
 
-<img src="media\image41.png" style="width:4.36319in;height:2.87361in" />To stop the server, enter must be pressed. In future iterations, this could be made more secure by requiring a passcode to be entered however it is not crucial so is not important now.
+<img src="./media/image41.png" style="width:4.36319in;height:2.87361in" />To stop the server, enter must be pressed. In future iterations, this could be made more secure by requiring a passcode to be entered however it is not crucial so is not important now.
 
 Currently, there are two issues with the shutdown process. Firstly, the clients connected to the server are not notified that the server has been shut down. Which can cause fatal errors for the client if they try to send anything to the server. This problem can be solved by sending a shutdown notice to all connected clients before closing the socket. Secondly, a non-fatal error is thrown in the server program during the shutdown process, but I am yet to figure out the cause.
 
-<img src="media\image42.png" style="width:6.26806in;height:0.51528in" />
+<img src="./media/image42.png" style="width:6.26806in;height:0.51528in" />
 
 Figure 11. Server console output after \[enter\] is pressed
 
 ### Accepting a new client
 
-<img src="media\image43.png" style="width:5.37662in;height:2.76218in" />
+<img src="./media/image43.png" style="width:5.37662in;height:2.76218in" />
 
 Figure 12. MessengerAppServer.ServerSocket.AcceptCallback
 
@@ -856,17 +856,17 @@ In future iterations of the solution, this method will be extended by adding the
 
 ### Receiving a message from a client
 
-<img src="media\image44.png" style="width:5.9913in;height:4.02139in" />
+<img src="./media/image44.png" style="width:5.9913in;height:4.02139in" />
 
 Figure 13. MessengerAppServer.ServerSocket.ReceiveCallback
 
-<img src="media\image45.png" style="width:2.77361in;height:1.05417in" />During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to makes sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
+<img src="./media/image45.png" style="width:2.77361in;height:1.05417in" />During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to makes sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
 
 In the future, I may move the client disconnect process to a separate method. This is because the process will only get longer and methods should only do one thing: just finish receiving the data, not also remove disconnected clients.
 
 ### Handling a message from a client
 
-<img src="media\image46.png" style="width:5.20314in;height:6.384in" />
+<img src="./media/image46.png" style="width:5.20314in;height:6.384in" />
 
 Figure 15. MessengerAppServer.ServerSocket.HandleMessages
 
@@ -878,13 +878,13 @@ In future iterations, this switch case block may have to be modified as the plan
 
 ### ECHO command handling
 
-<img src="media\image47.png" style="width:5in;height:4.6571in" />
+<img src="./media/image47.png" style="width:5in;height:4.6571in" />
 
-Figure 16. MessengerAppServer.ServerSocket.Command\_ECHO
+Figure 16. MessengerAppServer.ServerSocket.Command_ECHO
 
 This method will not be part of the final solution, instead, I am using it to test the sending of data between the client and server. By echoing any data sent back to the client, I can see immediately what data was transmitted, its form and therefore any problems, without the need to do variable watches in debugging.
 
-<img src="media\image48.png" style="width:6.26806in;height:1.67847in" />
+<img src="./media/image48.png" style="width:6.26806in;height:1.67847in" />
 
 Figure 17. ECHO command as seen from client's and server's perspective
 
@@ -892,15 +892,15 @@ At this point in development, the server can see all messages in plaintext. This
 
 ### SEND command handling
 
-<img src="media\image49.png" style="width:6.00662in;height:9.22222in" />
+<img src="./media/image49.png" style="width:6.00662in;height:9.22222in" />
 
-Figure . MessengerAppClient.ServerSocket.Command\_SEND
+Figure . MessengerAppClient.ServerSocket.Command_SEND
 
 One difficulty faced when writing this method was the command’s dependency on positional arguments. This required validation for the number of words in the message and tests of whether arguments were intended to be recipients or not, which meant there had to be many nested conditionals. This problem will be solved in future iterations where I will move away from a text-based protocol like this and into an object- or markup-based protocol as discussed in *2.1* *System Decomposition*.
 
 Another change I will make to this method in the future is changing the recipient argument into a username rather than an IP address and port. However, this can only be done once I have implemented user accounts. This will help the end-user by making the syntax easier and less likely to cause mistypes; although, in the final solution all commands will be generated by the client program so this improvement will lose its effect.
 
-<img src="media\image50.png" style="width:5.22699in;height:2.49999in" />
+<img src="./media/image50.png" style="width:5.22699in;height:2.49999in" />
 
 Figure . SEND message from left (port 1070) to right (port 1071)
 
@@ -908,7 +908,7 @@ As seen above, when sending a message, it is not immediately displayed by the re
 
 ## Iteration 1, Client Networking
 
-### <img src="media\image51.png" style="width:3.16389in;height:1.81944in" />Connecting to the server
+### <img src="./media/image51.png" style="width:3.16389in;height:1.81944in" />Connecting to the server
 
 This method is used to interface the UI with the socket functions: pressing the “Connect to server” button will call this and once the socket has connected to the server, it will update the status label.
 
@@ -918,7 +918,7 @@ In future iterations of the solution, this method to begin the connection with t
 
 ### Sending a message to the server
 
-<img src="media\image52.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
+<img src="./media/image52.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
 
 I will solve this problem by adding an infinite receive loop like that seen in the server program. The consequences of not having this loop can be seen in the example from *3.2.7* *SEND command handling.*
 
@@ -926,7 +926,7 @@ Another problem I faced when writing this method was how will I store the messag
 
 ## Iteration 1, Client UI
 
-<img src="media\image53.png" style="width:3.94236in;height:2.21196in" />
+<img src="./media/image53.png" style="width:3.94236in;height:2.21196in" />
 
 Figure . Client program's user interface
 
@@ -940,17 +940,17 @@ Secondly, there are no limits on window size, taskbar icon and descriptive name.
 
 I will be testing this iteration through a predominantly black-box testing method – with some tests targeting specific conditionals like white-box testing. This is being used to see how the expected output to the user compares to the intended output. Most of the tests conducted will be for all the possible messages sent to the server from the client program, the rest will be seeing how the client program handles malformed messages and clicking buttons that cannot complete their intended actions.
 
-<table><thead><tr class="header"><th>ID</th><th>Testing</th><th>Input Data</th><th>Expected Output</th></tr></thead><tbody><tr class="odd"><td>1</td><td>ECHO, normal</td><td>“ECHO Test”</td><td>“Test”</td></tr><tr class="even"><td>2</td><td>ECHO, no message</td><td>“ECHO”</td><td>“Invalid ECHO: Missing argument [message]”</td></tr><tr class="odd"><td>3</td><td>ECHO, whitespace message</td><td>“ECHO ”</td><td>“Invalid ECHO: [message] IsNullOrWhiteSpace”</td></tr><tr class="even"><td>4</td><td>SEND, normal</td><td>“SEND 127.0.0.1:123 Test”</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: “MESSAGE 127.0.0.1:123 Test”</p></td></tr><tr class="odd"><td>5</td><td>SEND, no arguments</td><td>“SEND”</td><td>“Invalid SEND: Missing arguments [recipient] and [message]”</td></tr><tr class="even"><td>6</td><td>SEND, no message, valid recipient</td><td>“SEND 127.0.0.1:123”</td><td>“Invalid SEND: Missing argument [message]”</td></tr><tr class="odd"><td>7</td><td>SEND, no message, invalid recipient</td><td>“SEND 0.0.0.0:0”</td><td>“Invalid SEND: Invalid [recipient] “0.0.0.0:0” and missing [message]”</td></tr><tr class="even"><td>8</td><td>SEND, whitespace message, valid recipient</td><td>“SEND 127.0.0.1:123 “</td><td>“Invalid SEND: [message] IsNullOrWhiteSpace”</td></tr><tr class="odd"><td>9</td><td>SEND, valid message, invalid recipient</td><td>“SEND 0.0.0.0:0 Test”</td><td>“Invalid SEND: Invalid [recipient]”</td></tr><tr class="even"><td>10</td><td>No message</td><td>“”</td><td>“Invalid message: Is null or whitespace”</td></tr><tr class="odd"><td>11</td><td>Invalid command</td><td>“RUN Test”</td><td>“Invalid command: Command “RUN” not found”</td></tr><tr class="even"><td>12</td><td>Leading and trailing whitespace</td><td>“ ECHO Test ”</td><td>“Test”</td></tr><tr class="odd"><td>13</td><td>Extra whitespace between arguments</td><td>“SEND 127.0.0.1:123 Test”</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: “MESSAGE 127.0.0.1:123 Test”</p></td></tr><tr class="even"><td>14</td><td>Message longer than 2048 bytes</td><td>“ECHO &lt;more than 2043-byte string&gt;”</td><td>The string truncated to 2043 bytes</td></tr><tr class="odd"><td>15</td><td>Sending a message without connected to the server</td><td>“ECHO Test”</td><td>Not allowed</td></tr><tr class="even"><td>16</td><td>Sending a message after the server has closed</td><td>“ECHO Test”</td><td>Not allowed</td></tr><tr class="odd"><td>17</td><td>Connecting an already connected client</td><td>Press “Connect to server”</td><td>Not allowed</td></tr><tr class="even"><td>18</td><td>Connected when the server is not running</td><td>Press “Connect to server”</td><td>Not allowed</td></tr></tbody></table>
+<table><colgroup><col style="width: 4%" /><col style="width: 26%" /><col style="width: 26%" /><col style="width: 41%" /></colgroup><thead><tr class="header"><th>ID</th><th>Testing</th><th>Input Data</th><th>Expected Output</th></tr></thead><tbody><tr class="odd"><td>1</td><td>ECHO, normal</td><td>“ECHO Test”</td><td>“Test”</td></tr><tr class="even"><td>2</td><td>ECHO, no message</td><td>“ECHO”</td><td>“Invalid ECHO: Missing argument [message]”</td></tr><tr class="odd"><td>3</td><td>ECHO, whitespace message</td><td>“ECHO ”</td><td>“Invalid ECHO: [message] IsNullOrWhiteSpace”</td></tr><tr class="even"><td>4</td><td>SEND, normal</td><td>“SEND 127.0.0.1:123 Test”</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: “MESSAGE 127.0.0.1:123 Test”</p></td></tr><tr class="odd"><td>5</td><td>SEND, no arguments</td><td>“SEND”</td><td>“Invalid SEND: Missing arguments [recipient] and [message]”</td></tr><tr class="even"><td>6</td><td>SEND, no message, valid recipient</td><td>“SEND 127.0.0.1:123”</td><td>“Invalid SEND: Missing argument [message]”</td></tr><tr class="odd"><td>7</td><td>SEND, no message, invalid recipient</td><td>“SEND 0.0.0.0:0”</td><td>“Invalid SEND: Invalid [recipient] “0.0.0.0:0” and missing [message]”</td></tr><tr class="even"><td>8</td><td>SEND, whitespace message, valid recipient</td><td>“SEND 127.0.0.1:123 “</td><td>“Invalid SEND: [message] IsNullOrWhiteSpace”</td></tr><tr class="odd"><td>9</td><td>SEND, valid message, invalid recipient</td><td>“SEND 0.0.0.0:0 Test”</td><td>“Invalid SEND: Invalid [recipient]”</td></tr><tr class="even"><td>10</td><td>No message</td><td>“”</td><td>“Invalid message: Is null or whitespace”</td></tr><tr class="odd"><td>11</td><td>Invalid command</td><td>“RUN Test”</td><td>“Invalid command: Command “RUN” not found”</td></tr><tr class="even"><td>12</td><td>Leading and trailing whitespace</td><td>“ ECHO Test ”</td><td>“Test”</td></tr><tr class="odd"><td>13</td><td>Extra whitespace between arguments</td><td>“SEND 127.0.0.1:123 Test”</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: “MESSAGE 127.0.0.1:123 Test”</p></td></tr><tr class="even"><td>14</td><td>Message longer than 2048 bytes</td><td>“ECHO &lt;more than 2043-byte string&gt;”</td><td>The string truncated to 2043 bytes</td></tr><tr class="odd"><td>15</td><td>Sending a message without connected to the server</td><td>“ECHO Test”</td><td>Not allowed</td></tr><tr class="even"><td>16</td><td>Sending a message after the server has closed</td><td>“ECHO Test”</td><td>Not allowed</td></tr><tr class="odd"><td>17</td><td>Connecting an already connected client</td><td>Press “Connect to server”</td><td>Not allowed</td></tr><tr class="even"><td>18</td><td>Connected when the server is not running</td><td>Press “Connect to server”</td><td>Not allowed</td></tr></tbody></table>
 
 ### Testing results
 
-<table><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>2</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>3</td><td>Fail</td><td>“Invalid ECHO: Missing argument [message]”</td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: No message</p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server</td></tr><tr class="odd"><td>5</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>6</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>7</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>8</td><td>Fail</td><td>“Invalid SEND: Invalid [recipient] “0.0.0.0:0” and missing [message]”</td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="odd"><td>9</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>12</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>13</td><td>Fail</td><td>“Invalid SEND: Invalid [recipient] “””</td><td>When splitting the string on space characters, the position of the recipient was replaced by an empty string</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>(1<sup>st</sup>) “ECHO …”</p><p>(2<sup>nd</sup>, not shown) “Invalid command: Command “…” not found “</p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
+<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 45%" /><col style="width: 41%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>2</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>3</td><td>Fail</td><td>“Invalid ECHO: Missing argument [message]”</td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender: “SUCCESSFUL SEND”</p><p>Recipient: No message</p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server</td></tr><tr class="odd"><td>5</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>6</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>7</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>8</td><td>Fail</td><td>“Invalid SEND: Invalid [recipient] “0.0.0.0:0” and missing [message]”</td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="odd"><td>9</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>12</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="odd"><td>13</td><td>Fail</td><td>“Invalid SEND: Invalid [recipient] “””</td><td>When splitting the string on space characters, the position of the recipient was replaced by an empty string</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>(1<sup>st</sup>) “ECHO …”</p><p>(2<sup>nd</sup>, not shown) “Invalid command: Command “…” not found “</p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td>Expected output</td><td></td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
 
 The failure of tests 3 and 8 was not a problem, they only failed because the data sanitisation did not allow the introduced malformations to reach the targeted conditionals. I will investigate removing these conditionals as if they are never reached there is no need to keep them in the code.
 
 Test 4 not producing the expected output was expected as the lack of a receive loop was identified in *3.2.7* *SEND command handling* as well as the necessary steps to solve the problem.
 
-The failure of tests 10, 15, 16 and 17 was all unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.s
+The failure of tests 10, 15, 16 and 17 was all unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.
 
 Lastly, test 14 failed. This can be solved by adding a limit on the maximum number of characters allowed in the client program so that no transmission is greater than 2048 bytes.
 

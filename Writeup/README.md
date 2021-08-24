@@ -500,15 +500,30 @@ Overall, I am satisfied with the results of the survey. The respondents have bee
 
 ### Stakeholder Requirements
 
-### Limitations
+**Primary requirements**
 
-**Hardcoded server IP:**
+The following are features raised in *1.1.4* *Stakeholder Identification* and *1.3* *Stakeholders* that are deemed essential for the program. These will be the priority in development and likely to be present in the project’s success criteria.
 
-When a client tries to connect to the server, it will use a hardcoded IP address as its target. This means that the IP address of the server must be static and cannot be moved onto another network. For this limitation to be fixed the server would have to be added to a DNS server so that the domain can dynamically point to the server. However, this is beyond the scope of the project.
+| Feature                                                 | Justification                                                                              | Reference                                                                |
+|---------------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| Accounts are needed to use the program                  | Accounts make contacts recognisable and accountable for their messages                     | *1.3.1* *Interview with Ethan Sandy* (Topic: Accounts)                   |
+| Passwords must pass a minimum complexity check          | Security is important for the program so secure passwords is a must                        | *1.3.1* *Interview with Ethan Sandy* (Topic: Accounts)                   |
+| Passwords and keys are not stored in plaintext          | Storing sensitive data as plaintext will undermine the system’s security                   | *1.1.4* *Stakeholder Identification*                                     |
+| Messages are end-to-end encrypted                       | This is the most important feature for the stakeholders as it’s the purpose of the program | *1.1.4* *Stakeholder Identification* and *1.3.3* *Survey Results* (Q9)   |
+| The client program works without the need for any setup | The stakeholders want simplicity and usability                                             | *1.1.4* *Stakeholder Identification* and *1.3.3* *Survey Results* (Q6)   |
+| Tab based navigation                                    | This is a common and intuitive navigation method preferred by the stakeholders             | *1.3.1* *Interview with Ethan Sandy* (Topic: Messages and conversations) |
 
-**Group messaging:**
+**Secondary Requirements**
 
-Group messaging – the most chosen “favourite feature” and rated the third most important feature from the stakeholders’ survey – will not be implemented in the solution. This is down to the vast increase in complexity from individual end-to-end encrypted messaging to group end-to-end encrypted messaging; implementing such a feature will take up too much time and would require the redesign of many of the procedures of the solution. For these reasons, I will be unable to implement the feature.
+These features were also raised in the sections stated above. However, they are not deemed essential so will not be a priority in development.
+
+| Feature                                          | Justification                                                                            | Reference                                                                                        |
+|--------------------------------------------------|------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| Different types of messages (text, media, files) | It is a feature in Discord that the stakeholders would like to see in this program       | *1.3.1* *Interview with Ethan Sandy* (Topic: Discord research) and *1.3.3* *Survey Results* (Q5) |
+| Messages are sent via pressing the \<enter> key  | It is intuitive and the most common method                                               | *1.3.1* *Interview with Ethan Sandy* (Topic: Program controls)                                   |
+| View historic messages                           | Being able to read old messages makes the program more like instant messaging than email | *1.3.1* *Interview with Ethan Sandy* (Topic: Messages and conversations)                         |
+| Standardised usernames                           | Users using the platform for work would benefit from standardised usernames              | *1.3.3* *Survey Results* (Q7)                                                                    |
+| Send files greater than 8 MB                     | This is a paid feature of Discord that the stakeholders would like to see in the program | *1.3.1* *Interview with Ethan Sandy* (Topic: Discord research) and *1.3.3* *Survey Results* (Q8) |
 
 ### Software Requirements
 
@@ -528,6 +543,16 @@ For simplicity, I will only be building a Windows x86 version of the solution fo
 The final user of the program will not be required to install the .NET runtime as the solution will be published self-contained. This means that the download will be larger as it will contain the .NET libraries, runtime and dependencies needed.
 
 Internet access will be required to run the program as the client program needs to communicate with the server.
+
+### Limitations
+
+**Hardcoded server IP:**
+
+When a client tries to connect to the server, it will use a hardcoded IP address as its target. This means that the IP address of the server must be static and cannot be moved onto another network. For this limitation to be fixed the server would have to be added to a DNS server so that the domain can dynamically point to the server. However, this is beyond the scope of the project.
+
+**Group messaging:**
+
+Group messaging – the most chosen “favourite feature” and rated the third most important feature from the stakeholders’ survey – will not be implemented in the solution. This is down to the vast increase in complexity from individual end-to-end encrypted messaging to group end-to-end encrypted messaging; implementing such a feature will take up too much time and would require the redesign of many of the procedures of the solution. For these reasons, I will be unable to implement the feature.
 
 ## Success Criteria
 
@@ -800,7 +825,7 @@ In future iterations, this is where I will put the code used to encrypt and decr
 
 <img src="./media/image33.png" style="width:5.07148in;height:1.68843in" />
 
-Figure 2. MessengerAppShared.SocketBase.SocketBase
+Figure . MessengerAppShared.SocketBase.SocketBase
 
 I have chosen the size of the socket’s buffer to be 2048 bytes as now 2KiB of data is enough for the text that is being transferred. Once multimedia messages are implemented, this buffer could be increased.
 
@@ -810,7 +835,7 @@ Secondly, the server is currently only available to the computer it is running o
 
 <img src="./media/image34.png" style="width:6.26806in;height:0.98333in" />
 
-Figure 3. MessengerAppShared.Receive
+Figure . MessengerAppShared.Receive
 
 <img src="./media/image35.png" style="width:3.73881in;height:2.53258in" />Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. The methods are also both virtual as the child classes may extend them.
 
@@ -820,7 +845,7 @@ In future iterations, the decoding of the message into text and passing to the m
 
 <img src="./media/image36.png" style="width:6.26806in;height:2.69375in" />
 
-Figure 5. MessengerAppShared.SocketBase.Send and MessengerAppShared.SocketBase.SendCallback
+Figure . MessengerAppShared.SocketBase.Send and MessengerAppShared.SocketBase.SendCallback
 
 For the moment, sending data is simpler than receiving the data. Therefore, there is no need for it to be virtual as all its functionality can be defined in the shared socket base. Once encryption is introduced to the solution, encryption keys will need to be used by the client so the methods will need to be made abstract to allow the child classes to define their specific processes.
 
@@ -842,13 +867,13 @@ Currently, there are two issues with the shutdown process. Firstly, the clients 
 
 <img src="./media/image42.png" style="width:6.26806in;height:0.51528in" />
 
-Figure 11. Server console output after \[enter\] is pressed
+Figure . Server console output after \[enter\] is pressed
 
 ### Accepting a new client
 
 <img src="./media/image43.png" style="width:5.37662in;height:2.76218in" />
 
-Figure 12. MessengerAppServer.ServerSocket.AcceptCallback
+Figure . MessengerAppServer.ServerSocket.AcceptCallback
 
 This method is called at the end of ServerSocket.Start (*Figure 7*) to finalise the new client connection and will call ServerSocket.Start once it has finished, continuing the infinite loop.
 
@@ -858,7 +883,7 @@ In future iterations of the solution, this method will be extended by adding the
 
 <img src="./media/image44.png" style="width:5.9913in;height:4.02139in" />
 
-Figure 13. MessengerAppServer.ServerSocket.ReceiveCallback
+Figure . MessengerAppServer.ServerSocket.ReceiveCallback
 
 <img src="./media/image45.png" style="width:2.77361in;height:1.05417in" />During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to makes sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
 
@@ -868,7 +893,7 @@ In the future, I may move the client disconnect process to a separate method. Th
 
 <img src="./media/image46.png" style="width:5.20314in;height:6.384in" />
 
-Figure 15. MessengerAppServer.ServerSocket.HandleMessages
+Figure . MessengerAppServer.ServerSocket.HandleMessages
 
 This method is called after receiving any data from the client. Firstly, data sanitation removes leading and trailing whitespace to ensure that all command word and parameter matches are accurate. Secondly, the string is exploded into an array of words which has been done to make reading specific parts of the message easier.
 
@@ -880,13 +905,13 @@ In future iterations, this switch case block may have to be modified as the plan
 
 <img src="./media/image47.png" style="width:5in;height:4.6571in" />
 
-Figure 16. MessengerAppServer.ServerSocket.Command_ECHO
+Figure . MessengerAppServer.ServerSocket.Command_ECHO
 
 This method will not be part of the final solution, instead, I am using it to test the sending of data between the client and server. By echoing any data sent back to the client, I can see immediately what data was transmitted, its form and therefore any problems, without the need to do variable watches in debugging.
 
 <img src="./media/image48.png" style="width:6.26806in;height:1.67847in" />
 
-Figure 17. ECHO command as seen from client's and server's perspective
+Figure . ECHO command as seen from client's and server's perspective
 
 At this point in development, the server can see all messages in plaintext. This is not an issue as I am yet to implement the encryption process. In a future iteration when encryption has been implemented, the above situation should produce the same results on the client’s side while not showing “Hello World!” on the server’s side.
 
@@ -894,7 +919,7 @@ At this point in development, the server can see all messages in plaintext. This
 
 <img src="./media/image49.png" style="width:6.00662in;height:9.22222in" />
 
-Figure . MessengerAppClient.ServerSocket.Command_SEND
+Figure 18. MessengerAppClient.ServerSocket.Command_SEND
 
 One difficulty faced when writing this method was the command’s dependency on positional arguments. This required validation for the number of words in the message and tests of whether arguments were intended to be recipients or not, which meant there had to be many nested conditionals. This problem will be solved in future iterations where I will move away from a text-based protocol like this and into an object- or markup-based protocol as discussed in *2.1* *System Decomposition*.
 
@@ -902,7 +927,7 @@ Another change I will make to this method in the future is changing the recipien
 
 <img src="./media/image50.png" style="width:5.22699in;height:2.49999in" />
 
-Figure . SEND message from left (port 1070) to right (port 1071)
+Figure 19. SEND message from left (port 1070) to right (port 1071)
 
 As seen above, when sending a message, it is not immediately displayed by the recipient. I believe that this is because the client programs do not have an infinite receive loop like the server program. This means that they only read in data from their socket after they send a message to the server. Having a message waiting to be read by the socket introduces a permanent one-message delay on all communications from that program, which increases for each further message they receive via a SEND. To solve this problem, I will create a virtual thread that continually listens for messages from the server to process/display them in real-time.
 
@@ -918,7 +943,7 @@ In future iterations of the solution, this method to begin the connection with t
 
 ### Sending a message to the server
 
-<img src="./media/image52.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
+<img src="./media/image52.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send Message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
 
 I will solve this problem by adding an infinite receive loop like that seen in the server program. The consequences of not having this loop can be seen in the example from *3.2.7* *SEND command handling.*
 
@@ -928,7 +953,7 @@ Another problem I faced when writing this method was how will I store the messag
 
 <img src="./media/image53.png" style="width:3.94236in;height:2.21196in" />
 
-Figure . Client program's user interface
+Figure 22. Client program's user interface
 
 The current UI has not been made for usability. It only has the essential components for testing and debugging the networking portion of the solution: my aim for this first iteration. In future iterations, I will focus more on recreating the designs which the stakeholders and I decided on. This includes adding the feature to send messages via pressing the enter key, connecting to the server automatically upon opening the program and most importantly, having the program write all the commands which are sent to the server, so the user only needs to write the message they want to send.
 
@@ -950,7 +975,7 @@ The failure of tests 3 and 8 was not a problem, they only failed because the dat
 
 Test 4 not producing the expected output was expected as the lack of a receive loop was identified in *3.2.7* *SEND command handling* as well as the necessary steps to solve the problem.
 
-The failure of tests 10, 15, 16 and 17 was all unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.
+The failure of tests 10, 15, 16 and 17 were all unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.
 
 Lastly, test 14 failed. This can be solved by adding a limit on the maximum number of characters allowed in the client program so that no transmission is greater than 2048 bytes.
 

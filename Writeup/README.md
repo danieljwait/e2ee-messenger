@@ -30,111 +30,115 @@
 
 [1.4.1 Stakeholder Requirements 17][]
 
-[1.4.2 Limitations 17][]
+[1.4.2 Software Requirements 18][]
 
-[1.4.3 Software Requirements 17][]
+[1.4.3 Limitations 18][]
 
-[1.5 Success Criteria 18][]
+[1.5 Success Criteria 19][]
 
-[2 Design 20][]
+[2 Design 21][]
 
-[2.1 System Decomposition 20][]
+[2.1 System Decomposition 21][]
 
-[2.2 User Design Requirements 24][]
+[2.2 User Design Requirements 25][]
 
-[2.2.1 Primary User Requirements 24][]
+[2.2.1 Primary User Requirements 25][]
 
-[2.2.2 Secondary User Requirements 24][]
+[2.2.2 Secondary User Requirements 25][]
 
-[2.3 Initial Design 25][]
+[2.3 Initial Design 26][]
 
-[2.3.1 Design Specification 25][]
+[2.3.1 Design Specification 26][]
 
-[2.3.2 Initial Designs 25][]
+[2.3.2 Initial Designs 26][]
 
-[2.4 Interface Design 26][]
+[2.4 Interface Design 27][]
 
-[2.4.1 Interface Designs 26][]
+[2.4.1 Interface Designs 27][]
 
-[2.4.2 Interface Feedback 30][]
+[2.4.2 Interface Feedback 31][]
 
-[2.4.3 Improved Interface 30][]
+[2.4.3 Improved Interface 31][]
 
-[2.5 Interface Features 31][]
+[2.5 Interface Features 32][]
 
-[2.5.1 User Experience 31][]
+[2.5.1 User Experience 32][]
 
-[2.5.2 Usability Features 32][]
+[2.5.2 Usability Features 33][]
 
-[2.5.3 Input Validation 33][]
+[2.5.3 Input Validation 34][]
 
-[2.6 Internal Structures 34][]
+[2.6 Internal Structures 35][]
 
-[2.6.1 Algorithm – Creating a new user account 34][]
+[2.6.1 Client Algorithm – Logging in 35][]
 
-[2.6.2 File Organisation 36][]
+[2.6.2 Client Algorithm – Creating a new user account (1) 36][]
 
-[2.6.3 Variables 36][]
+[2.6.3 Client Algorithm – Creating a new user account (2) 38][]
 
-[2.6.4 Class Diagrams 36][]
+[2.6.4 File Organisation 39][]
 
-[2.7 Final Design 37][]
+[2.6.5 Variables 39][]
 
-[2.7.1 Final Design 37][]
+[2.6.6 Class Diagrams 39][]
 
-[2.7.2 System Walkthrough 37][]
+[2.7 Final Design 40][]
 
-[2.8 Testing Strategy 38][]
+[2.7.1 Final Design 40][]
 
-[2.8.1 Testing algorithms 38][]
+[2.7.2 System Walkthrough 40][]
 
-[3 Development 39][]
+[2.8 Testing Strategy 41][]
 
-[3.1 Iteration 1, Shared Networking 39][]
+[2.8.1 Testing algorithms 41][]
 
-[3.1.1 SocketBase class 39][]
+[3 Development 42][]
 
-[3.1.2 Protocol 39][]
+[3.1 Iteration 1, Shared Networking 42][]
 
-[3.1.3 Creating the socket 40][]
+[3.1.1 SocketBase class 42][]
 
-[3.1.4 Receiving a message 40][]
+[3.1.2 Protocol 42][]
 
-[3.1.5 Sending a message 41][]
+[3.1.3 Creating the socket 43][]
 
-[3.2 Iteration 1, Server Networking 41][]
+[3.1.4 Receiving a message 43][]
 
-[3.2.1 Starting the server 41][]
+[3.1.5 Sending a message 44][]
 
-[3.2.2 Stopping the server 42][]
+[3.2 Iteration 1, Server Networking 44][]
 
-[3.2.3 Accepting a new client 42][]
+[3.2.1 Starting the server 44][]
 
-[3.2.4 Receiving a message from a client 43][]
+[3.2.2 Stopping the server 45][]
 
-[3.2.5 Handling a message from a client 44][]
+[3.2.3 Accepting a new client 45][]
 
-[3.2.6 ECHO command handling 45][]
+[3.2.4 Receiving a message from a client 46][]
 
-[3.2.7 SEND command handling 46][]
+[3.2.5 Handling a message from a client 47][]
 
-[3.3 Iteration 1, Client Networking 47][]
+[3.2.6 ECHO command handling 48][]
 
-[3.3.1 Connecting to the server 47][]
+[3.2.7 SEND command handling 49][]
 
-[3.3.2 Sending a message to the server 48][]
+[3.3 Iteration 1, Client Networking 50][]
 
-[3.4 Iteration 1, Client UI 48][]
+[3.3.1 Connecting to the server 50][]
 
-[3.5 Iteration 1, Tests 49][]
+[3.3.2 Sending a message to the server 51][]
 
-[3.5.1 Testing plans 49][]
+[3.4 Iteration 1, Client UI 51][]
 
-[3.5.2 Testing results 50][]
+[3.5 Iteration 1, Tests 52][]
 
-[4 Evaluation 51][]
+[3.5.1 Testing plans 52][]
 
-[5 References 52][]
+[3.5.2 Testing results 53][]
+
+[4 Evaluation 54][]
+
+[5 References 55][]
 
 # Analysis
 
@@ -585,7 +589,7 @@ Group messaging – the most chosen “favourite feature” and rated the third 
 | 25  | The server can create new accounts                                                | New clients must be issued an account to start using the app                                                |                                               |
 | 26  | Messages are routed to the intended recipient                                     | Users must only receive messages addressed to them                                                          | Existing solution – Internet Relay Chat (IRC) |
 | 27  | Messages are held in the server if the recipient is not connected                 | Users may not be connected when a message is being sent so that must be accounted for                       | Existing solution – Internet Relay Chat (IRC) |
-| 28  | Undelivered messages are sent the next time the recipient connects                | Users should no miss out on messages because they were not online                                           | Existing solution – Internet Relay Chat (IRC) |
+| 28  | Undelivered messages are sent the next time the recipient connects                | Users should not miss out on messages because they were not online                                          | Existing solution – Internet Relay Chat (IRC) |
 
 # Design
 
@@ -721,9 +725,17 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 
 ## Internal Structures
 
-### Algorithm – Creating a new user account
+### Client Algorithm – Logging in
 
-<img src="./media/image31.png" style="width:6.26806in;height:5.69028in" />
+This routine will be triggered by default when the user opens the program. The user can enter their credentials and log in, allowing them to progress onto the next screen with their messages, or they can press the button to create a new user account.
+
+<img src="./media/image31.png" style="width:2.12697in;height:7.00694in" />
+
+A change from this routine that may be considered is the use of a single password-based key derivation function (PBKDF), possibly Scrypt, to generate the “hash” for login validations and the seed for the RSA keygen algorithm. Being able to reproduce the key pair’s seed will allow the key pair to be generated client-side at log in rather than receiving them from the server, meaning only each client’s public key will need to be stored (rather than their public key and a symmetrically encrypted private key).
+
+### Client Algorithm – Creating a new user account (1)
+
+<img src="./media/image32.png" style="width:6.26806in;height:5.69028in" />
 
 **Summary** – This algorithm will be executed when a new user wants to create an account. This is because all users will require an RSA key pair to facilitate encrypted communications and a pair of credentials to allow them to log in from any device.
 
@@ -748,6 +760,12 @@ Quickly identifying the sender of a message is crucial to messaging apps. From *
 **Line 28** – Since all passwords need to be store securely, the password must be hashed first. This will be done via MD5 with the possibility of an added salt. The salt will be different for each user and will mean that even if two users have the same password, their password hashes will not be the same. This also has the benefit of helping to reduce the effectiveness of hash table attacks.
 
 **Line 29 to 30** – Lastly, all the new information to make the user’s account must be sent to the server. Even though this will be transmitted over an insecure channel, all the sensitive information has been either hashed or encrypted. Although, man-in-the-middle attacks are (very much) possible at this point, addressing this vulnerability is beyond the scope of this program so will have to remain in the program.
+
+### <img src="./media/image33.png" style="width:2.20069in;height:9.68889in" />Client Algorithm – Creating a new user account (2)
+
+This routine is a revision of the pseudocode described above. This has been done to align the new user account creation process more with the standard login process. For example, after a new account has been made on the server, the client is not automatically signed into this new account. This means that the client still must send the same login request that would be sent normally; this will allow me to only write one procedure for how message and user information will be sent after the login (triggered by the successful login request).
+
+There has also been an additional step of validation added to the routine: the name that the user selects will be checked against all the existing names. This eliminates the need for the discriminators being appended to the end of names by only allowing unique usernames. Conversely, the checks for the validity of the username and password have been abstracted away as they have already been explained in the section above, and I do not think they need to be changed.
 
 ### File Organisation
 
@@ -815,7 +833,7 @@ Since some methods will need to be implemented but will have different implement
 
 ### Protocol
 
-<img src="./media/image32.png" style="width:2.90347in;height:3.41667in" />To allow communication between the client and server to be consistent, I have created a Protocol class that encodes text in a standardised way (UTF-8). This was done to address the problem found of incompatible character encodings from *1.2.2* *Existing Solution – Internet Relay Chat (IRC)*.
+<img src="./media/image34.png" style="width:2.90347in;height:3.41667in" />To allow communication between the client and server to be consistent, I have created a Protocol class that encodes text in a standardised way (UTF-8). This was done to address the problem found of incompatible character encodings from *1.2.2* *Existing Solution – Internet Relay Chat (IRC)*.
 
 I have used two constructors in this class as an instance of the Protocol needs be able to be created from a string (when being converted to binary for transmission) or from binary (when being converted to string from a transmission).
 
@@ -823,7 +841,7 @@ In future iterations, this is where I will put the code used to encrypt and decr
 
 ### Creating the socket
 
-<img src="./media/image33.png" style="width:5.07148in;height:1.68843in" />
+<img src="./media/image35.png" style="width:5.07148in;height:1.68843in" />
 
 Figure . MessengerAppShared.SocketBase.SocketBase
 
@@ -833,17 +851,17 @@ Secondly, the server is currently only available to the computer it is running o
 
 ### Receiving a message
 
-<img src="./media/image34.png" style="width:6.26806in;height:0.98333in" />
+<img src="./media/image36.png" style="width:6.26806in;height:0.98333in" />
 
 Figure . MessengerAppShared.Receive
 
-<img src="./media/image35.png" style="width:3.73881in;height:2.53258in" />Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. The methods are also both virtual as the child classes may extend them.
+<img src="./media/image37.png" style="width:3.73881in;height:2.53258in" />Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. The methods are also both virtual as the child classes may extend them.
 
 In future iterations, the decoding of the message into text and passing to the message handler will have to be moved out of the shared method and into the child-specific overrides as decryption keys will need to be used by the client.
 
 ### Sending a message
 
-<img src="./media/image36.png" style="width:6.26806in;height:2.69375in" />
+<img src="./media/image38.png" style="width:6.26806in;height:2.69375in" />
 
 Figure . MessengerAppShared.SocketBase.Send and MessengerAppShared.SocketBase.SendCallback
 
@@ -851,9 +869,9 @@ For the moment, sending data is simpler than receiving the data. Therefore, ther
 
 ## Iteration 1, Server Networking
 
-### <img src="./media/image37.png" style="width:2.96042in;height:0.59792in" />Starting the server
+### <img src="./media/image39.png" style="width:2.96042in;height:0.59792in" />Starting the server
 
-<img src="./media/image38.png" style="width:1.62222in;height:0.83264in" /><img src="./media/image39.png" style="width:3.40417in;height:2.20764in" /><img src="./media/image40.png" style="width:3.21429in;height:1.83577in" />
+<img src="./media/image40.png" style="width:1.62222in;height:0.83264in" /><img src="./media/image41.png" style="width:3.40417in;height:2.20764in" /><img src="./media/image42.png" style="width:3.21429in;height:1.83577in" />
 
 Inside the server program’s main function, a socket (ServerSocket is a child of SocketBase) is created and set to start. This will begin an infinite loop that accepts new connections from clients and creates a virtual thread for each client which has begins an infinite loop of receiving data.
 
@@ -861,17 +879,17 @@ This code should not need to change for the rest of the development since the co
 
 ### Stopping the server
 
-<img src="./media/image41.png" style="width:4.36319in;height:2.87361in" />To stop the server, enter must be pressed. In future iterations, this could be made more secure by requiring a passcode to be entered however it is not crucial so is not important now.
+<img src="./media/image43.png" style="width:4.36319in;height:2.87361in" />To stop the server, enter must be pressed. In future iterations, this could be made more secure by requiring a passcode to be entered however it is not crucial so is not important now.
 
 Currently, there are two issues with the shutdown process. Firstly, the clients connected to the server are not notified that the server has been shut down. Which can cause fatal errors for the client if they try to send anything to the server. This problem can be solved by sending a shutdown notice to all connected clients before closing the socket. Secondly, a non-fatal error is thrown in the server program during the shutdown process, but I am yet to figure out the cause.
 
-<img src="./media/image42.png" style="width:6.26806in;height:0.51528in" />
+<img src="./media/image44.png" style="width:6.26806in;height:0.51528in" />
 
 Figure . Server console output after \[enter\] is pressed
 
 ### Accepting a new client
 
-<img src="./media/image43.png" style="width:5.37662in;height:2.76218in" />
+<img src="./media/image45.png" style="width:5.37662in;height:2.76218in" />
 
 Figure . MessengerAppServer.ServerSocket.AcceptCallback
 
@@ -881,17 +899,17 @@ In future iterations of the solution, this method will be extended by adding the
 
 ### Receiving a message from a client
 
-<img src="./media/image44.png" style="width:5.9913in;height:4.02139in" />
+<img src="./media/image46.png" style="width:5.9913in;height:4.02139in" />
 
 Figure . MessengerAppServer.ServerSocket.ReceiveCallback
 
-<img src="./media/image45.png" style="width:2.77361in;height:1.05417in" />During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to makes sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
+<img src="./media/image47.png" style="width:2.77361in;height:1.05417in" />During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to makes sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
 
 In the future, I may move the client disconnect process to a separate method. This is because the process will only get longer and methods should only do one thing: just finish receiving the data, not also remove disconnected clients.
 
 ### Handling a message from a client
 
-<img src="./media/image46.png" style="width:5.20314in;height:6.384in" />
+<img src="./media/image48.png" style="width:5.20314in;height:6.384in" />
 
 Figure . MessengerAppServer.ServerSocket.HandleMessages
 
@@ -903,13 +921,13 @@ In future iterations, this switch case block may have to be modified as the plan
 
 ### ECHO command handling
 
-<img src="./media/image47.png" style="width:5in;height:4.6571in" />
+<img src="./media/image49.png" style="width:5in;height:4.6571in" />
 
 Figure . MessengerAppServer.ServerSocket.Command_ECHO
 
 This method will not be part of the final solution, instead, I am using it to test the sending of data between the client and server. By echoing any data sent back to the client, I can see immediately what data was transmitted, its form and therefore any problems, without the need to do variable watches in debugging.
 
-<img src="./media/image48.png" style="width:6.26806in;height:1.67847in" />
+<img src="./media/image50.png" style="width:6.26806in;height:1.67847in" />
 
 Figure . ECHO command as seen from client's and server's perspective
 
@@ -917,7 +935,7 @@ At this point in development, the server can see all messages in plaintext. This
 
 ### SEND command handling
 
-<img src="./media/image49.png" style="width:6.00662in;height:9.22222in" />
+<img src="./media/image51.png" style="width:6.00662in;height:9.22222in" />
 
 Figure 18. MessengerAppClient.ServerSocket.Command_SEND
 
@@ -925,7 +943,7 @@ One difficulty faced when writing this method was the command’s dependency on 
 
 Another change I will make to this method in the future is changing the recipient argument into a username rather than an IP address and port. However, this can only be done once I have implemented user accounts. This will help the end-user by making the syntax easier and less likely to cause mistypes; although, in the final solution all commands will be generated by the client program so this improvement will lose its effect.
 
-<img src="./media/image50.png" style="width:5.22699in;height:2.49999in" />
+<img src="./media/image52.png" style="width:5.22699in;height:2.49999in" />
 
 Figure 19. SEND message from left (port 1070) to right (port 1071)
 
@@ -933,7 +951,7 @@ As seen above, when sending a message, it is not immediately displayed by the re
 
 ## Iteration 1, Client Networking
 
-### <img src="./media/image51.png" style="width:3.16389in;height:1.81944in" />Connecting to the server
+### <img src="./media/image53.png" style="width:3.16389in;height:1.81944in" />Connecting to the server
 
 This method is used to interface the UI with the socket functions: pressing the “Connect to server” button will call this and once the socket has connected to the server, it will update the status label.
 
@@ -943,7 +961,7 @@ In future iterations of the solution, this method to begin the connection with t
 
 ### Sending a message to the server
 
-<img src="./media/image52.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send Message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
+<img src="./media/image54.png" style="width:3.37292in;height:2.56111in" />This method is called when the “Send Message” button is pressed. It sends the message in a text field to the button’s left to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
 
 I will solve this problem by adding an infinite receive loop like that seen in the server program. The consequences of not having this loop can be seen in the example from *3.2.7* *SEND command handling.*
 
@@ -951,7 +969,7 @@ Another problem I faced when writing this method was how will I store the messag
 
 ## Iteration 1, Client UI
 
-<img src="./media/image53.png" style="width:3.94236in;height:2.21196in" />
+<img src="./media/image55.png" style="width:3.94236in;height:2.21196in" />
 
 Figure 22. Client program's user interface
 
@@ -975,7 +993,7 @@ The failure of tests 3 and 8 was not a problem, they only failed because the dat
 
 Test 4 not producing the expected output was expected as the lack of a receive loop was identified in *3.2.7* *SEND command handling* as well as the necessary steps to solve the problem.
 
-The failure of tests 10, 15, 16 and 17 were all unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.
+The failure of tests 10, 15, 16 and 17 was unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.
 
 Lastly, test 14 failed. This can be solved by adding a limit on the maximum number of characters allowed in the client program so that no transmission is greater than 2048 bytes.
 
@@ -1012,57 +1030,59 @@ Lastly, test 14 failed. This can be solved by adding a limit on the maximum numb
   [1.3.3 Survey Results 12]: #survey-results
   [1.4 Requirements 17]: #requirements
   [1.4.1 Stakeholder Requirements 17]: #stakeholder-requirements
-  [1.4.2 Limitations 17]: #limitations
-  [1.4.3 Software Requirements 17]: #software-requirements
-  [1.5 Success Criteria 18]: #success-criteria
-  [2 Design 20]: #design
-  [2.1 System Decomposition 20]: #system-decomposition
-  [2.2 User Design Requirements 24]: #user-design-requirements
-  [2.2.1 Primary User Requirements 24]: #primary-user-requirements
-  [2.2.2 Secondary User Requirements 24]: #secondary-user-requirements
-  [2.3 Initial Design 25]: #initial-design
-  [2.3.1 Design Specification 25]: #design-specification
-  [2.3.2 Initial Designs 25]: #initial-designs
-  [2.4 Interface Design 26]: #interface-design
-  [2.4.1 Interface Designs 26]: #interface-designs
-  [2.4.2 Interface Feedback 30]: #interface-feedback
-  [2.4.3 Improved Interface 30]: #improved-interface
-  [2.5 Interface Features 31]: #interface-features
-  [2.5.1 User Experience 31]: #user-experience
-  [2.5.2 Usability Features 32]: #usability-features
-  [2.5.3 Input Validation 33]: #input-validation
-  [2.6 Internal Structures 34]: #internal-structures
-  [2.6.1 Algorithm – Creating a new user account 34]: #algorithm-creating-a-new-user-account
-  [2.6.2 File Organisation 36]: #file-organisation
-  [2.6.3 Variables 36]: #variables
-  [2.6.4 Class Diagrams 36]: #class-diagrams
-  [2.7 Final Design 37]: #final-design
-  [2.7.1 Final Design 37]: #final-design-1
-  [2.7.2 System Walkthrough 37]: #system-walkthrough
-  [2.8 Testing Strategy 38]: #testing-strategy
-  [2.8.1 Testing algorithms 38]: #testing-algorithms
-  [3 Development 39]: #development
-  [3.1 Iteration 1, Shared Networking 39]: #iteration-1-shared-networking
-  [3.1.1 SocketBase class 39]: #socketbase-class
-  [3.1.2 Protocol 39]: #protocol
-  [3.1.3 Creating the socket 40]: #creating-the-socket
-  [3.1.4 Receiving a message 40]: #receiving-a-message
-  [3.1.5 Sending a message 41]: #sending-a-message
-  [3.2 Iteration 1, Server Networking 41]: #iteration-1-server-networking
-  [3.2.1 Starting the server 41]: #starting-the-server
-  [3.2.2 Stopping the server 42]: #stopping-the-server
-  [3.2.3 Accepting a new client 42]: #accepting-a-new-client
-  [3.2.4 Receiving a message from a client 43]: #receiving-a-message-from-a-client
-  [3.2.5 Handling a message from a client 44]: #handling-a-message-from-a-client
-  [3.2.6 ECHO command handling 45]: #echo-command-handling
-  [3.2.7 SEND command handling 46]: #send-command-handling
-  [3.3 Iteration 1, Client Networking 47]: #iteration-1-client-networking
-  [3.3.1 Connecting to the server 47]: #connecting-to-the-server
-  [3.3.2 Sending a message to the server 48]: #sending-a-message-to-the-server
-  [3.4 Iteration 1, Client UI 48]: #iteration-1-client-ui
-  [3.5 Iteration 1, Tests 49]: #iteration-1-tests
-  [3.5.1 Testing plans 49]: #testing-plans
-  [3.5.2 Testing results 50]: #testing-results
-  [4 Evaluation 51]: #evaluation
-  [5 References 52]: #_Toc77521679
+  [1.4.2 Software Requirements 18]: #software-requirements
+  [1.4.3 Limitations 18]: #limitations
+  [1.5 Success Criteria 19]: #success-criteria
+  [2 Design 21]: #design
+  [2.1 System Decomposition 21]: #system-decomposition
+  [2.2 User Design Requirements 25]: #user-design-requirements
+  [2.2.1 Primary User Requirements 25]: #primary-user-requirements
+  [2.2.2 Secondary User Requirements 25]: #secondary-user-requirements
+  [2.3 Initial Design 26]: #initial-design
+  [2.3.1 Design Specification 26]: #design-specification
+  [2.3.2 Initial Designs 26]: #initial-designs
+  [2.4 Interface Design 27]: #interface-design
+  [2.4.1 Interface Designs 27]: #interface-designs
+  [2.4.2 Interface Feedback 31]: #interface-feedback
+  [2.4.3 Improved Interface 31]: #improved-interface
+  [2.5 Interface Features 32]: #interface-features
+  [2.5.1 User Experience 32]: #user-experience
+  [2.5.2 Usability Features 33]: #usability-features
+  [2.5.3 Input Validation 34]: #input-validation
+  [2.6 Internal Structures 35]: #internal-structures
+  [2.6.1 Client Algorithm – Logging in 35]: #client-algorithm-logging-in
+  [2.6.2 Client Algorithm – Creating a new user account (1) 36]: #client-algorithm-creating-a-new-user-account-1
+  [2.6.3 Client Algorithm – Creating a new user account (2) 38]: #client-algorithm-creating-a-new-user-account-2
+  [2.6.4 File Organisation 39]: #file-organisation
+  [2.6.5 Variables 39]: #variables
+  [2.6.6 Class Diagrams 39]: #class-diagrams
+  [2.7 Final Design 40]: #final-design
+  [2.7.1 Final Design 40]: #final-design-1
+  [2.7.2 System Walkthrough 40]: #system-walkthrough
+  [2.8 Testing Strategy 41]: #testing-strategy
+  [2.8.1 Testing algorithms 41]: #testing-algorithms
+  [3 Development 42]: #development
+  [3.1 Iteration 1, Shared Networking 42]: #iteration-1-shared-networking
+  [3.1.1 SocketBase class 42]: #socketbase-class
+  [3.1.2 Protocol 42]: #protocol
+  [3.1.3 Creating the socket 43]: #creating-the-socket
+  [3.1.4 Receiving a message 43]: #receiving-a-message
+  [3.1.5 Sending a message 44]: #sending-a-message
+  [3.2 Iteration 1, Server Networking 44]: #iteration-1-server-networking
+  [3.2.1 Starting the server 44]: #starting-the-server
+  [3.2.2 Stopping the server 45]: #stopping-the-server
+  [3.2.3 Accepting a new client 45]: #accepting-a-new-client
+  [3.2.4 Receiving a message from a client 46]: #receiving-a-message-from-a-client
+  [3.2.5 Handling a message from a client 47]: #handling-a-message-from-a-client
+  [3.2.6 ECHO command handling 48]: #echo-command-handling
+  [3.2.7 SEND command handling 49]: #send-command-handling
+  [3.3 Iteration 1, Client Networking 50]: #iteration-1-client-networking
+  [3.3.1 Connecting to the server 50]: #connecting-to-the-server
+  [3.3.2 Sending a message to the server 51]: #sending-a-message-to-the-server
+  [3.4 Iteration 1, Client UI 51]: #iteration-1-client-ui
+  [3.5 Iteration 1, Tests 52]: #iteration-1-tests
+  [3.5.1 Testing plans 52]: #testing-plans
+  [3.5.2 Testing results 53]: #testing-results
+  [4 Evaluation 54]: #evaluation
+  [5 References 55]: #_Toc82638685
   [WeeChat.org]: https://weechat.org/about/screenshots/

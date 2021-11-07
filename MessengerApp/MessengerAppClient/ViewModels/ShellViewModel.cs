@@ -14,30 +14,35 @@ namespace MessengerAppClient.ViewModels
         public ClientSocket socket = new ClientSocket();
 
         private string _messageToSend;
-        private string _messageReceived;
-        private string _connectionStatus = "Not connected";
-        
-        // TODO: Allow message to be sent with enter
         public string MessageToSend
         {
             get { return _messageToSend; }
-            set { _messageToSend = value; }
+            set {
+                _messageToSend = value;
+                NotifyOfPropertyChange(() => MessageToSend);
+            }
         }
 
-        // TODO: Replace single textblock with conversation
+        // TODO: Replace single TextBlock with a conversation type view
+        private string _messageReceived;
         public string MessageReceived
         {
             get { return _messageReceived; }
-            set { _messageReceived = value; }
+            set {
+                _messageReceived = value;
+                NotifyOfPropertyChange(() => MessageReceived);
+            }
         }
 
+        private string _connectionStatus = "Not connected";
         public string ConnectionStatus
         {
             get { return _connectionStatus; }
             set {
                 _connectionStatus = value;
+                NotifyOfPropertyChange(() => ConnectionStatus);
 
-                // When the connection status changes, grey out the button
+                // When the connection status changes, checks whether to grey out the button
                 NotifyOfPropertyChange(() => CanConnect);
             }
         }
@@ -45,7 +50,7 @@ namespace MessengerAppClient.ViewModels
         // Controls state of Connect button
         public bool CanConnect => (ConnectionStatus == "Not connected");
 
-        // Connects program to the server
+        // Connects to server
         public void Connect()
         {
             // Local socket starts connection with server
@@ -53,16 +58,24 @@ namespace MessengerAppClient.ViewModels
 
             // Update UI
             ConnectionStatus = "Connected";
-            NotifyOfPropertyChange(() => ConnectionStatus);
+            // NotifyOfPropertyChange(() => ConnectionStatus);
 
             // TODO: Infinite receive loop
         }
 
-        // Sends a message to server and gets response
+
+
+
+
+
+        // TODO: Switch SendMessage to object based
+        // Still uses text based networking
+
+        // Send message to server, gets response
         public void SendMessage()
         {
             // Sends message to server
-            socket.Send(MessageToSend, socket.Socket);
+            socket.SendString(MessageToSend, socket.Socket);
             // Gets server's response
             socket.Receive(socket.Socket);
 

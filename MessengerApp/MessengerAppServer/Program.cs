@@ -2,9 +2,9 @@
 
 namespace MessengerAppServer
 {
-    class Program
+    public class Program
     {
-        static void Main()
+        public static void Main()
         {
             // Sets the title of the console's window
             Console.Title = "MessengerApp Server";
@@ -14,8 +14,10 @@ namespace MessengerAppServer
             serverSocket.Start();
 
             // User presses enter to close the server
-            Console.ReadLine();
+            _ = Console.ReadLine();
             serverSocket.Stop();
+
+            // TODO: Fix errors when closing server by ending all client threads
         }
     }
 }

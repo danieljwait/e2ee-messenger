@@ -16,7 +16,7 @@ namespace MessengerAppServer
         // Maximum length of the connection queue for new clients
         public const int BACKLOG = 5;
 
-        // Starts socket listening on a port, begins accept client loop
+        // Start socket listening on a port, begins accept client loop
         public void Start()
         {
             PrintMessage("Starting server...");
@@ -34,7 +34,7 @@ namespace MessengerAppServer
             Socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
 
-        // Disconnects socket to end server
+        // Disconnect socket to end server
         public void Stop()
         {
             PrintMessage("Stopping server...");
@@ -62,14 +62,108 @@ namespace MessengerAppServer
             ClientSockets.Add(clientSocket.RemoteEndPoint.ToString(), clientSocket);
             ClientSocketsInverse.Add(clientSocket, clientSocket.RemoteEndPoint.ToString());
 
-            PrintMessage($"Client {clientSocket.RemoteEndPoint} connected");
+            PrintMessage($"{clientSocket.RemoteEndPoint} connected");
 
             // Starts listening for data from the new client
-            Receive(clientSocket);
+            ReceiveObject(clientSocket);
 
             // Starts accepting the next client (continues infinite loop)
             Socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
+
+        public override void HandleObject(Socket socket, object received_object)
+        {
+            // Each case is a different message type, since object type determines purpose
+            switch (received_object)
+            {
+                case MessageLogin login:
+                    HandleObject_Login(socket, login);
+                    break;
+
+                case MessageSend send:
+                    HandleObject_Send(socket, send);                                                      // Not implemented yet
+                    break;
+
+                case MessageEcho echo:
+                    HandleObject_Echo(socket, echo);
+                    break;
+
+                default:
+                    // handle unknown type somehow
+                    break;
+            }
+        }
+
+        public void HandleObject_Login(Socket socket, MessageLogin messageLogin)
+        {
+            MessageBoxResponse response;
+            Account user_account;
+            IEnumerable<Account> accounts = CSVHandler.GetAccounts();
+            bool logged_in = false;
+
+            // Compares the username and password against all of those in the CSV
+            foreach (Account account in accounts)
+            {
+                // Output CSV contents for debugging
+                // PrintMessage($"{account.Username},{account.Password},{account.PublicKey},{account.PrivateKey}");
+
+                PrintMessage($"Username: {messageLogin.Username}, Password {messageLogin.Password}");
+
+                // When there is a match, set login flag and break loop
+                if (account.Username == messageLogin.Username && account.Password == messageLogin.Password)
+                {
+                    logged_in = true;
+                    user_account = account;
+                }
+            }
+
+            // Valid
+            if (logged_in)
+            {
+                response = new MessageBoxResponse($"Successful login. Welcome, {messageLogin.Username}!" +
+                    "\nPassage to the messaging screen is currently unimplemented","Login attempt");
+
+                PrintMessage($"{socket.RemoteEndPoint} logged in as '{messageLogin.Username}'");
+
+                // TODO: Update client dictionary entries with username
+            }
+            // Invalid
+            else
+            {
+                response = new MessageBoxResponse($"Unsuccessful login, try again", "Login attempt");
+
+                PrintMessage($"{socket.RemoteEndPoint} attempted login to '{messageLogin.Username}'");
+            }
+
+            // Sends the MessageBoxResponse to client
+            SendObject(response, socket);
+        }
+
+        public void HandleObject_Send(Socket socket, MessageSend messageSend) {
+            // Get the text to be sent
+            // Determine IP of recipient
+            // Determine Name of sender
+            // Make Object with message, sender, recipient
+            // Send to recipient
+            // Send confirmation to sender (?)
+        }
+        
+        public void HandleObject_Echo(Socket socket, MessageEcho messageEcho) {
+            // Creates new MessageEcho object containing the same text
+            MessageBoxResponse echo = new MessageBoxResponse($"'{messageEcho.Text}'", "Echo");
+
+            PrintMessage($"IN   {socket.RemoteEndPoint} '{messageEcho.Text}'");
+            PrintMessage($"OUT  {socket.RemoteEndPoint} '{messageEcho.Text}'");
+
+            // Sends the MessageBoxResponse to client
+            SendObject(echo, socket);
+        }
+
+
+
+
+
+        // *** Old text based networking, still in ShellViewModel ***
 
         // Finishes receiving data from client, passes message to handler
         public override void ReceiveCallback(IAsyncResult asyncResult)
@@ -120,6 +214,10 @@ namespace MessengerAppServer
                     response = Command_SEND(parts);
                     break;
 
+                case "LOGIN":
+                    response = Command_LOGIN(parts);
+                    break;
+
                 // When there is no command
                 case "":
                     response = "Invalid message: Is null Or whitespace";
@@ -134,13 +232,13 @@ namespace MessengerAppServer
             // Output debugging message to console: what the client is being sent
             PrintMessage($"To   {senderSocket.RemoteEndPoint} - {response}");
             // Sends the message to the client
-            Send(response, senderSocket);
+            SendString(response, senderSocket);
         }
 
         // Format: ECHO [message]
         private string Command_ECHO(string[] message)
         {
-            string response;
+            string response = "Invalid ECHO: Unknown error";
 
             // If there is no [message] parameter, send error to client
             if (message.Length <= 1)
@@ -151,10 +249,10 @@ namespace MessengerAppServer
             else
             {
                 // Gets all of [message] to be echoed back
-                string arg_message = String.Join(' ', message, 1, message.Length - 1);
+                string arg_message = string.Join(' ', message, 1, message.Length - 1);
 
                 // If [message] is whitespace, send error to client
-                if (String.IsNullOrWhiteSpace(arg_message))
+                if (string.IsNullOrWhiteSpace(arg_message))
                 {
                     response = "Invalid ECHO: [message] IsNullOrWhiteSpace";
                 }
@@ -168,11 +266,10 @@ namespace MessengerAppServer
             return response;
         }
 
-
         // Format: SEND [recipient] [message]
         private string Command_SEND(string[] message)
         {
-            string response;
+            string response = "Invalid SEND: Unknown error";
 
             // If there are no [recipient] and [message] parameters, send error to client
             if (message.Length == 1)
@@ -221,7 +318,7 @@ namespace MessengerAppServer
                         // Creates string to be sent to recipient
                         string recipientResponse = "MESSAGE " + recipientSocket.RemoteEndPoint + " " + arg_message;
                         // Sends message
-                        Send(recipientResponse, recipientSocket);
+                        SendString(recipientResponse, recipientSocket);
                         // Outputs debug message to console: what the recipient is being sent
                         PrintMessage($"To   {recipientSocket.RemoteEndPoint} - {recipientResponse}");
                         // Sender client will receive confirmation message
@@ -234,9 +331,45 @@ namespace MessengerAppServer
                     response = $"Invalid SEND: Invalid [recipient] \"{arg_recipient}\"";
                 }
             }
+
+            return response;
+        }
+
+        private string Command_LOGIN(string[] message)
+        {
+            string response = "InvalidLogin: Unknown error";
+
+            // if not: "Login: [username] [password]"
+            if (message.Length != 3)
+            {
+                response = "InvalidLogin: Invalid number of credentials supplied";
+            }
             else
             {
-                response = "Invalid SEND: Unexpected error";
+                string username = message[1];
+                string password = message[2];
+                bool logged_in = false;
+
+                IEnumerable<Account> accounts = CSVHandler.GetAccounts();
+
+                //Compares the username and password against all of those in the CSV
+                foreach (Account account in accounts)
+                {
+                    PrintMessage($"{account.Username},{account.Password},{account.PublicKey},{account.PrivateKey}");
+
+                    // When there is a match, set login flag and break loop
+                    if (account.Username == username && account.Password == password)
+                    {
+                        response = $"ValidLogin: Welcome {username}!";
+                        logged_in = true;
+                    }
+                }
+
+                // When the supplied credentials don't match any of those in the CSV
+                if (!logged_in)
+                {
+                    response = "InvalidLogin: User matching your credentials doesn't exist";
+                }
             }
 
             return response;
@@ -245,7 +378,8 @@ namespace MessengerAppServer
         // Neatly output messages to the server console
         public static void PrintMessage(string message)
         {
-            Console.WriteLine(message);
+            string time = DateTime.Now.ToString("HH:mm ss.fff");
+            Console.WriteLine($"[{time}] {message}");
 
             /* TODO: Fix pretty console output
                         

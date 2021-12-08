@@ -5,11 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
+using System.Windows;
 
+
+// Screen conductor
+// https://stackoverflow.com/questions/32519656/caliburn-micro-show-screens-simultaniously
 
 namespace MessengerAppClient.ViewModels
 {
-    class ShellViewModel : Screen
+    class HomeViewModel : Screen
     {
         public ClientSocket socket = new ClientSocket();
 
@@ -57,15 +62,35 @@ namespace MessengerAppClient.ViewModels
             socket.Connect();
 
             // Update UI
-            ConnectionStatus = "Connected";
+            ConnectionStatus = $"Connected\n{socket.Socket.RemoteEndPoint}";
             // NotifyOfPropertyChange(() => ConnectionStatus);
 
             // TODO: Infinite receive loop
         }
 
+        public HomeViewModel()
+        {
+            // Thread receive_thread = new Thread(new ThreadStart(ThreadReceiveLoop));
+            // receive_thread.Start();
+        }
 
-
-
+        private void ThreadReceiveLoop()
+        {
+            try
+            {
+                while (true){
+                    if (ConnectionStatus == "Connected")
+                    {
+                        // MessageBox.Show("Receiving has begun");
+                        socket.ReceiveObject(socket.Socket);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "An error has occured");               
+            }
+        }
 
 
         // TODO: Switch SendMessage to object based
@@ -74,19 +99,22 @@ namespace MessengerAppClient.ViewModels
         // Send message to server, gets response
         public void SendMessage()
         {
-            // Sends message to server
-            socket.SendString(MessageToSend, socket.Socket);
-            // Gets server's response
-            socket.Receive(socket.Socket);
+            socket.SendObject(new MessageEcho(MessageToSend), socket.Socket);
+            socket.ReceiveObject(socket.Socket);
 
-            // Displays the received message (if available)
-            if (socket.ReceiveMessages.Count != 0)
-            {
-                // Last message to be appended to list
-                MessageReceived = socket.ReceiveMessages[^1];
-                // Updates UI
-                NotifyOfPropertyChange(() => MessageReceived);
-            }
+            //// Sends message to server
+            //socket.SendString(MessageToSend, socket.Socket);
+            //// Gets server's response
+            //socket.Receive(socket.Socket);
+
+            //// Displays the received message (if available)
+            //if (socket.ReceiveMessages.Count != 0)
+            //{
+            //    // Last message to be appended to list
+            //    MessageReceived = socket.ReceiveMessages[^1];
+            //    // Updates UI
+            //    NotifyOfPropertyChange(() => MessageReceived);
+            //}
         }
     }
 }

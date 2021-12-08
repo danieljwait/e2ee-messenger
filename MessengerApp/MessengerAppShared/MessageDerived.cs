@@ -60,4 +60,16 @@ namespace MessengerAppShared
             Text = text;
         }
     }
+
+    // For sending an error message
+    [Serializable]
+    public class MessageError : MessageBase
+    {
+        public string Message;
+
+        public MessageError(string message)
+        {
+            Message = message;
+        }
+    }
 }

@@ -25,9 +25,16 @@ namespace MessengerAppClient.Model
             // Each case is a different message type, since type determines purpose
             switch (received_object)
             {
+                // TODO: Add case for message from server to add to conversation view
+
                 case MessageBoxResponse box_response:
                     Console.WriteLine("Triggered: MessageBoxResponse");
                     HandleObject_BoxResponse(box_response);
+                    break;
+
+                case MessageError message_error:
+                    Console.WriteLine("Triggered: MessageError");
+                    HandleObject_Error(message_error);
                     break;
 
                 default:
@@ -40,9 +47,16 @@ namespace MessengerAppClient.Model
         {
             // Displays message from server as pop-up box
             MessageBox.Show(messageBoxResponse.Text, messageBoxResponse.Caption);
-
-            // Call function to close LoginViewModel and open ShellViewModel
         }
+
+        public void HandleObject_Error(MessageError messageError)
+        {
+            // Displays error message to the user via a pop-up
+            MessageBox.Show(messageError.Message, "Error encountered");
+
+            // Close LoginViewModel and open ShellViewModel
+        }
+
 
 
 

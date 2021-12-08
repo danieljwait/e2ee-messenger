@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 
+// https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.page?view=windowsdesktop-5.0
+// https://docs.microsoft.com/en-us/dotnet/api/system.windows.window.showdialog?redirectedfrom=MSDN&view=windowsdesktop-5.0#System_Windows_Window_ShowDialog
+// https://stackoverflow.com/questions/499294/how-to-make-modal-dialog-in-wpf
+// https://stackoverflow.com/questions/11499932/wpf-popup-window
+
 namespace MessengerAppClient.ViewModels
 {
     class LoginViewModel : Screen
@@ -43,7 +48,7 @@ namespace MessengerAppClient.ViewModels
 
         public void LoginButton()
         {
-            // Create MessageLogin object using provided parameters (set for debugging)
+            // Create MessageLogin object using GUI fields
             MessageLogin login_request = new MessageLogin(UsernameInput, PasswordInput);
 
             // Sends the object to the server

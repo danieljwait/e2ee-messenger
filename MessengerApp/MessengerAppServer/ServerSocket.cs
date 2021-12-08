@@ -81,15 +81,19 @@ namespace MessengerAppServer
                     break;
 
                 case MessageSend send:
-                    HandleObject_Send(socket, send);                                                      // Not implemented yet
+                    HandleObject_Send(socket, send);  // TODO: Implement
                     break;
 
-                case MessageEcho echo:
+                case MessageEcho echo:  // Only called in testing
                     HandleObject_Echo(socket, echo);
                     break;
 
+                case MessageError error:
+                    HandleObject_Error(socket, error);
+                    break;
+
                 default:
-                    // handle unknown type somehow
+                    HandleObject_Invalid(socket);  // TODO: Implement
                     break;
             }
         }
@@ -104,11 +108,6 @@ namespace MessengerAppServer
             // Compares the username and password against all of those in the CSV
             foreach (Account account in accounts)
             {
-                // Output CSV contents for debugging
-                // PrintMessage($"{account.Username},{account.Password},{account.PublicKey},{account.PrivateKey}");
-
-                PrintMessage($"Username: {messageLogin.Username}, Password {messageLogin.Password}");
-
                 // When there is a match, set login flag and break loop
                 if (account.Username == messageLogin.Username && account.Password == messageLogin.Password)
                 {
@@ -117,21 +116,17 @@ namespace MessengerAppServer
                 }
             }
 
-            // Valid
+            // Successful login
             if (logged_in)
             {
                 response = new MessageBoxResponse($"Successful login. Welcome, {messageLogin.Username}!" +
                     "\nPassage to the messaging screen is currently unimplemented","Login attempt");
-
                 PrintMessage($"{socket.RemoteEndPoint} logged in as '{messageLogin.Username}'");
-
-                // TODO: Update client dictionary entries with username
             }
-            // Invalid
+            // Unsuccessful login
             else
             {
                 response = new MessageBoxResponse($"Unsuccessful login, try again", "Login attempt");
-
                 PrintMessage($"{socket.RemoteEndPoint} attempted login to '{messageLogin.Username}'");
             }
 
@@ -157,6 +152,21 @@ namespace MessengerAppServer
 
             // Sends the MessageBoxResponse to client
             SendObject(echo, socket);
+        }
+
+        public void HandleObject_Error(Socket socket, MessageError messageError)
+        {
+            // Outputs the error message to the server ouput
+            PrintMessage($"{socket.RemoteEndPoint}'s error: {messageError.Message}");
+
+            // Could confirm error receive || remove the client for safety
+        }
+
+        public void HandleObject_Invalid(Socket socket)
+        {
+            PrintMessage($"{socket.RemoteEndPoint} sent an invalid message");
+
+            // TODO: Send client a MessageError saying they sent a bad message
         }
 
 

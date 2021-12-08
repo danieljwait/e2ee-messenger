@@ -13,7 +13,7 @@ namespace MessengerAppShared
         public Socket Socket;
 
         // Buffer to hold read in data, maximum of 2048 bytes
-        public byte[] Buffer = new byte[2048];
+        public byte[] Buffer = new byte[4096];
 
         // Constructor creates socket
         public SocketBase(int port = 31416)
@@ -45,23 +45,31 @@ namespace MessengerAppShared
         // Ends async receive of a serialised object
         public void ReceiveObjectCallback(IAsyncResult asyncResult)
         {
-            // Recreates socket to handle connection
-            Socket socketHandler = (Socket)asyncResult.AsyncState;
+            try
+            {
+                // Recreates socket to handle connection
+                Socket socketHandler = (Socket)asyncResult.AsyncState;
 
-            // Reads data to buffer, gets the number of bytes received
-            int received_binary = socketHandler.EndReceive(asyncResult);
-            // Creates array to hold the data received
-            byte[] dataBuffer = new byte[received_binary];
-            // Copy received bytes to actual binary array
-            Array.Copy(Buffer, dataBuffer, received_binary);
+                // Reads data to buffer, gets the number of bytes received
+                int received_binary = socketHandler.EndReceive(asyncResult);
+                // Creates array to hold the data received
+                byte[] dataBuffer = new byte[received_binary];
+                // Copy received bytes to actual binary array
+                Array.Copy(Buffer, dataBuffer, received_binary);
 
-            // Deserialises object from binary
-            object received_object = MessageBase.Deserialise(dataBuffer);
-            // Handles the object
-            HandleObject(socketHandler, received_object);
+                // Deserialises object from binary
+                object received_object = MessageBase.Deserialise(dataBuffer);
+                // Handles the object
+                HandleObject(socketHandler, received_object);
 
-            // Continues infinite receive loop
-            ReceiveObject(socketHandler);
+                // Continues infinite receive loop
+                ReceiveObject(socketHandler);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"[xx:xx xx.xxx] Error: {e.Message}");
+                Console.WriteLine($"[xx:xx xx.xxx] Action: Ending conversation with culprit client");
+            }
         }
 
         // Will handle the received object

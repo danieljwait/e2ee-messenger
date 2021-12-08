@@ -13,11 +13,11 @@ using System.Windows.Shapes;
 namespace MessengerAppClient.Views
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class HomeView : Window
     {
-        public ShellView()
+        public HomeView()
         {
             InitializeComponent();
         }

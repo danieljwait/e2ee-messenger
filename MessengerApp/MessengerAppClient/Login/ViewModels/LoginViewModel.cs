@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MessengerAppClient.Login.Messages;
 using MessengerAppClient.Model;
 using MessengerAppShared;
 using System;
@@ -11,10 +12,13 @@ using System.Windows;
 // https://stackoverflow.com/questions/499294/how-to-make-modal-dialog-in-wpf
 // https://stackoverflow.com/questions/11499932/wpf-popup-window
 
-namespace MessengerAppClient.ViewModels
+namespace MessengerAppClient.Login.ViewModels
 {
-    class LoginViewModel : Screen
+    public class LoginViewModel : Screen
     {
+        private readonly IEventAggregator _eventAggregator;
+
+        /*
         public ClientSocket socket = new ClientSocket();
 
         private string _usernameInput;
@@ -38,18 +42,22 @@ namespace MessengerAppClient.ViewModels
                 NotifyOfPropertyChange(() => PasswordInput);
             }
         }
+        /**/
 
         // When programs first starts up, create server connection
-        public LoginViewModel()
+        public LoginViewModel(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
+
             // Connects to the server
-            socket.Connect();
+            // socket.Connect();
         }
 
         public void LoginButton()
         {
+            /*
             // Create MessageLogin object using GUI fields
-            MessageLogin login_request = new MessageLogin(UsernameInput, PasswordInput);
+             MessageLogin login_request = new MessageLogin(UsernameInput, PasswordInput);
 
             // Sends the object to the server
             socket.SendObject(login_request, socket.Socket);
@@ -60,12 +68,15 @@ namespace MessengerAppClient.ViewModels
 
             // Receives the response
             socket.ReceiveObject(socket.Socket);
+            /**/
+
+            _eventAggregator.PublishOnUIThread(new ValidLoginMessage());
         }
 
         // TODO: Implement Signup (not priority now)
         public void SignupButton()
         {
-            MessageBox.Show("This button is under construction", "Create an account");
+            _eventAggregator.PublishOnUIThread(new NavigateMessage(LoginPage.Signup));
         }
     }
 }

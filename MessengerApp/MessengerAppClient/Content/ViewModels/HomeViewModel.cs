@@ -12,10 +12,11 @@ using System.Windows;
 // Screen conductor
 // https://stackoverflow.com/questions/32519656/caliburn-micro-show-screens-simultaniously
 
-namespace MessengerAppClient.ViewModels
+namespace MessengerAppClient.Content.ViewModels
 {
-    class HomeViewModel : Screen
+    public class HomeViewModel : Screen
     {
+        /*
         public ClientSocket socket = new ClientSocket();
 
         private string _messageToSend;
@@ -68,11 +69,15 @@ namespace MessengerAppClient.ViewModels
             // TODO: Infinite receive loop
         }
 
+        /**/
+
         public HomeViewModel()
         {
             // Thread receive_thread = new Thread(new ThreadStart(ThreadReceiveLoop));
             // receive_thread.Start();
         }
+
+        /*
 
         private void ThreadReceiveLoop()
         {
@@ -91,7 +96,7 @@ namespace MessengerAppClient.ViewModels
                 MessageBox.Show(e.Message, "An error has occured");               
             }
         }
-
+        
 
         // TODO: Switch SendMessage to object based
         // Still uses text based networking
@@ -116,5 +121,7 @@ namespace MessengerAppClient.ViewModels
             //    NotifyOfPropertyChange(() => MessageReceived);
             //}
         }
+
+        /**/
     }
 }

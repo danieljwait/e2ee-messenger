@@ -20,103 +20,103 @@ Contents
 
 [1.2.3 Existing Program – Telegram 11][]
 
-[1.2.4 Existing Program – WhatsApp 13][]
+[1.2.4 Existing Program – WhatsApp 12][]
 
-[1.3 Stakeholders 15][]
+[1.3 Stakeholders 13][]
 
-[1.3.1 Interview with Ethan Sandy 15][]
+[1.3.1 Interview with Ethan Sandy 13][]
 
-[1.3.2 Survey Aims 18][]
+[1.3.2 Survey Aims 16][]
 
-[1.3.3 Survey Results 18][]
+[1.3.3 Survey Results 16][]
 
-[1.4 Requirements 23][]
+[1.4 Requirements 21][]
 
-[1.4.1 Stakeholder Requirements 23][]
+[1.4.1 Stakeholder Requirements 21][]
 
-[1.4.2 Software Requirements 24][]
+[1.4.2 Software Requirements 22][]
 
-[1.4.3 Limitations 24][]
+[1.4.3 Limitations 22][]
 
-[1.5 Success Criteria 25][]
+[1.5 Success Criteria 23][]
 
-[2 Design 27][]
+[2 Design 25][]
 
-[2.1 System Decomposition 27][]
+[2.1 System Decomposition 25][]
 
-[2.2 User Design Requirements 31][]
+[2.2 User Design Requirements 29][]
 
-[2.2.1 Primary User Requirements 31][]
+[2.2.1 Primary User Requirements 29][]
 
-[2.2.2 Secondary User Requirements 31][]
+[2.2.2 Secondary User Requirements 29][]
 
-[2.3 Initial Design 32][]
+[2.3 Initial Design 30][]
 
-[2.3.1 Design Specification 32][]
+[2.3.1 Design Specification 30][]
 
-[2.3.2 Initial Designs 32][]
+[2.3.2 Initial Designs 30][]
 
-[2.4 Interface Design 33][]
+[2.4 Interface Design 31][]
 
-[2.4.1 Interface Designs 33][]
+[2.4.1 Interface Designs 31][]
 
-[2.4.2 Interface Feedback 38][]
+[2.4.2 Interface Feedback 36][]
 
-[2.4.3 Improved Interface 38][]
+[2.4.3 Improved Interface 36][]
 
-[2.5 Interface Features 39][]
+[2.5 Interface Features 37][]
 
-[2.5.1 User Experience 39][]
+[2.5.1 User Experience 37][]
 
-[2.5.2 Usability Features 40][]
+[2.5.2 Usability Features 38][]
 
-[2.5.3 Input Validation 41][]
+[2.5.3 Input Validation 39][]
 
-[2.6 Internal Structures 42][]
+[2.6 Internal Structures 40][]
 
-[2.6.1 Client Algorithm – Logging in 42][]
+[2.6.1 Client Algorithm – Logging in 40][]
 
-[2.6.2 Client Algorithm – Creating a new user account (1) 43][]
+[2.6.2 Client Algorithm – Creating a new user account (1) 41][]
 
-[2.6.3 Client Algorithm – Creating a new user account (2) 45][]
+[2.6.3 Client Algorithm – Creating a new user account (2) 43][]
 
-[2.6.4 File Organisation 46][]
+[2.6.4 File Organisation 44][]
 
-[2.6.5 Variables 46][]
+[2.6.5 Variables 44][]
 
-[2.6.6 Class Diagrams 46][]
+[2.6.6 Class Diagrams 44][]
 
-[2.7 Final Design 47][]
+[2.7 Final Design 45][]
 
-[2.7.1 Final Design 47][]
+[2.7.1 Final Design 45][]
 
-[2.7.2 System Walkthrough 47][]
+[2.7.2 System Walkthrough 45][]
 
-[2.8 Testing Strategy 48][]
+[2.8 Testing Strategy 46][]
 
-[2.8.1 Testing algorithms 48][]
+[2.8.1 Testing algorithms 46][]
 
-[3 Development 49][]
+[3 Development 47][]
 
-[3.1 Iteration 1 49][]
+[3.1 Iteration 1 47][]
 
-[3.1.1 Shared 49][]
+[3.1.1 Shared 47][]
 
-[3.1.2 Server 52][]
+[3.1.2 Server 50][]
 
-[3.1.3 Client 59][]
+[3.1.3 Client 57][]
 
-[3.1.4 Testing 61][]
+[3.1.4 Testing 59][]
 
-[3.2 Iteration 2 65][]
+[3.2 Iteration 2 63][]
 
-[3.2.1 Plan 65][]
+[3.2.1 Plan 63][]
 
-[3.2.2 Shared 66][]
+[3.2.2 Shared 64][]
 
-[3.2.3 Server 68][]
+[3.2.3 Server 66][]
 
-[3.2.4 Client 71][]
+[3.2.4 Client 69][]
 
 [3.2.5 Testing 1][]
 
@@ -352,41 +352,37 @@ WhatsApp is an instant messaging platform created in 2009; as of 2020, it has 2 
 
 **Accounts**
 
-To send messages, WhatsApp uses a variant of XMPP (Extensible Messaging and Presence Protocol). To create a WhatsApp account only a phone number needs to be provided. This number is then used by WhatsApp to make a Jabber account (an XMPP service) with the username formatted as (\[phone number\]@s.whatsapp.net). The password to this account was generated as the following until 2012: the phone’s IMEI reversed and then MD5-hashed. This was changed in 2012 to be generated randomly on the server. There is no way for a user to set their password. The only additional authentication that can be added is a layer of biometric security.
+To send messages, WhatsApp uses a variant of XMPP (Extensible Messaging and Presence Protocol). To create a WhatsApp account only a phone number needs to be provided. This number is then used by WhatsApp to make a Jabber account (an XMPP service) with the username formatted as *\[phone number\]@s.whatsapp.net*. The password to this account was generated as the following until 2012: the phone’s IMEI reversed and then MD5-hashed. This was changed in 2012 to be generated randomly on the server. There is no way for a user to set their password. The only additional authentication that can be added is a layer of biometric security.
 
 **Individual messaging**
 
-To send a message, the sender sends the message to the server, which stores the message. The server then sends the message to the recipient and awaits a confirmation that the message was received. Only once the confirmation is received by the server will the server delete the message from its storage. If there is no confirmation message, the server will try to send the message again. This is done to solve the issues that may arise if the clients do not have a constant internet connection.
+To send a message, the sender sends the message to the server, which stores the message. The server then sends the message to the recipient and awaits a confirmation that the message was received. Only once the confirmation is received by the server will the server delete the message from its storage. If there is no confirmation message, the server will try to send the message again. This is done to solve the issues that may arise if the recipient does not have a stable internet connection.
 
 **Encryption**
 
 Before 2012, all WhatsApp messages were sent as plain text and it took until 2016 for end-to-end encryption to be implemented on all messages. WhatsApp uses the Signal Protocol – an encryption protocol for instant messaging also used in Signal, Viber, Facebook Messenger, and Skype.
 
-To begin a conversation, both parties fetch the other party’s public key from the WhatsApp key server and combine it with their private key to generate a shared secret key. The next steps involve two “ratchet” algorithms.
+To begin a conversation, both parties fetch the other party’s public key from the WhatsApp key server. The following algorithms are used to establish a shared secret key and maintain its security.
 
-Symmetric ratchet algorithm
+> Extended Triple Diffie-Hellman (X3DH)
 
--   Input in a shared secret key to derive a new key
+-   Is a modified Diffie-Hellman key exchange – DH is explained in *1.2.3* *Existing Program – Telegram*
 
--   Both parties end up with the same derived key as the input is the same
+-   Allows two parties to establish a shared secret key even when one of the parties is offline
 
--   After the first derivation, the old new key becomes the input, and a new key is derived from that
+> Symmetric “ratchet” algorithm
 
--   A key derivation function (KDF) is used to generate the new derived keys
+1.  Input is a shared secret key
 
-Diffie-Hellman
+2.  Combines with a temporary key via a key derivation function (KDF)
 
--   
+3.  Derive a new shared key, this is input for next iteration
 
-The protocol differs from other public-key protocols through its own “ratchet” algorithm. This algorithm generates a collection of temporary key pairs for each user allowing the encryption key to be changed after every message. Therefore, when sending a message, the temporary and permanent key pairs are combined to create a shared secret key – facilitating symmetric encryption.
+What separates this protocol from other public-key protocols is its “ratchet” algorithm. To encrypt using the protocol, a collection of temporary key pairs for each user are generated. Then, the ratchet algorithm combines the temporary and permanent key pairs to create a shared secret key – facilitating the forward secret, symmetric encryption. This forward secrecy means the protocol is referred to as “self-healing” because in the event a session key is compromised, only one message can be decrypted. As soon as the racket algorithm “moves along” to the next key pair the messages are secure again.
 
-The protocol is also referred to as “self-healing” because in the event a session key is compromised, the protocol can disable access for the attacker trying to access the cleartext.
+**Takeaways**
 
-https://www.ru.nl/publish/pages/769526/z00b_2019_thesis_dion_van_dam_2019_eerder.pdf
-
-Flaws
-
-Takeaways
+A feature of WhatsApp that I would like to include in my program is the server holding onto messages if the recipient is not online. This will allow my solution to be more resilient in the case of unstable network connections and more similar to other instant messages apps that users may have used (since almost all messaging apps allow messages to be sent to offline users).
 
 ## Stakeholders
 
@@ -506,7 +502,7 @@ Secondly, I wanted to hear the stakeholders’ opinions on some common features 
 
 ### Survey Results
 
-**Question 1 –** **“How much time do you spend on messaging apps each day?”**
+**Question 1 – “How much time do you spend on messaging apps each day?”**
 
 <img src="./media/image9.png" style="width:3.27273in;height:2.10766in" />
 
@@ -616,11 +612,11 @@ Internet access will be required to run the program as the client program needs 
 
 ### Limitations
 
-**Hardcoded server IP:**
+**Hardcoded server IP**
 
 When a client tries to connect to the server, it will use a hardcoded IP address as its target. This means that the IP address of the server must be static and cannot be moved onto another network. For this limitation to be fixed the server would have to be added to a DNS server so that the domain can dynamically point to the server. However, this is beyond the scope of the project.
 
-**Group messaging:**
+**Group messaging**
 
 Group messaging – the most chosen “favourite feature” and rated the third most important feature from the stakeholders’ survey – will not be implemented in the solution. This is down to the vast increase in complexity from individual end-to-end encrypted messaging to group end-to-end encrypted messaging; implementing such a feature will take up too much time and would require the redesign of many of the procedures of the solution. For these reasons, I will be unable to implement the feature.
 
@@ -642,7 +638,7 @@ Group messaging – the most chosen “favourite feature” and rated the third 
 | 12  | Users can click on a contact to message with them                                 | No need to manually address each message they send like an email                                            | Discord (UI)                                  |
 | 13  | Users can see past conversations with a contact                                   | Users do not have to worry that old messages will be lost                                                   | Stakeholder survey                            |
 | 14  | Users can be added to contacts by searching their username                        | Usernames are easier for a user to remember than an IP address                                              | Discord (add friend)                          |
-| 15  | Messages are encrypted with the recipient's public key                            | The recipients public and private keys are a keypair as it is asymmetric encryption                         |                                               |
+| 15  | Messages are encrypted with the recipient's public key                            | The recipient’s public and private keys are a keypair as it is asymmetric encryption                        |                                               |
 | 16  | Messages are decrypted with the recipient's private key                           | Only the intended recipient can view the message as the decryption key is private                           |                                               |
 | 17  | Messages are signed with the sender's private key                                 | The sender can prove their identity by using a key that only they know                                      |                                               |
 | 18  | Signatures are checked with the sender's public key                               | The recipient must be able to prove that a message came from the user it claims to be from                  |                                               |
@@ -801,7 +797,7 @@ A change from this routine that may be considered is the use of a single passwor
 
 ### Client Algorithm – Creating a new user account (1)
 
-<img src="./media/image33.png" style="width:6.26806in;height:5.69028in" />
+<img src="./media/image33.png" style="width:5.60345in;height:5.08693in" />
 
 **Summary** – This algorithm will be executed when a new user wants to create an account. This is because all users will require an RSA key pair to facilitate encrypted communications and a pair of credentials to allow them to log in from any device.
 
@@ -1055,16 +1051,16 @@ I will be testing this iteration through a predominantly black-box testing metho
 
 #### Testing results
 
-<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 56%" /><col style="width: 30%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image57.png" style="width:1.74904in;height:0.41532in" /></p><p>Server:</p><p><img src="./media/image58.png" style="width:1.33742in;height:0.16211in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>2</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image59.png" style="width:1.67986in;height:0.37398in" /></p><p>Server:</p><p><img src="./media/image60.png" style="width:2.58282in;height:0.17622in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>3</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image59.png" style="width:1.91007in;height:0.42524in" /></p><p>Server:</p><p><img src="./media/image60.png" style="width:2.58264in;height:0.1762in" /></p></td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender (127.0.0.1:62839):</p><p><img src="./media/image61.png" style="width:1.70144in;height:0.41437in" /></p><p>Recipient (127.0.0.1:63008):</p><p><img src="./media/image62.png" style="width:1.7446in;height:0.40557in" /></p><p>Server:</p><p><img src="./media/image63.png" style="width:2.11656in;height:0.25886in" /></p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server</td></tr><tr class="odd"><td>5</td><td>Pass</td><td><p>Client:<br />
-<img src="./media/image64.png" style="width:2.31319in;height:0.4086in" /></p><p>Server:</p><p><img src="./media/image65.png" style="width:3.28221in;height:0.19273in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>6</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image66.png" style="width:1.90659in;height:0.43484in" /></p><p>Server:</p><p><img src="./media/image67.png" style="width:2.6319in;height:0.18027in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>7</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image68.png" style="width:2.30521in;height:0.39835in" /></p><p>Server:</p><p><img src="./media/image69.png" style="width:3.41791in;height:0.17696in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>8</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image70.png" style="width:2.2678in;height:0.39326in" /></p><p>Server:</p><p><img src="./media/image71.png" style="width:3.37421in;height:0.17101in" /></p></td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message</td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image72.png" style="width:1.80256in;height:0.40659in" /></p><p>Server:</p><p><img src="./media/image73.png" style="width:2.83742in;height:0.17477in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image74.png" style="width:2.06593in;height:0.45831in" /></p><p>Server:</p><p><img src="./media/image75.png" style="width:2.60736in;height:0.18226in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>12</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image76.png" style="width:2.02198in;height:0.44552in" /></p><p>Server:</p><p><img src="./media/image77.png" style="width:1.3777in;height:0.17353in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>13</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image78.png" style="width:1.83517in;height:0.3937in" /></p><p>Server:</p><p><img src="./media/image79.png" style="width:2.45092in;height:0.17797in" /></p></td><td>When splitting the string on space characters, the position of the recipient was replaced by an empty string</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image80.png" style="width:1.95604in;height:0.42347in" /></p><p>Server Part 1:</p><p><img src="./media/image81.png" style="width:2.57826in;height:0.14358in" /></p><p><img src="./media/image81.png" style="width:2.56957in;height:0.14885in" /></p><p>Server Part 2:</p><p><img src="./media/image82.png" style="width:2.57113in;height:0.18472in" /></p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td><p>Expected output</p><p><img src="./media/image83.png" style="width:1.29384in;height:0.72367in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
+<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 56%" /><col style="width: 30%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image57.png" style="width:1.74904in;height:0.41532in" /></p><p>Server:</p><p><img src="./media/image58.png" style="width:1.33742in;height:0.16211in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>2</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image59.png" style="width:1.67986in;height:0.37398in" /></p><p>Server:</p><p><img src="./media/image60.png" style="width:2.58282in;height:0.17622in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>3</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image59.png" style="width:1.91007in;height:0.42524in" /></p><p>Server:</p><p><img src="./media/image60.png" style="width:2.58264in;height:0.1762in" /></p></td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message. This is good as it meant an data validation from other tests was working as expected</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender (127.0.0.1:62839):</p><p><img src="./media/image61.png" style="width:1.70144in;height:0.41437in" /></p><p>Recipient (127.0.0.1:63008):</p><p><img src="./media/image62.png" style="width:1.7446in;height:0.40557in" /></p><p>Server:</p><p><img src="./media/image63.png" style="width:2.11656in;height:0.25886in" /></p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server. This will need to be addressed in a following iteration</td></tr><tr class="odd"><td>5</td><td>Pass</td><td><p>Client:<br />
+<img src="./media/image64.png" style="width:2.31319in;height:0.4086in" /></p><p>Server:</p><p><img src="./media/image65.png" style="width:3.28221in;height:0.19273in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>6</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image66.png" style="width:1.90659in;height:0.43484in" /></p><p>Server:</p><p><img src="./media/image67.png" style="width:2.6319in;height:0.18027in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>7</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image68.png" style="width:2.30521in;height:0.39835in" /></p><p>Server:</p><p><img src="./media/image69.png" style="width:3.41791in;height:0.17696in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>8</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image70.png" style="width:2.2678in;height:0.39326in" /></p><p>Server:</p><p><img src="./media/image71.png" style="width:3.37421in;height:0.17101in" /></p></td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message. This is good as it meant an error was not thrown</td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image72.png" style="width:1.80256in;height:0.40659in" /></p><p>Server:</p><p><img src="./media/image73.png" style="width:2.83742in;height:0.17477in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image74.png" style="width:2.06593in;height:0.45831in" /></p><p>Server:</p><p><img src="./media/image75.png" style="width:2.60736in;height:0.18226in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>12</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image76.png" style="width:2.02198in;height:0.44552in" /></p><p>Server:</p><p><img src="./media/image77.png" style="width:1.3777in;height:0.17353in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>13</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image78.png" style="width:1.83517in;height:0.3937in" /></p><p>Server:</p><p><img src="./media/image79.png" style="width:2.45092in;height:0.17797in" /></p></td><td>When splitting the string on space characters, the recipient parameter was replaced by an empty string.</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image80.png" style="width:1.95604in;height:0.42347in" /></p><p>Server Part 1:</p><p><img src="./media/image81.png" style="width:2.57826in;height:0.14358in" /></p><p><img src="./media/image81.png" style="width:2.56957in;height:0.14885in" /></p><p>Server Part 2:</p><p><img src="./media/image82.png" style="width:2.57113in;height:0.18472in" /></p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td><p>Expected output</p><p><img src="./media/image83.png" style="width:1.29384in;height:0.72367in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
 
-The failure of tests 3 and 8 was not a problem, they only failed because the data sanitisation did not allow the introduced malformations to reach the targeted conditionals. I will investigate removing these conditionals as if they are never reached there is no need to keep them in the code.
+The failure of tests 3 and 8 was not a problem, they only failed because the data sanitisation did not allow the introduced malformations to reach the targeted conditionals. Even those this is not what was being tested, it shows that the program’s data validation is effectively fixing malformed inputs.
 
-Test 4 not producing the expected output was expected as the lack of a receive loop was identified in *3.2.7* *SEND command handling* as well as the necessary steps to solve the problem.
+Test 4 not producing the expected output was expected as the lack of a receive loop was identified in *3.2.7* *SEND command handling*. I will aim to implement a receive loop in the next iterations as this is what is needed to fix this error.
 
-The failure of tests 10, 15, 16 and 17 was unexpected. During the next development cycle, I will investigate the errors that were thrown causing the program to hang in a debugging environment and do the necessary changes to the code. Since they were all client-side errors, they will likely be mitigated by checking the contents of fields and status of buttons before allowing any action to begin.
+The failure of tests 10, 15, 16 and 17 was unexpected. These error all stemmed from the client and server not communicating their status with each other. To fix this a heartbeat could be implemented between the client and server so if either party does not get the expected reply, they know that the other party is not online. Another way to prevent these errors is limited the usage of buttons on the client’s program until the client has connected to the server. I will look into implementing these fixes in the next iteration.
 
-Lastly, test 14 failed. This can be solved by adding a limit on the maximum number of characters allowed in the client program so that no transmission is greater than 2048 bytes.
+Lastly, test 14 failed. This can be solved by adding a limit on the maximum number of characters allowed in the client program so that no transmission is greater than 2048 bytes. This value of 2048 is from the buffer size used to process the transmission. Therefore, another fix would be to increase the buffer size. However, I will likely limit the number of characters allowed as this solution to the problem is more extensible compared to increasing the buffer size.
 
 ## Iteration 2
 
@@ -1161,9 +1157,9 @@ On the server side, the dictionary that contains the relations between clients a
 
 Figure 26. MessengerAppServer.CSVHandler
 
-This class handles reading data from AccountCredentials.csv by the server. When called it reads the file and transforms each record into an Account object. The Account class has attributes corresponding to each header in the CSV (Username, Password) and no methods, it merely exists to hold data. The list of Account objects is then returned to the program so that it can be searched as seen above in the 3.8.2 Login procedure.
+This class handles reading data from AccountCredentials.csv by the server. When called it reads the file and transforms each record into an Account object. The Account class has attributes corresponding to each header in the CSV (Username, Password) and no methods, it merely exists to hold data. The list of Account objects is then returned to the program so that it can be searched as seen above in the *3.8.2* *Login procedure*.
 
-Currently, there are no restrictions on allowed usernames and passwords since there is no way to create an account (all the test records in AccountCredentials.csv are from manual input). When I do implement an account creation system, I need to consider the following standardised usernames as raised in 1.4.1 Stakeholder Requirements. To define the rules for the usernames and passwords I will use the grammar below.
+Currently, there are no restrictions on allowed usernames and passwords since there is no way to create an account (all the test records in AccountCredentials.csv are from manual input). When I do implement an account creation system, I need to consider the following standardised usernames as raised in *1.4.1* *Stakeholder Requirements*. To define the rules for the usernames and passwords I will use the grammar below.
 
 <table><colgroup><col style="width: 100%" /></colgroup><thead><tr class="header"><th>Username and password grammar (EBNF)</th></tr></thead><tbody><tr class="odd"><td><p>upper ::= [A-Z]</p><p>lower ::= [a-z]</p><p>digit ::= [0-9]</p><p>special ::= "$" | "#" | "@" | "!" | "%" | "^" | "&amp;" | "*"</p><p>character ::= [A-Z] | [a-z] | [0-9] | special</p><p>first_name ::= upper { lower }</p><p>last_name ::= upper { lower | "-" upper }</p><p>username ::= first_name [ "_" last_name ]</p><p>password ::= character { character }</p></td></tr></tbody></table>
 
@@ -1177,13 +1173,13 @@ As all login attempts are processed by the server by checking the supplied crede
 
 Figure 27. MessengerAppClient.LoginViewModel.LoginButton
 
-This function is called when the user clicks the “Log in” button on the login dialogue (as seen in 3.10 Iteration 2, Client UI). The contents of the username and password field are used to create a new MessageLogin object. This object is then sent to the server and the server’s response is received. The UI fields are also cleared.
+This function is called when the user clicks the “Log in” button on the login dialogue (as seen *in* *3.10* *Iteration 2, Client UI*). The contents of the username and password field are used to create a new MessageLogin object. This object is then sent to the server and the server’s response is received. The UI fields are also cleared.
 
 In future iterations, I plan to add data validation to ensure that UsernameInput and PasswordInput are not empty when this function is called. Currently, zero-length strings do not cause errors, although they may cause issues once hashing and encryption are introduced.
 
 Another change that needs to be implemented is the move away from the one-to-one send and receive messages between the client and server. In the last iteration, this was the cause of the timing issues seen in test ID 4 in *3.5.2* *Testing results*: it caused a queue of transmissions to build upon the server’s socket that only dequeued when the client sent a message. I plan to fix this by implementing an infinite receiving loop on the client giving a one-to-many relation instead.
 
-When a response is received from the server, the client shows a pop-up box to the user containing the response. This is fine for testing, although for the program to be functional and success criterion 4 to be satisfied the client should do something different: if the response is for a valid login, pass the user onto the messaging screen; if the response is for an invalid login, continue showing the login screen (as already mentioned in 3.7.2 Login procedure).
+When a response is received from the server, the client shows a pop-up box to the user containing the response. This is fine for testing, although for the program to be functional and success criterion 4 to be satisfied the client should do something different: if the response is for a valid login, pass the user onto the messaging screen; if the response is for an invalid login, continue showing the login screen (as already mentioned in *3.7.2* *Login procedure*).
 
 #### Login screen 
 
@@ -1262,57 +1258,57 @@ All logins are checked by the server against the AccountCredentials.csv file to 
   [1.2.1 Existing Program – Discord 5]: #existing-program-discord
   [1.2.2 Existing Solution – Internet Relay Chat (IRC) 8]: #existing-solution-internet-relay-chat-irc
   [1.2.3 Existing Program – Telegram 11]: #existing-program-telegram
-  [1.2.4 Existing Program – WhatsApp 13]: #existing-program-whatsapp
-  [1.3 Stakeholders 15]: #stakeholders
-  [1.3.1 Interview with Ethan Sandy 15]: #interview-with-ethan-sandy
-  [1.3.2 Survey Aims 18]: #survey-aims
-  [1.3.3 Survey Results 18]: #survey-results
-  [1.4 Requirements 23]: #requirements
-  [1.4.1 Stakeholder Requirements 23]: #stakeholder-requirements
-  [1.4.2 Software Requirements 24]: #software-requirements
-  [1.4.3 Limitations 24]: #limitations
-  [1.5 Success Criteria 25]: #success-criteria
-  [2 Design 27]: #design
-  [2.1 System Decomposition 27]: #system-decomposition
-  [2.2 User Design Requirements 31]: #user-design-requirements
-  [2.2.1 Primary User Requirements 31]: #primary-user-requirements
-  [2.2.2 Secondary User Requirements 31]: #secondary-user-requirements
-  [2.3 Initial Design 32]: #initial-design
-  [2.3.1 Design Specification 32]: #design-specification
-  [2.3.2 Initial Designs 32]: #initial-designs
-  [2.4 Interface Design 33]: #interface-design
-  [2.4.1 Interface Designs 33]: #interface-designs
-  [2.4.2 Interface Feedback 38]: #interface-feedback
-  [2.4.3 Improved Interface 38]: #improved-interface
-  [2.5 Interface Features 39]: #interface-features
-  [2.5.1 User Experience 39]: #user-experience
-  [2.5.2 Usability Features 40]: #usability-features
-  [2.5.3 Input Validation 41]: #input-validation
-  [2.6 Internal Structures 42]: #internal-structures
-  [2.6.1 Client Algorithm – Logging in 42]: #client-algorithm-logging-in
-  [2.6.2 Client Algorithm – Creating a new user account (1) 43]: #client-algorithm-creating-a-new-user-account-1
-  [2.6.3 Client Algorithm – Creating a new user account (2) 45]: #client-algorithm-creating-a-new-user-account-2
-  [2.6.4 File Organisation 46]: #file-organisation
-  [2.6.5 Variables 46]: #variables
-  [2.6.6 Class Diagrams 46]: #class-diagrams
-  [2.7 Final Design 47]: #final-design
-  [2.7.1 Final Design 47]: #final-design-1
-  [2.7.2 System Walkthrough 47]: #system-walkthrough
-  [2.8 Testing Strategy 48]: #testing-strategy
-  [2.8.1 Testing algorithms 48]: #testing-algorithms
-  [3 Development 49]: #development
-  [3.1 Iteration 1 49]: #iteration-1
-  [3.1.1 Shared 49]: #shared
-  [3.1.2 Server 52]: #server
-  [3.1.3 Client 59]: #client
-  [3.1.4 Testing 61]: #testing
-  [3.2 Iteration 2 65]: #iteration-2
-  [3.2.1 Plan 65]: #plan
-  [3.2.2 Shared 66]: #shared-1
-  [3.2.3 Server 68]: #server-1
-  [3.2.4 Client 71]: #client-1
+  [1.2.4 Existing Program – WhatsApp 12]: #existing-program-whatsapp
+  [1.3 Stakeholders 13]: #stakeholders
+  [1.3.1 Interview with Ethan Sandy 13]: #interview-with-ethan-sandy
+  [1.3.2 Survey Aims 16]: #survey-aims
+  [1.3.3 Survey Results 16]: #survey-results
+  [1.4 Requirements 21]: #requirements
+  [1.4.1 Stakeholder Requirements 21]: #stakeholder-requirements
+  [1.4.2 Software Requirements 22]: #software-requirements
+  [1.4.3 Limitations 22]: #limitations
+  [1.5 Success Criteria 23]: #success-criteria
+  [2 Design 25]: #design
+  [2.1 System Decomposition 25]: #system-decomposition
+  [2.2 User Design Requirements 29]: #user-design-requirements
+  [2.2.1 Primary User Requirements 29]: #primary-user-requirements
+  [2.2.2 Secondary User Requirements 29]: #secondary-user-requirements
+  [2.3 Initial Design 30]: #initial-design
+  [2.3.1 Design Specification 30]: #design-specification
+  [2.3.2 Initial Designs 30]: #initial-designs
+  [2.4 Interface Design 31]: #interface-design
+  [2.4.1 Interface Designs 31]: #interface-designs
+  [2.4.2 Interface Feedback 36]: #interface-feedback
+  [2.4.3 Improved Interface 36]: #improved-interface
+  [2.5 Interface Features 37]: #interface-features
+  [2.5.1 User Experience 37]: #user-experience
+  [2.5.2 Usability Features 38]: #usability-features
+  [2.5.3 Input Validation 39]: #input-validation
+  [2.6 Internal Structures 40]: #internal-structures
+  [2.6.1 Client Algorithm – Logging in 40]: #client-algorithm-logging-in
+  [2.6.2 Client Algorithm – Creating a new user account (1) 41]: #client-algorithm-creating-a-new-user-account-1
+  [2.6.3 Client Algorithm – Creating a new user account (2) 43]: #client-algorithm-creating-a-new-user-account-2
+  [2.6.4 File Organisation 44]: #file-organisation
+  [2.6.5 Variables 44]: #variables
+  [2.6.6 Class Diagrams 44]: #class-diagrams
+  [2.7 Final Design 45]: #final-design
+  [2.7.1 Final Design 45]: #final-design-1
+  [2.7.2 System Walkthrough 45]: #system-walkthrough
+  [2.8 Testing Strategy 46]: #testing-strategy
+  [2.8.1 Testing algorithms 46]: #testing-algorithms
+  [3 Development 47]: #development
+  [3.1 Iteration 1 47]: #iteration-1
+  [3.1.1 Shared 47]: #shared
+  [3.1.2 Server 50]: #server
+  [3.1.3 Client 57]: #client
+  [3.1.4 Testing 59]: #testing
+  [3.2 Iteration 2 63]: #iteration-2
+  [3.2.1 Plan 63]: #plan
+  [3.2.2 Shared 64]: #shared-1
+  [3.2.3 Server 66]: #server-1
+  [3.2.4 Client 69]: #client-1
   [3.2.5 Testing 1]: #testing-1
   [3.2.6 Evaluation 4]: #evaluation
   [4 Evaluation 5]: #evaluation-1
-  [5 References 6]: #_Toc89883099
+  [5 References 6]: #_Toc92282998
   [WeeChat.org]: https://weechat.org/about/screenshots/

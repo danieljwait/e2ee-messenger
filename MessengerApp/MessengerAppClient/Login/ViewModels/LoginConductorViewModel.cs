@@ -20,6 +20,7 @@ namespace MessengerAppClient.Login.ViewModels
             _signupViewModel = signupViewModel;
         }
 
+        // When instantiated, begin listening to EventAggregator and show LoginViewModel
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -27,12 +28,14 @@ namespace MessengerAppClient.Login.ViewModels
             ActivateItem(_loginViewModel);
         }
 
+        // When deleted, stop listening to EventAggregator
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
             _eventAggregator.Unsubscribe(this);
         }
 
+        // Determine which Screen to show using attribute of message
         public void Handle(NavigateMessage message)
         {
             switch (message.NavigateTo)

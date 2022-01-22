@@ -1,4 +1,4 @@
-﻿namespace MessengerAppClient.Login.Messages
+﻿namespace MessengerAppClient.Shell.Messages
 {
     public sealed class ValidLoginMessage
     {

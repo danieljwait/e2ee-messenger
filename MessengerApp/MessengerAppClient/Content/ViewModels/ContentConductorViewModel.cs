@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using MessengerAppClient.Content.Message;
+using MessengerAppClient.Content.Messages;
 
 namespace MessengerAppClient.Content.ViewModels
 {
@@ -24,6 +24,7 @@ namespace MessengerAppClient.Content.ViewModels
             _settingsViewModel = settingsViewModel;
         }
 
+        // When instantiated, begin listening to EventAggregator and show HomeViewModel
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -31,12 +32,14 @@ namespace MessengerAppClient.Content.ViewModels
             ActivateItem(_homeViewModel);
         }
 
+        // When deleted, stop listening to EventAggregator
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
             _eventAggregator.Unsubscribe(this);
         }
 
+        // Determine which Screen to show using attribute of message
         public void Handle(NavigateMessage message)
         {
             switch (message.NavigateTo)

@@ -1,10 +1,9 @@
 ﻿using Caliburn.Micro;
-using MessengerAppClient.Content.Message;
 using MessengerAppClient.Content.ViewModels;
-using MessengerAppClient.Login.Messages;
 using MessengerAppClient.Login.ViewModels;
+using MessengerAppClient.Shell.Messages;
 
-namespace MessengerAppClient
+namespace MessengerAppClient.Shell.ViewModels
 {
     public class ShellViewModel : Conductor<Screen>.Collection.OneActive,
         IHandle<ValidLoginMessage>, IHandle<LogOutMessage>
@@ -21,10 +20,9 @@ namespace MessengerAppClient
             _eventAggregator = eventAggregator;
             _loginConductorViewModel = loginConductorViewModel;
             _contentConductorViewModel = contentConductorViewModel;
-
-            Items.AddRange(new Screen[] { _loginConductorViewModel, _contentConductorViewModel });
         }
 
+        // When instantiated, begin listening to EventAggregator and show LoginConductorViewModel
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -32,17 +30,22 @@ namespace MessengerAppClient
             ActivateItem(_loginConductorViewModel);
         }
 
+        // When deleted, stop listening to EventAggregator
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
             _eventAggregator.Unsubscribe(this);
         }
 
+        // Activate Messaging Conductor
+        // Deactivate Login Conductor
         public void Handle(ValidLoginMessage message)
         {
             ActivateItem(_contentConductorViewModel);
         }
 
+        // Activate Login Conductor
+        // Deactivate Messaging Conductor
         public void Handle(LogOutMessage message)
         {
             ActivateItem(_loginConductorViewModel);

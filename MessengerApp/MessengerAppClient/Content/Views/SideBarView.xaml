@@ -10,13 +10,8 @@
     <!-- Style gives all buttons set dimensions -->
     <UserControl.Resources>
         <Style TargetType="Button">
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="Margin" Value="10"/>
-                    <Setter Property="Height" Value="50"/>
-                    <Setter Property="Width" Value="100"/>
-                </Style>
-            </Style.Resources>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="10"/>
         </Style>
     </UserControl.Resources>
 
@@ -25,6 +20,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Row="0">
             <Button x:Name="NavigateHome" Content="Home"/>

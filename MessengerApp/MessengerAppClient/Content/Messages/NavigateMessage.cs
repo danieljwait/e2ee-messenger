@@ -1,4 +1,4 @@
-﻿namespace MessengerAppClient.Content.Message
+﻿namespace MessengerAppClient.Content.Messages
 {
     public sealed class NavigateMessage
     {

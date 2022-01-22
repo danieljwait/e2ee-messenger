@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using MessengerAppClient.Login.Messages;
+using MessengerAppClient.Shell.Messages;
 using MessengerAppClient.Model;
 using MessengerAppShared;
 using System;
@@ -70,12 +71,15 @@ namespace MessengerAppClient.Login.ViewModels
             socket.ReceiveObject(socket.Socket);
             /**/
 
+            // Tell Conductor to navigate to HomeViewModel
+            // Need to reconnect logic to authorise login first
             _eventAggregator.PublishOnUIThread(new ValidLoginMessage());
         }
 
         // TODO: Implement Signup (not priority now)
         public void SignupButton()
         {
+            // Tell Conductor to navigate to the SignupViewModel
             _eventAggregator.PublishOnUIThread(new NavigateMessage(LoginPage.Signup));
         }
     }

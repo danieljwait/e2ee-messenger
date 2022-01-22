@@ -1,4 +1,4 @@
-﻿namespace MessengerAppClient.Content.Message
+﻿namespace MessengerAppClient.Shell.Messages
 {
     public sealed class LogOutMessage
     {

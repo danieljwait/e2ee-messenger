@@ -4,7 +4,7 @@ using MessengerAppClient.Login.Messages;
 namespace MessengerAppClient.Login.ViewModels
 {
     public class LoginConductorViewModel : Conductor<Screen>.Collection.OneActive,
-        IHandle<NavigateMessage>
+        IHandle<LoginNavMessage>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly LoginViewModel _loginViewModel;
@@ -36,16 +36,18 @@ namespace MessengerAppClient.Login.ViewModels
         }
 
         // Determine which Screen to show using attribute of message
-        public void Handle(NavigateMessage message)
+        public void Handle(LoginNavMessage message)
         {
             switch (message.NavigateTo)
             {
                 case LoginPage.Login:
                     ActivateItem(_loginViewModel);
                     break;
+
                 case LoginPage.Signup:
                     ActivateItem(_signupViewModel);
                     break;
+
                 default:
                     break;
             }

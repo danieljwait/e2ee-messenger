@@ -4,7 +4,7 @@ using MessengerAppClient.Content.Messages;
 namespace MessengerAppClient.Content.ViewModels
 {
     public class ContentConductorViewModel : Conductor<Screen>.Collection.OneActive,
-        IHandle<NavigateMessage>
+        IHandle<ContentNavMessage>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly HomeViewModel _homeViewModel;
@@ -40,17 +40,16 @@ namespace MessengerAppClient.Content.ViewModels
         }
 
         // Determine which Screen to show using attribute of message
-        public void Handle(NavigateMessage message)
+        public void Handle(ContentNavMessage message)
         {
             switch (message.NavigateTo)
             {
                 case ContentPage.Home:
                     ActivateItem(_homeViewModel);
                     break;
+
                 case ContentPage.Settings:
                     ActivateItem(_settingsViewModel);
-                    break;
-                default:
                     break;
             }
         }

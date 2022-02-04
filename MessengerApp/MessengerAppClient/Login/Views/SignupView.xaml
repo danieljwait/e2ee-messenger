@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MessengerAppClient.Login.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -17,9 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
@@ -29,27 +28,29 @@
             HorizontalAlignment="Center" VerticalAlignment="Center"
             FontSize="30" FontWeight="Bold"/>
 
-        <!-- Username field R2 C2 -->
-        <StackPanel Grid.Row="2" Grid.Column="2">
-            <TextBlock Text="Username:"/>
-            <!-- TODO: Auto focus cursor on username field upon startup -->
-            <TextBox x:Name="UsernameInput" IsEnabled="False"/>
-        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Center">
+            <!-- Username field R2 C2 -->
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Username:" Margin="0,5"/>
+                <!-- TODO: Auto focus cursor on username field upon startup -->
+                <TextBox x:Name="UsernameInput" IsEnabled="False"  Padding="5"/>
+            </StackPanel>
 
-        <!-- Password field R3 C2 -->
-        <StackPanel Grid.Row="3" Grid.Column="2">
-            <TextBlock Text="Password:"/>
-            <!-- TODO: Disable CTRL+C and CTRL+V in password form -->
-            <TextBox x:Name="PasswordInput" IsEnabled="False"
-                     FontFamily="{StaticResource PasswordFont}"/>
+            <!-- Password field R3 C2 -->
+            <StackPanel  Margin="0,10">
+                <TextBlock Text="Password:" Margin="0,5"/>
+                <!-- TODO: Disable CTRL+C and CTRL+V in password form -->
+                <TextBox x:Name="PasswordInput" IsEnabled="False"  Padding="5"
+                         FontFamily="{StaticResource PasswordFont}"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Coloured background behind buttons R(5-6) C* -->
         <Rectangle Grid.ColumnSpan="5" Grid.RowSpan="2"
-                Grid.Column="0" Grid.Row="5" Fill="{DynamicResource AccentColour}"/>
+                Grid.Column="0" Grid.Row="3" Fill="{DynamicResource AccentColour}"/>
 
         <!-- Login and signup button R5 C2 -->
-        <StackPanel Grid.Row="5" Grid.Column="2">
+        <StackPanel Grid.Row="3" Grid.Column="2">
             <Button Margin="0,25,0,20" Width="175" Height="50"
                 x:Name="SignupButton" Content="Sign up" IsDefault="True" IsEnabled="False"/>
             <Button Width="75" Height="30"

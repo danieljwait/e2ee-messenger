@@ -2,6 +2,7 @@
 using Caliburn.Micro.Autofac;
 using MessengerAppClient.Content.ViewModels;
 using MessengerAppClient.Login.ViewModels;
+using MessengerAppClient.Shell.Models;
 using MessengerAppClient.Shell.ViewModels;
 using System.Windows;
 
@@ -9,7 +10,6 @@ namespace MessengerAppClient
 {
     public class Bootstrapper : AutofacBootstrapper<ShellViewModel>
     {
-
         public Bootstrapper()
         {
             Initialize();
@@ -21,6 +21,7 @@ namespace MessengerAppClient
 
             // ViewModel which is loaded by the bootstrapper
             builder.RegisterType<ShellViewModel>().SingleInstance();
+            builder.RegisterType<SocketHandler>().SingleInstance();
 
             // ViewModels for the Login
             builder.RegisterType<LoginConductorViewModel>().SingleInstance();
@@ -42,9 +43,9 @@ namespace MessengerAppClient
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            // DisplayRootViewFor<T> was changed in CaliburnMicro>=v4.0
-            // See caliburnmicro.com/documentation/bootstrapper
-            // So v3.2.0 is used instead
+            // Note:
+            //     DisplayRootViewFor<T> was changed in CaliburnMicro>=v4.0 so v3.2.0 is used instead
+            //     See caliburnmicro.com/documentation/bootstrapper
             DisplayRootViewFor<ShellViewModel>();
         }
     }

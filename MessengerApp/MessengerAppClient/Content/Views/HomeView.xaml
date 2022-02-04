@@ -4,43 +4,78 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+             xmlns:viewmodels="clr-namespace:MessengerAppClient.Content.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="170"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
+        <!-- Select recipient combo box -->
+        <DockPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Grid.ColumnSpan="1">
+            <TextBlock Text="Select recipient: " VerticalAlignment="Center"/>
+            <ComboBox x:Name="Users" SelectedItem="{Binding SelectedUser}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Username}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+
         <!-- Message output area R1 C1 -->
-        <Border Grid.Row="1" Grid.Column="1" Margin="5"
-                BorderBrush="LightGray" BorderThickness="2">
-            <ScrollViewer VerticalScrollBarVisibility="Visible">
-                <StackPanel>
-                    <TextBlock x:Name="MessageReceived" Text=""/>
-                </StackPanel>
+        <Border Grid.Row="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="1">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding SelectedUser.Messages}">
+                    <ItemsControl.Resources>
+                        
+                        <!-- Inbound messages -->
+                        <DataTemplate DataType="{x:Type viewmodels:InboundMessageViewModel}">
+                            <local:InboundMessageView DataContext="{Binding}"/>
+                        </DataTemplate>
+                        
+                        <!-- Outbound messages -->
+                        <DataTemplate DataType="{x:Type viewmodels:OutboundMessageViewModel}">
+                            <local:OutboundMessageView DataContext="{Binding}"/>
+                        </DataTemplate>
+                        
+                        <!-- Unknown/default messages -->
+                        <DataTemplate DataType="{x:Type viewmodels:BaseMessageViewModel}">
+                            <local:BaseMessageView DataContext="{Binding}"/>
+                        </DataTemplate>
+                        
+                    </ItemsControl.Resources>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel VerticalAlignment="Bottom" Margin="10,0"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
             </ScrollViewer>
         </Border>
 
-        <!-- Right pane with connection button and status R1 C2 -->
-        <StackPanel Grid.Row="1" Grid.Column="2">
-            <Button x:Name="Connect" Margin="5"
-                    Content="Connect to server"/>
-            <TextBlock x:Name="ConnectionStatus" Text="[connection status]" Margin="5" HorizontalAlignment="Center"/>
-        </StackPanel>
-
         <!-- Message input box and send button R2 C1 -->
-        <TextBox x:Name="MessageToSend" Grid.Row="2" Grid.Column="1" Margin="5"
-                 Text=""/>
-        <Button x:Name="SendMessage" Grid.Row="2" Grid.Column="2" Margin="5"
-                Content="Send message" IsDefault="True"/>
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="MessageToSend" Margin="0,10,0,0"
+                     VerticalAlignment="Center" Padding="5"
+                     Text="Type your message here..."/>
+            <Button Grid.Column="1" x:Name="SendMessage" Margin="10,10,0,0"
+                    Content="Send" IsDefault="True"/>
+        </Grid>
+
     </Grid>
 </UserControl>

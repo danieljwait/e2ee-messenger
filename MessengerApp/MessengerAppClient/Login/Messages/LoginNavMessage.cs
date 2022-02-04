@@ -1,10 +1,10 @@
 ﻿namespace MessengerAppClient.Login.Messages
 {
-    public sealed class NavigateMessage
+    public sealed class LoginNavMessage
     {
         public LoginPage NavigateTo;
 
-        public NavigateMessage(LoginPage navigateTo)
+        public LoginNavMessage(LoginPage navigateTo)
         {
             NavigateTo = navigateTo;
         }

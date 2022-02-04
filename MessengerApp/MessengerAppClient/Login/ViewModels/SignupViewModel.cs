@@ -15,7 +15,8 @@ namespace MessengerAppClient.Login.ViewModels
         public void BackToLoginButton()
         {
             // Tells Conductor to navigate back to LoginViewModel
-            _eventAggregator.PublishOnUIThread(new NavigateMessage(LoginPage.Login));
+            var InternalMessage = new LoginNavMessage(LoginPage.Login);
+            _eventAggregator.PublishOnUIThread(InternalMessage);
         }
     }
 }

@@ -30,6 +30,11 @@
             <Button x:Name="NavigateSettings" Content="Settings"/>
         </StackPanel>
 
-        <Button x:Name="NavigateLogOut" Content="Log Out" Grid.Row="1"/>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Logged in as:" TextAlignment="Center"/>
+            <TextBlock x:Name="Username" TextAlignment="Center"/>
+            <Button x:Name="NavigateLogOut" Content="Log Out"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

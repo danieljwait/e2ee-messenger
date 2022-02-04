@@ -1,10 +1,10 @@
 ﻿namespace MessengerAppClient.Content.Messages
 {
-    public sealed class NavigateMessage
+    public sealed class ContentNavMessage
     {
         public ContentPage NavigateTo;
 
-        public NavigateMessage(ContentPage navigateTo)
+        public ContentNavMessage(ContentPage navigateTo)
         {
             NavigateTo = navigateTo;
         }

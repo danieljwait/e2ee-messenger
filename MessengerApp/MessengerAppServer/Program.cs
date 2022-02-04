@@ -16,8 +16,6 @@ namespace MessengerAppServer
             // User presses enter to close the server
             _ = Console.ReadLine();
             serverSocket.Stop();
-
-            // TODO: Fix errors when closing server by ending all client threads
         }
     }
 }

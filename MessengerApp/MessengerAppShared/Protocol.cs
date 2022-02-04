@@ -1,30 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace MessengerAppShared
 {
-    // Base class for all objects sent through network
-    [Serializable]
-    public abstract class MessageBase
+    public static class Protocol
     {
-        // TODO: Remove text-based networking from ShellViewModel
-        // Helper: String -> Binary
-        public static byte[] StringToBinary(string input)
-        {
-            return Encoding.UTF8.GetBytes(input);
-        }
-
-        // Helper: Binary -> String
-        public static string BinaryToString(byte[] input)
-        {
-            return Encoding.UTF8.GetString(input);
-        }
-
-        // Object -> Object's binary
-        public static byte[] Serialise(object to_serialise)
+        public static byte[] Serialise(object data)
         {
             // Creates stream to handle data
             using (MemoryStream memory_stream = new MemoryStream())
@@ -32,13 +15,12 @@ namespace MessengerAppShared
                 // Binary formatter traverses object converting it all to binary
                 BinaryFormatter binary_formatter = new BinaryFormatter();
                 // Object is serialised into the stream of binary
-                binary_formatter.Serialize(memory_stream, to_serialise);
+                binary_formatter.Serialize(memory_stream, data);
 
                 return memory_stream.ToArray();
             }
         }
 
-        // Object's binary -> Object
         public static object Deserialise(byte[] data)
         {
             // Binary array converted into a Stream
@@ -51,6 +33,23 @@ namespace MessengerAppShared
 
                 return deserialised_object;
             }
+        }
+
+        // Extracts and deserialises an object from an AsyncResult
+        public static object GetObject(IAsyncResult asyncResult, byte[] buffer)
+        {
+            // Recreates socket to handle connection
+            Socket socketHandler = (Socket)asyncResult.AsyncState;
+
+            // Reads data to buffer, gets the number of bytes received
+            int received_binary = socketHandler.EndReceive(asyncResult);
+            // Creates array to hold the data received
+            byte[] dataBuffer = new byte[received_binary];
+            // Copy received bytes to actual binary array
+            Array.Copy(buffer, dataBuffer, received_binary);
+
+            // Deserialises object from binary
+            return Deserialise(dataBuffer);
         }
     }
 }

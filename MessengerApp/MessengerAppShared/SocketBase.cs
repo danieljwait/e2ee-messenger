@@ -21,17 +21,6 @@ namespace MessengerAppShared
             Socket = new Socket(EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
 
-        // Boolean of connection status
-        public static bool IsConnected(Socket socket)
-        {
-            try
-            {
-                // True if client socket responds to poll and data is available to receive
-                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
-            }
-            catch (SocketException) { return false; }
-        }
-
         // Close and dispose of socket
         public void Disconnect()
         {

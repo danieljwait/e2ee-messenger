@@ -20,16 +20,17 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
         
+        <!-- Home and Settings buttons -->
         <StackPanel Grid.Row="0">
             <Button x:Name="NavigateHome" Content="Home"/>
             <Button x:Name="NavigateSettings" Content="Settings"/>
         </StackPanel>
 
+        <!-- Username and Log Out button -->
         <StackPanel Grid.Row="1">
             <TextBlock Text="Logged in as:" TextAlignment="Center"/>
             <TextBlock x:Name="Username" TextAlignment="Center"/>

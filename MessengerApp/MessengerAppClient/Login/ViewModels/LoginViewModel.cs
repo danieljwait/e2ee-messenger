@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using MessengerAppClient.Login.Messages;
 using MessengerAppClient.Shell.Messages;
-using System.Collections.Generic;
 using MessengerAppShared.Messages;
+using System.Collections.Generic;
 
 namespace MessengerAppClient.Login.ViewModels
 {

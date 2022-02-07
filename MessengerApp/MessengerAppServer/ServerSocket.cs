@@ -44,9 +44,14 @@ namespace MessengerAppServer
             PrintMessage("Stopping server...");
 
             // Try used in case errors are thrown
-            try { Disconnect(); }
-            // TODO: Find cause of exception causing clients to disconnect
-            catch (Exception e) { PrintMessage("Error: " + e.Message); }
+            try
+            {
+                Disconnect();
+            }
+            catch (Exception e)
+            {
+                PrintMessage("Error: " + e.Message);
+            }
 
             PrintMessage("Server stopped");
         }
@@ -77,8 +82,8 @@ namespace MessengerAppServer
         // Finishes receive of data from client, then starts loop again
         private void ReceiveObjectCallback(IAsyncResult asyncResult)
         {
-            //try
-            //{
+            try
+            {
                 // Recreates socket to handle connection
                 Socket socketHandler = (Socket)asyncResult.AsyncState;
                 // Deserialises object from binary
@@ -96,12 +101,12 @@ namespace MessengerAppServer
 
                 // Continues infinite receive loop
                 ReceiveObject(socketHandler);
-            //}
-            //catch (Exception e)
-            //{
-            //    PrintMessage($"Error: {e.Message}");
-            //    PrintMessage($"Action: Ending conversation with culprit client");
-            //}
+            }
+            catch (Exception e)
+            {
+                PrintMessage($"Error: {e.Message}");
+                PrintMessage($"Action: Ending conversation with culprit client");
+            }
         }
 
         // Moves user from not authorised status to authorised
@@ -118,11 +123,13 @@ namespace MessengerAppServer
         // Sends all connected users the new user
         private void TellClientUserConnect(string username)
         {
+            var credentials = CSVHandler.GetUserPublicCredentials(username);
+
             // For each connected and authorised client
             foreach (Socket connectedSocket in AuthedUsers.Values)
             {
                 // Send new username
-                var ClientMessage = new ServerToClientMessage(ServerCommand.ClientConnect, username);
+                var ClientMessage = new ServerToClientMessage(ServerCommand.ClientConnect, credentials);
                 SendToClient(ClientMessage, connectedSocket);
             }
 
@@ -145,11 +152,16 @@ namespace MessengerAppServer
 
         private void SendClientList(Socket client_socket)
         {
-            List<string> clients = AuthedUsers.Keys.ToList();
-            var ClientMessage = new ServerToClientMessage(ServerCommand.SendClientsList, clients);
+            // List of online users' usernames
+            var online_clients = AuthedUsers.Keys.ToList();
+
+            // List of credentials of online users
+            var client_credentials = CSVHandler.GetMutiPublicCredentials(online_clients);
+
+            var ClientMessage = new ServerToClientMessage(ServerCommand.SendClientsList, client_credentials);
             SendToClient(ClientMessage, client_socket);
 
-            PrintMessage($"Sent {AuthedUsersReverse[client_socket]} list of clients");
+            PrintMessage($"Sent {AuthedUsersReverse[client_socket]} list of clients' credentials");
         }
 
         // Adds a user who is not logged in
@@ -241,13 +253,13 @@ namespace MessengerAppServer
         private bool CheckCredentials(string username, string password)
         {
             // Gets all the credentials from the CSV
-            IEnumerable<Account> accounts = CSVHandler.GetAccounts();
+            IEnumerable<AccountModel> accounts = CSVHandler.GetAllAccounts();
 
             // Compares the username and password against all of those in the CSV
-            foreach (Account account in accounts)
+            foreach (AccountModel account in accounts)
             {
-                // If there is a match, set login flag and break loop
-                if (account.Username == username && account.Password == password)
+                // If there is a match who is not already logged in, set login flag and break loop
+                if (account.Username == username && account.Password == password && !AuthedUsers.ContainsKey(username))
                 {
                     return true;
                 }
@@ -258,47 +270,51 @@ namespace MessengerAppServer
         }
 
         // Processes a login request
-        private void VerifyLogin(Socket socket, Dictionary<string, string> credentials)
+        private void VerifyLogin(Socket socket, Dictionary<string, string> attempted_credentials)
         {
-            // Prepare object to be returned to user, missing success/failure flag
-            var response = new ServerToClientMessage(ServerCommand.LoginResult);
-
             // Checks CSV for credentials pair
-            if (CheckCredentials(credentials["Username"], credentials["Password"]))
+            if (CheckCredentials(attempted_credentials["Username"], attempted_credentials["Password"]))
             {
-                // Gets user's details to send back to client
-                var user_credentials = new Dictionary<string, string>()
-                {
-                    { "Username", credentials["Username"] }
-                };
-
-                // Returning not false means valid
-                response.Data = user_credentials;
-
-                // Sends the result to client
-                SendToClient(response, socket);
-
-                // Move to dictionaries of authorised users
-                MakeUserAuthed(credentials["Username"], socket);
-
-                // Send client list of connected clients
-                SendClientList(socket);
-
-                // Tells other clients about the new login
-                TellClientUserConnect(credentials["Username"]);
+                ValidLogin(socket, attempted_credentials);
             }
             else
             {
-                // Tells user login failed
-                response.Data = false;
+                // Object to be returned to user, false signifies failed attempt
+                var response = new ServerToClientMessage(ServerCommand.LoginResult, false);
 
                 // Sends the result to client
                 SendToClient(response, socket);
 
-                PrintMessage($"{socket.RemoteEndPoint} attempted login to '{credentials["Username"]}'");
+                PrintMessage($"{socket.RemoteEndPoint} attempted login to '{attempted_credentials["Username"]}'");
             }
         }
 
+        // Tells the user of valid login and sends credentials
+        private void ValidLogin(Socket socket, Dictionary<string, string> attempted_credentials)
+        {
+            // Object to be returned to user
+            var response = new ServerToClientMessage(ServerCommand.LoginResult);
+
+            // Gets the user's full credentials from the CSV
+            var real_credentials = CSVHandler.GetUserPrivateCredentials(attempted_credentials["Username"]);
+
+            // Returning not false means valid
+            response.Data = real_credentials;
+
+            // Sends the result to client
+            SendToClient(response, socket);
+
+            // Move to dictionaries of authorised users
+            MakeUserAuthed(real_credentials.Username, socket);
+
+            // Send client list of connected clients
+            SendClientList(socket);
+
+            // Tells other clients about the new login
+            TellClientUserConnect(real_credentials.Username);
+        }
+
+        // Send object to client
         public void SendToClient(object message, Socket client_socket)
         {
             // Serialises object into binary

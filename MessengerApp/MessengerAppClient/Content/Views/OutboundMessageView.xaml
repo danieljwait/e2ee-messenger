@@ -17,11 +17,14 @@
         <Border Background="LightGray" BorderBrush="Black" BorderThickness="1" CornerRadius="8" DockPanel.Dock="Right">
             <StackPanel Margin="0,2.5">
 
+                <!-- Message -->
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding Text, FallbackValue='Lorem ipsum dolor sit amet'}"/>
 
+                <!-- Time -->
                 <TextBlock HorizontalAlignment="Right" FontSize="10"
                            Text="{Binding Time, FallbackValue='00:00'}" FontWeight="Bold"/>
+                
             </StackPanel>
         </Border>
         <Canvas DockPanel.Dock="Left"/>

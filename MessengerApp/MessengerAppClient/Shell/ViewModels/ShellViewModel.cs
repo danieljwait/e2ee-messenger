@@ -22,7 +22,7 @@ namespace MessengerAppClient.Shell.ViewModels
 
         // Event Aggregator instance
         private readonly IEventAggregator _eventAggregator;
-        
+
         // Screen Collection
         private readonly LoginConductorViewModel _loginConductorViewModel;
         private readonly ContentConductorViewModel _contentConductorViewModel;
@@ -55,7 +55,7 @@ namespace MessengerAppClient.Shell.ViewModels
                 object received_object = Protocol.GetObject(asyncResult, _socketHandler.Buffer);
 
                 // Publishes message that a new SocketServerMessage has been received
-                _eventAggregator.BeginPublishOnUIThread((ServerToClientMessage)received_object);
+                _eventAggregator.PublishOnUIThread((ServerToClientMessage)received_object);
 
                 // Continues infinite receive loop
                 _socketHandler.ReceiveLoop(ReceiveLoopCallback);
@@ -75,7 +75,7 @@ namespace MessengerAppClient.Shell.ViewModels
             _socketHandler.SendToServer(ServerMessage);
             // Close socket
             _socketHandler.Disconnect();
-             
+
             _shutdownWaitHandle.Set();
         }
 
@@ -119,16 +119,6 @@ namespace MessengerAppClient.Shell.ViewModels
             }
         }
 
-        // Pass control to content Conductor and publish login details
-        private void ValidLoginRoutine(object details_object)
-        {
-            // Pass control over to content Conductor from login Conductor
-            ActivateItem(_contentConductorViewModel);
-
-            var InternalMessage = new InternalClientMessage(InternalClientCommand.LoginDetails, details_object);
-            _eventAggregator.BeginPublishOnUIThread(InternalMessage);
-        }
-
         // Handle from server
         public void Handle(ServerToClientMessage message)
         {
@@ -140,42 +130,50 @@ namespace MessengerAppClient.Shell.ViewModels
                     LoginResultRoutine(message.Data);
                     break;
 
-                case ServerCommand.ClientConnect:  // Username of client that just logged in
+                case ServerCommand.ClientConnect:
                     InternalMessage = new InternalClientMessage(InternalClientCommand.ClientConnect, message.Data);
                     _eventAggregator.PublishOnUIThread(InternalMessage);
                     break;
 
-                case ServerCommand.ClientDisconnect:  // Username of client that just logged out
+                case ServerCommand.ClientDisconnect:
                     InternalMessage = new InternalClientMessage(InternalClientCommand.ClientDisconnect, message.Data);
                     _eventAggregator.PublishOnUIThread(InternalMessage);
                     break;
 
-                case ServerCommand.SendClientsList:  // List of connected clients from server
+                case ServerCommand.SendClientsList:
                     InternalMessage = new InternalClientMessage(InternalClientCommand.ReceiveClientList, message.Data);
                     _eventAggregator.PublishOnUIThread(InternalMessage);
                     break;
 
-                case ServerCommand.Message:  // Message sent from another client to this client
+                case ServerCommand.Message:
                     InternalMessage = new InternalClientMessage(InternalClientCommand.ReceiveMessage, message.Data);
                     _eventAggregator.PublishOnUIThread(InternalMessage);
                     break;
             }
         }
 
+        // Pass control to content Conductor and publish login details
+        private void ValidLoginRoutine(object details_object)
+        {
+            // Pass control over to content Conductor from login Conductor
+            ActivateItem(_contentConductorViewModel);
+
+            var InternalMessage = new InternalClientMessage(InternalClientCommand.LoginDetails, details_object);
+            _eventAggregator.PublishOnUIThread(InternalMessage);
+        }
+
         // Determine if login attempt was success
         private void LoginResultRoutine(object data)
         {
-            // When login is invalid, data is false. When login is valid, data is username
+            // When login is invalid, data is false
             if (data is false)
             {
-                // TODO: Feedback invalid login to user
+                return;
             }
-            else
-            {
-                // Notify of valid login
-                var InternalMessage = new InternalClientMessage(InternalClientCommand.ValidLogin, data);
-                _eventAggregator.PublishOnUIThread(InternalMessage);
-            }
+
+            // Notify of valid login
+            var InternalMessage = new InternalClientMessage(InternalClientCommand.ValidLogin, data);
+            _eventAggregator.PublishOnUIThread(InternalMessage);
         }
 
         // When the [X] button is pressed, disconnect socket first

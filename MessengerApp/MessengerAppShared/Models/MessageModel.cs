@@ -2,6 +2,7 @@
 
 namespace MessengerAppShared.Models
 {
+    // Object for client to client messages
     [Serializable]
     public class MessageModel
     {

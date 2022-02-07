@@ -6,7 +6,7 @@ namespace MessengerAppClient.Content.ViewModels
     {
         public OutboundMessageViewModel(MessageModel message) : base(message)
         {
-            
+
         }
     }
 }

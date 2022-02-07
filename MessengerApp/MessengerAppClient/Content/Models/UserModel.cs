@@ -6,6 +6,7 @@ namespace MessengerAppClient.Content.Models
     public class UserModel
     {
         public string Username { get; set; }
+        public string PublicKey { get; set; }
         public BindableCollection<BaseMessageViewModel> Messages { get; set; }
     }
 }

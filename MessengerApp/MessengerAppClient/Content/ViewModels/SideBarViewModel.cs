@@ -1,8 +1,7 @@
 ﻿using Caliburn.Micro;
 using MessengerAppClient.Content.Messages;
 using MessengerAppClient.Shell.Messages;
-using System.Collections.Generic;
-using System.Windows;
+using MessengerAppShared.Models;
 
 namespace MessengerAppClient.Content.ViewModels
 {
@@ -24,7 +23,7 @@ namespace MessengerAppClient.Content.ViewModels
         public SideBarViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);                                          // Not elegant, subscribes upon program startup, not activation
+            _eventAggregator.Subscribe(this);
         }
 
         // Tells Conductor to navigate to HomeViewModel
@@ -55,8 +54,8 @@ namespace MessengerAppClient.Content.ViewModels
             switch (message.Command)
             {
                 case InternalClientCommand.LoginDetails:
-                    var credentials = (Dictionary<string, string>)message.Data;
-                    Username = credentials["Username"];
+                    var credentials = (AccountModel)message.Data;
+                    Username = credentials.Username;
                     break;
             }
         }

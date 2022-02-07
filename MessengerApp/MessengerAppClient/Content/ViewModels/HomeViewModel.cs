@@ -24,7 +24,7 @@ namespace MessengerAppClient.Content.ViewModels
         public BindableCollection<UserModel> Users
         {
             get { return _users; }
-            set 
+            set
             {
                 _users = value;
                 NotifyOfPropertyChange(() => Users);
@@ -49,11 +49,15 @@ namespace MessengerAppClient.Content.ViewModels
         public string MessageToSend
         {
             get { return _messageToSend; }
-            set {
+            set
+            {
                 _messageToSend = value;
                 NotifyOfPropertyChange(() => MessageToSend);
             }
         }
+
+        // Store keys for encryption
+        private string _private_key;
 
         // Holds user's username
         private string _username;
@@ -70,7 +74,8 @@ namespace MessengerAppClient.Content.ViewModels
         // Send message to server
         public void SendMessage()
         {
-            var message = new MessageModel()
+            // Message to show on this client's screen
+            var standard_message = new MessageModel()
             {
                 Sender = Username,
                 Recipient = SelectedUser.Username,
@@ -78,60 +83,25 @@ namespace MessengerAppClient.Content.ViewModels
                 Time = DateTime.Now
             };
 
+            // Clear message UI field
             MessageToSend = "";
 
             // Add to own list of messages
-            SelectedUser.Messages.Add(new OutboundMessageViewModel(message));
+            SelectedUser.Messages.Add(new OutboundMessageViewModel(standard_message));
+
+            // Encrypted message, remaking object avoids reference issues after encryption
+            var encrypted_message = new MessageModel()
+            {
+                Sender = standard_message.Sender,
+                Recipient = standard_message.Recipient,
+                Text = EncryptionModel.RSAEncrypt(standard_message.Text, SelectedUser.PublicKey),
+                Time = standard_message.Time
+            };
 
             // Send to recipient
-            var ServerMessage = new ClientToServerMessage(ClientCommand.Message, message);
+            var ServerMessage = new ClientToServerMessage(ClientCommand.Message, encrypted_message);
             var InternalMessage = new InternalClientMessage(InternalClientCommand.SendMessage, ServerMessage);
             _eventAggregator.PublishOnUIThread(InternalMessage);
-        }
-
-        // Receive list of clients from server and add to combo box
-        private void ReceiveClientList(List<string> new_list)
-        {
-            Users.Clear();
-
-            foreach (string username in new_list)
-            {
-                var messages = new BindableCollection<BaseMessageViewModel>();
-
-                //Stops self being in list
-                if (username != Username)
-                {
-                    Users.Add(new UserModel() { Username = username, Messages = messages });
-                }
-            }
-        }
-
-        // Update combo box to remove a user
-        private void RemoveClient(string username)
-        {
-            foreach (UserModel user in Users)
-            {
-                if (user.Username == username)
-                {
-                    Users.Remove(user);
-                }
-            }
-        }
-
-        // Update combo box to add a user
-        private void AddClient(string username)
-        {
-            // Stops self being in list
-            if (username != Username)
-            {
-                Users.Add(new UserModel { Username = username, Messages = new BindableCollection<BaseMessageViewModel>()});
-            }
-        }
-
-        // Store the credentials received from the server
-        private void SetLoginDetails(Dictionary<string, string> credentials)
-        {
-            Username = credentials["Username"];
         }
 
         private void ReceiveMessage(MessageModel message)
@@ -140,7 +110,77 @@ namespace MessengerAppClient.Content.ViewModels
             {
                 if (User.Username == message.Sender)
                 {
+                    // Decrypt message
+                    message.Text = EncryptionModel.RSADecrypt(message.Text, _private_key);
+
                     User.Messages.Add(new InboundMessageViewModel(message));
+
+                    return;
+                }
+            }
+        }
+
+        // Receive list of clients from server and add to combo box
+        private void ReceiveClientList(List<AccountModel> credentials_list)
+        {
+            Users.Clear();
+
+            foreach (AccountModel credentials in credentials_list)
+            {
+                //Stops self being in list
+                if (credentials.Username != Username)
+                {
+                    AddClient(credentials);
+                }
+            }
+        }
+
+        // Update combo box to remove a user
+        private void RemoveClient(string username)
+        {
+            // Error from deleting element in Users while iterating through Users
+            try
+            {
+                foreach (UserModel user in Users)
+                {
+                    if (user.Username == username)
+                    {
+                        Users.Remove(user);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        // Update combo box to add a user
+        private void AddClient(AccountModel credentials)
+        {
+            // Stops self being in list
+            if (credentials.Username != Username)
+            {
+                var new_user = new UserModel()
+                {
+                    Username = credentials.Username,
+                    PublicKey = credentials.PublicKey,
+                    Messages = new BindableCollection<BaseMessageViewModel>()
+                };
+
+                Users.Add(new_user);
+            }
+        }
+
+        // Store the credentials received from the server
+        private void SetLoginDetails(AccountModel credentials)
+        {
+            Username = credentials.Username;
+            _private_key = credentials.PrivateKey;
+
+            foreach (UserModel user in Users)
+            {
+                // Remove connections to self from user list
+                if (user.Username == Username)
+                {
+                    Users.Remove(user);
                 }
             }
         }
@@ -152,11 +192,11 @@ namespace MessengerAppClient.Content.ViewModels
             switch (message.Command)
             {
                 case InternalClientCommand.LoginDetails:
-                    SetLoginDetails((Dictionary<string, string>)message.Data);
+                    SetLoginDetails((AccountModel)message.Data);
                     break;
 
                 case InternalClientCommand.ClientConnect:
-                    AddClient((string)message.Data);
+                    AddClient((AccountModel)message.Data);
                     break;
 
                 case InternalClientCommand.ClientDisconnect:
@@ -164,11 +204,14 @@ namespace MessengerAppClient.Content.ViewModels
                     break;
 
                 case InternalClientCommand.ReceiveClientList:
-                    ReceiveClientList((List<string>)message.Data);
+                    ReceiveClientList((List<AccountModel>)message.Data);
                     break;
 
                 case InternalClientCommand.ReceiveMessage:
                     ReceiveMessage((MessageModel)message.Data);
+                    break;
+
+                case InternalClientCommand.LogOut:
                     break;
             }
         }

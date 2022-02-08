@@ -40,7 +40,17 @@ namespace MessengerAppClient.Shell.ViewModels
 
             // Creating server connection
             _socketHandler = new SocketHandler();
-            _socketHandler.Connect();
+
+            // Try connect to server, if fail close program
+            try
+            {
+                _socketHandler.Connect();
+            }
+            catch(Exception exception)
+            {
+                // Shut down program, report server disabled error to Windows
+                FatalError(exception, 1341);
+            }
 
             // Begin receiving from server
             _socketHandler.ReceiveLoop(ReceiveLoopCallback);
@@ -60,10 +70,10 @@ namespace MessengerAppClient.Shell.ViewModels
                 // Continues infinite receive loop
                 _socketHandler.ReceiveLoop(ReceiveLoopCallback);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                MessageBox.Show($"Error: {e.Message}\n\nPress OK to close the program", "A fatal error was caught");
-                TryClose();
+                // Shut down program, report unknown network error to Windows
+                FatalError(exception, 59);
             }
         }
 
@@ -192,6 +202,18 @@ namespace MessengerAppClient.Shell.ViewModels
 
             // Closes the window
             base.CanClose(callback);
+        }
+
+        // When a fatal error is thrown, close program
+        private void FatalError(Exception exception, int error_code=0)
+        {
+            MessageBox.Show($"Error: {exception.Message}\n\nPress OK to close the program", "A fatal error was caught");
+            
+            // Close window
+            TryClose();
+
+            // Close program
+            Environment.Exit(1341);
         }
 
         // When window opened, begin listening to EventAggregator and show LoginConductorViewModel

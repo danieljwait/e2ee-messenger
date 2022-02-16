@@ -54,7 +54,7 @@
 
 [2.2 (X) Solution Structure 32][]
 
-[2.2.1 (X) Client 32][]
+[2.2.1 (X) Client 32][2.2 (X) Solution Structure 32]
 
 [2.2.2 (X) Server 32][]
 
@@ -66,7 +66,7 @@
 
 [2.3.2 Creating an account 34][]
 
-[2.3.3 Creating an account (revised) 36][]
+[2.3.3 Creating an account (revised) 36][2.3.2 Creating an account 34]
 
 [2.4 Usability Features 37][]
 
@@ -222,9 +222,17 @@ I will make use of performance modelling to ensure that the program functions ef
 
 ### Stakeholder Identification
 
-The first group of potential stakeholders are the users who will prioritise privacy and security. The needs of this group are that all communications are encrypted so they cannot be read while passing through the server and that their sensitive information (e.g., passwords and keys) is protected while being stored. This group will most likely use the solution for everyday use as their main communication platform; for this reason, the solution must be robust enough for that use case. I have selected the following user to represent this group of stakeholders: Ethan S. He is a student who believes that privacy is very important, especially online where he makes a conscious effort to minimise his digital footprint by limiting any personally identifiable information about himself. For these reasons, I believe that he will be a fair representation of this group’s needs.
+Client type 1
 
-The second group of potential stakeholders are the users who want a messenger app that is lightweight and easy to use. The needs of this group are the following: all components of the user interface are intuitive and clearly labelled; the program requires no prior setup or configuration, and the program can easily be installed and immediately used. This group will most likely only infrequently use the solution to keep in touch with friends and family. For this reason, the solution must have a low barrier of use as to not discourage them. I have not chosen a specific stakeholder to represent this group but rather will take the ideas from a group of stakeholders. This is because usability is a priority for most general users so selecting a group will give me the most “averaged” opinions on any ideas. If I do need specific feedback on the program for usability, I will use the identified stakeholder for the first group as I think that the views of the second group are approximately a subset of the views of the first group.
+The first group of potential stakeholders are the users who will prioritise privacy and security. The needs of this group are that all communications are encrypted so they cannot be read while passing through the server and that their sensitive information (e.g., passwords and keys) is protected while being stored. This group will most likely use the solution for everyday use as their main communication platform; for this reason, the solution must be robust enough for that use case.
+
+I have selected the following user to represent this group of stakeholders: Ethan S. He is a student who believes that privacy is very important, especially online where he makes a conscious effort to minimise his digital footprint by limiting any personally identifiable information about himself. For these reasons, I believe that he will be a fair representation of this group’s needs.
+
+Client type 2
+
+The second group of potential stakeholders are the users who want a messenger app that is lightweight and easy to use. The needs of this group are the following: all components of the user interface are intuitive and clearly labelled; the program requires no prior setup or configuration, and the program can easily be installed and immediately used. This group will most likely only infrequently use the solution to keep in touch with friends and family. For this reason, the solution must have a low barrier of use as to not discourage them.
+
+I have not chosen a specific stakeholder to represent this group but rather will take the ideas from a group of stakeholders. This is because usability is a priority for most general users so selecting a group will give me the most “averaged” opinions on any ideas. If I do need specific feedback on the program for usability, I will use the identified stakeholder for the first group as I think that the views of the second group are approximately a subset of the views of the first group.
 
 ### Interview with Ethan S
 
@@ -669,7 +677,7 @@ A limitation of end-to-end encrypted systems and by extension this solution is t
 
 ## Requirements
 
-### Stakeholders
+### Stakeholder
 
 Primary requirements
 
@@ -679,7 +687,7 @@ The following are features raised in *1.1.4* *Stakeholder Identification* and *1
 |---------------------------------------------------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
 | Accounts are needed to use the program                  | Accounts make contacts recognisable and accountable for their messages                     | *1.3.1* *Interview with Ethan S* (Topic: Accounts)                     |
 | Passwords must pass a minimum complexity check          | Security is important for the program so secure passwords is a must                        | *1.3.1* *Interview with Ethan S* (Topic: Accounts)                     |
-| Passwords and keys are not stored in plaintext          | Storing sensitive data as plaintext will undermine the system’s security                   | *1.1.4* *Stakeholder Identification*                                   |
+| Passwords and keys are not stored in plaintext          | Storing sensitive data as plaintext will undermine the system’s security                   | *1.1.4* *Stakeholder Identification (Private information)*             |
 | Messages are end-to-end encrypted                       | This is the most important feature for the stakeholders as it’s the purpose of the program | *1.1.4* *Stakeholder Identification* and *1.3.3* *Survey Results* (Q9) |
 | The client program works without the need for any setup | The stakeholders want simplicity and usability                                             | *1.1.4* *Stakeholder Identification* and *1.3.3* *Survey Results* (Q6) |
 | Tab based navigation                                    | This is a common and intuitive navigation method preferred by the stakeholders             | *1.3.1* *Interview with Ethan S* (Topic: Messages and conversations)   |
@@ -842,35 +850,85 @@ Generate new key pair
 
 Before any encrypted messages are sent between users, the new user must generate a key pair for RSA. The public key will then need to be sent to the server so that it can be accessed by any other client. The public key on the other hand should not be accessible to any other client but should be accessible to the user when they sign in on another machine: so, will be encrypted and stored in the server. The user’s password will be passed through a KDF (possibly PBKDF2) to generate the key for a symmetric encryption algorithm (possible AES) which the private key will be passed through before being sent off to the server for storage.
 
-## (X) Solution Structure
+## Solution Structure
 
-### (X) Client
+The development of the solution will be divided into three categories: client, server, and shared. I have chosen to include a shared codebase along with ones for the client and server because there will be overlap between the two programs in areas such as networking and data formatting standards so having a shared codebase eliminates duplicated code.
 
-### (X) Server
+These codebases will each be a C# project within a wider Visual Studio solution, described in the following hierarchy diagram.
 
-### (X) Shared
+<table><colgroup><col style="width: 100%" /></colgroup><thead><tr class="header"><th><p>MessengerApp</p><p>│</p><p>├───MessengerAppClient</p><p>│ ├───Exe</p><p>│ ├───Resources</p><p>│ ├───Models</p><p>│ ├───Views</p><p>│ └───ViewModels</p><p>│</p><p>├───MessengerAppServer</p><p>│ ├───Exe</p><p>│ └───Resources</p><p>│</p><p>└───MessengerAppShared</p><p>└───Resources</p></th></tr></thead><tbody></tbody></table>
+
+Figure . Solution hierarchy diagram
+
+Client
+
+This project will be a C# WPF application that targets .NET Core. This framework was chosen as it allows simple distribution of the program to users without the need for any setup or configuration. In comparison, if .NET Framework was targeted the user would have to install the correct framework version before the application would be able to run.
+
+Since this project will have a graphical user interface, I will employ the MVVM design pattern. This will separate the logic (the Model) from the GUI (the View) with an interfacing layer in-between (the ViewModel). Doing this allows separate development of the components and independent Views mean that even if the content of the Model is changing frequently during development, the binding to the GUI will not need to be changed.
+
+<span id="_Toc95572209" class="anchor"></span>Server
+
+This project will be a C# console application that also targets .NET Core. This project will not benefit from targeting .NET Core as it does not need the requirement of easy setup (since the end-user is not who will be running the server) but targeting .NET Framework does not provide any benefits either so I will choose .NET Core for consistency between the projects.
+
+I will not employ a design pattern in the server project since I do not think there will be enough files to organise to justify the overhead that implementing a design pattern creates. During the development, if I find this to not be the case, I can always refactor the project’s architecture to match a design pattern.
+
+<span id="_Toc95572210" class="anchor"></span>Shared
+
+Lastly, this project will be a C# class library that is required to target .NET Core as it will be used by the other two projects. The shared project will likely be the smallest of the three projects as all it will hold will be a transmission protocol, encryption protocol, and base classes for the network connection handlers. As with the server project, I do not plan on employing a design pattern for this project due to its small size in comparison to the client project.
 
 ## Algorithms
 
-### Logging in
+### Logging In
 
-This client-side routine will be triggered by default when the user opens the program. The user can enter their credentials and log in, allowing them to progress onto the next screen with their messages, or they can press the button to create a new user account.
+<img src="./media/image18.png" style="width:2.06597in;height:7.07361in" />This is a client-side routine that will trigger on the login page when the user presses the login button. There will be data validation on the login button to prevent the routine from being triggered when one or both username and password fields are empty. This is because passing an empty string into some of the functions used in this method (e.g., hashing) will throw errors.
 
-<img src="./media/image18.png" style="width:2.12697in;height:7.00694in" alt="Diagram Description automatically generated with low confidence" />
+The first thing this procedure does is send the username and hashed password to the server in the form of a login request. The reason that the password is being hashed is that the server should not see the plaintext password of the user, so hashes are stored in the server’s database to be compared against. Comparing hashes provides the client with a method of doing a zero-knowledge proof that they are the user they say they are.
 
-A change from this routine that may be considered is the use of a single password-based key derivation function (PBKDF), possibly Scrypt, to generate the “hash” for login validations and the seed for the RSA keygen algorithm. Being able to reproduce the key pair’s seed will allow the key pair to be generated client-side at log in rather than receiving them from the server, meaning only each client’s public key will need to be stored (rather than their public key and a symmetrically encrypted private key).
+The login process is contained within a condition-controlled loop, this means that the client will keep being asked for credentials until the login response has the status “logged in”. Looping this part of the algorithm means that the user can try as many times as they want to log into the program
 
-### Creating an account
+Once the login is successful, the encryption keys are extracted from the log response object. This assumes the login response is an object as the plan for the transmission protocol is for it to be markup- or object-based; however, the first few iterations will likely use a text-based protocol as it will be quicker to develop and test.
 
-<img src="./media/image19.png" style="width:5.60345in;height:5.08693in" alt="Table Description automatically generated with medium confidence" />
+Now that the user has their keys, the private key must be decrypted. Once again this is required because the server should not have access to the private key in plaintext. The way that the private key is decoded is by using the plaintext password as the key for a symmetric decryption algorithm such as AES.
 
-**Summary** – This algorithm will be executed when a new user wants to create an account. This is because all users will require an RSA key pair to facilitate encrypted communications and a pair of credentials to allow them to log in from any device.
+Lastly, the login screen is closed, and the messaging screen is opened to allow the user to message other users from the account that they have just signed into.
 
-**Line 3 to 4** – The username and password will be fetched from text boxes in the UI. The submit button that will call the subroutine CreateAccount() will only be enabled when both fields because enabling it right away will lead to the possibility of empty strings being used in the function and the visual aid will guide the user.
+### <img src="./media/image19.png" style="width:2.10486in;height:9.60208in" />Signing Up
 
-**Line 7 to 12** – The input validation for the username will require the username’s length to be between 5 and 128 characters long and does not contain any non-encodable characters. Due to the requirement of eliminating nickname collisions, a discriminator needs to be postfixed to prevent nickname collisions, this will be done on line 8 if the username is valid.
+This routine handles the sign-up process for a new user. This is a special case of the login process seen above where a new account needs to be created before it can be successfully logged into (although the login will be done automatically after the account is created).
 
-**Line 13 to 17** – Due to the success criterion “strong minimum password strength”, the input validation for the password will require the following criteria to be satisfied:
+Firstly, the user will request a list of all the current user accounts, this is done to prevent the new accounts from having the same username as a pre-existing account. This validation is being included as multiple accounts having the same username would cause nickname collisions as seen in the IRC research.
+
+When a username and password are inputted, there will be validation done to ensure that the username and password are an acceptable size and that the password fits the minimum strength requirements for the program (as outlined by the stakeholders).
+
+The next step is for the asymmetric encryption keys to be generated. The seed of this algorithm does not matter as the keys will only be generated once.
+
+Using the plaintext password entered earlier in the algorithm, the private key will be encrypted with a symmetric encryption algorithm such as AES. Encrypting the private key symmetrically using a secret means that both parts of the key pair can be stored in the server securely.
+
+The last part of the processing on the client-side is to hash the password for the user. The username, hashed password, public key and encrypted private key are then sent to the server in a new account request.
+
+When the client receives confirmation from the server that the new account has been successfully made the client will send a login request to the server for that new account using the credentials that it already has stored.
+
+Once the server confirms that the user has been successfully signed into the account (there should be no chance for this being unsuccessful unless an unexpected error has occurred) the login screen is closed, and the messaging screen is shown to the user. When the user is on the messaging screen, there should be no difference than if the user had logged into a pre-existing account.
+
+### Validation and Keys
+
+This algorithm will be executed when a new user wants to create an account. This is because all users will need encryption keys to facilitate encrypted communications and a pair of login credentials to allow them to log in from any device.
+
+<img src="./media/image20.png" style="width:5.89583in;height:5.35237in" alt="Table Description automatically generated with medium confidence" />
+
+Figure . Procedure for creating a new account written using LATEX, see appendix for source code
+
+Line 4 to 5
+
+The username and password will be fetched from text boxes in the UI. The submit button that will call the subroutine CreateAccount will only be enabled when both fields because enabling it right away will lead to the possibility of empty strings being used in the function and the visual aid will guide the user.
+
+Line 6 to 10
+
+The input validation for the username will require the username’s length to be between 5 and 128 characters long and does not contain any non-encodable characters. Due to the requirement of eliminating nickname collisions, a discriminator needs to be postfixed to prevent nickname collisions, this will be done on line 8 if the username is valid.
+
+**Line 11 to 13**
+
+Due to the success criterion “strong minimum password strength”, the input validation for the password will require the following criteria to be satisfied:
 
 -   Both uppercase and lowercase characters
 
@@ -880,25 +938,51 @@ A change from this routine that may be considered is the use of a single passwor
 
 -   Between 8 and 128 characters
 
-**Line 18** – To allow users to amend their credentials if they are not accepted, a “repeat…until” (or “do…while”) loop is used to continue requesting usernames and passwords until a valid pair is supplied. This will appear in the UI in the form of the invalid text box(es) being highlighted.
+Line 14
 
-**Line 26** – As addressed in *2.1* *System Decomposition*, a key derivation function will be required to generate a symmetric key for AES to decrypt and encrypt the user’s private key that will be stored on the server. There are a few possible functions that the KDF in the pseudocode can be: KDF1, PBKDF2 or KBKDFVS. The final implementation will be chosen based on .NET implementation, security, and computation time.
+To allow users to amend their credentials if they are not accepted, a “repeat…until” (or “do…while”) loop is used to continue requesting usernames and passwords until a valid pair is supplied. This will appear in the UI in the form of the invalid text box(es) being highlighted.
 
-**Line 28** – Since all passwords need to be stored securely, the password must be hashed first. This will be done via MD5 with the possibility of an added salt. The salt will be different for each user and will mean that even if two users have the same password, their password hashes will not be the same. This also has the benefit of helping to reduce the effectiveness of hash table attacks.
+Line 20
 
-**Line 29 to 30** – Lastly, all the new information to make the user’s account must be sent to the server. Even though this will be transmitted over an insecure channel, all the sensitive information has been either hashed or encrypted. Although, man-in-the-middle attacks are (very much) possible at this point, addressing this vulnerability is beyond the scope of this program so will have to remain in the program.
+As addressed in *2.1* *System Decomposition*, a key derivation function will be required to generate a symmetric key for AES to decrypt and encrypt the user’s private key that will be stored on the server. There are a few possible functions that the KDF in the pseudocode can be: KDF1, PBKDF2 or KBKDFVS. The final implementation will be chosen based on .NET implementation, security, and computation time.
 
-### <img src="./media/image20.png" style="width:2.12917in;height:9.37639in" />Creating an account (revised)
+Line 22
 
-This routine is a revision of the pseudocode described above. This has been done to align the new user account creation process more with the standard login process. For example, after a new account has been made on the server, the client is not automatically signed into this new account. This means that the client still must send the same login request that would be sent normally; this will allow me to only write one procedure for how message and user information will be sent after the login (triggered by the successful login request).
+Since all passwords need to be stored securely, the password must be hashed first. This will be done via MD5 with the possibility of an added salt. The salt will be different for each user and will mean that even if two users have the same password, their password hashes will not be the same. This also has the benefit of helping to reduce the effectiveness of hash table attacks.
 
-There has also been an additional step of validation added to the routine: the name that the user selects will be checked against all the existing names. This eliminates the need for the discriminators to be appended to the end of names by only allowing unique usernames. Conversely, the checks for the validity of the username and password have been abstracted away as they have already been explained in the section above, and I do not think they need to be changed.
+Line 23 to 24
+
+Lastly, all the new information to make the user’s account must be sent to the server. Even though this will be transmitted over an insecure channel, all the sensitive information has been either hashed or encrypted. Although, man-in-the-middle attacks are (very much) possible at this point, addressing this vulnerability is beyond the scope of this program so will have to remain in the program.
+
+### <img src="./media/image21.png" style="width:1.91319in;height:7.19792in" />Sending a message
+
+This routine happens when a user is on the messaging screen, and they press the button to send a message. I will have data validation on the button to send a message so that the button is only available when there is text in the message field and a valid user is selected as the recipient. This will prevent the routine from running when the data is not complete as some of the functions require a non-empty string as their input (e.g., encryption).
+
+The first step of the process is to get the public encryption key for the recipient from the server or a local copy of the server’s credentials list if it is up to date. The key is then used to encrypt the message. The recipient’s public key to asymmetrically encrypt the message means that the private key is needed to decrypt the message – the only person with the private key is the recipient so the message is not secure.
+
+Next, the private key of the party that is sending the message is fetched. This will not be stored in the server so will be held in the client program’s RAM from the login process still. Using the private key, the message contents will be signed. This is done by hashing the contents of the message and then asymmetrically encrypting the message digest (the result of the hash).
+
+Lastly, the recipient username, encrypted message and signature are sent to the server. The only piece of data that is insecure while the message is passing through the server is the recipient’s username. This is needed since it is what the server uses to figure out who to route the message to.
+
+### <img src="./media/image22.png" style="width:1.89444in;height:7.12986in" />Receiving a message
+
+This routine happens when the server sends a message to a client program from another client. The client will be listening for messages using an infinite receive loop where every time a transmission is received the client begins listening for another transmission. This gets around the limitation of one-to-one server-client iterations but will require the algorithm to be run on a separate thread than the main program execution thread.
+
+The first step of the algorithm is to fetch the public key of the sender from the server or a local copy of the credentials list if the copy is up to date. The public key is then used to verify the signature of the message. This is done by decrypting the signature using an asymmetric encryption algorithm and the public key, then hashing the encrypted message. The plaintext signature and message digest should be the same if the message has not been tampered with and originated from who it claims to be from.
+
+Next, the private key of the party that is receiving the message is fetched. This is not stored in the server so will be fetched from a store in RAM that was likely made during the login process. Then the encrypted message is decrypted using this private key to give the plaintext message.
+
+Lastly, the sender username and plaintext message are outputted. Assuming the receiving this logic is in the ViewModel of the client, this algorithm’s outputs can be bound to fields in the View (GUI) so that the text can be added to the appropriate user’s conversation view.
 
 ## Usability Features
 
+Send button mapped to “Enter” key
+
+Researching several pre-existing instant messaging apps showed me that it is very common to have messages sent by pressing the “Enter” key instead of clicking a send button with the mouse. I then confirmed this with my stakeholders. Therefore, to make the program more intuitive and easier to use I will map the send button to the “Enter” key so that any users who are used to using other platforms will be able to quickly learn how to use my program.
+
 Descriptive input fields
 
-To help aid the user in using the login screen, I will have descriptive labels on all the input boxes. These will be non-intrusive as to not get in the way for users who do not need them, but still visible enough so that it's clear as to which input box they describe. Also, highlighted labels will be added when an incorrect username or password is entered to give feedback to the user as to which fields they need to amend and, in the case of account creation, how.
+To help aid the user in using the login screen, I will have descriptive labels on all the input boxes. These will be non-intrusive as to not get in the way for users who do not need them, but still visible enough so that it's clear as to which input box they describe (i.e., “Enter username” and “Enter password”). Also, highlighted labels will be added when an incorrect username or password is entered to give feedback to the user as to which fields they need to amend, and how they need to be amended. When the user is attempting to log in, this will only provide information to say that the login attempt failed but when the user is trying to create an account it would contain the password strength requirements for the user to read and any other requirements the credentials don’t satisfy.
 
 Pop-up error dialogues
 
@@ -906,21 +990,39 @@ In the event of an error, the program will display an error dialogue to the user
 
 Intuitive navigation
 
-To simplify the navigation, the main program will all be displayed in one window (login screen and error dialogues are the exception) where the user can choose which user to send a message using the tabs. This was determined during the *1.3.1* *Interview with Ethan S* in response to seeing the navigation style in the research of Discord. Since this style is common in many programs, the user will likely find it very natural and intuitive to use. Limiting the program to only one window also reduces the risk of users who do not use computer programs often getting “lost” or being confused by the child-parent relationship of pop-out windows (the alternative navigation method proposed to the stakeholder during the interview).
+To simplify the navigation, the main program will all be displayed in one window (the login screen and pop-up error dialogues are the exceptions) where the user can choose which user to send a message using the tabs. This was determined during the *1.3.1* *Interview with Ethan S* in response to seeing the navigation style in the research of Discord. Since this style is common in many programs, the user will likely find it very natural and intuitive to use. Limiting the program to only one window also reduces the risk of users who do not use computer programs often getting “lost” or being confused by the child-parent relationship of pop-out windows (the alternative navigation method proposed to the stakeholder during the interview).
 
 Conversation view
 
 Quickly identifying the sender of a message is crucial to messaging apps. From the *1.3.1* *Interview with Ethan S,* it was decided that this will be achieved by using a similar conversation view to that found on Discord: all messages are left-aligned in the format \[time\]\[user\]\[message\]. This will help the users in three ways. Firstly, the timestamps on the left mean that finding messages from a certain time can be done by quickly scanning down the left column. Secondly, having the username displayed for each message means that the sender of the messages can be quickly identified. Lastly, the username can be padded with whitespace to ensure that all messages begin at the same point to improve readability for the user; this has the added benefit that in situations where the two users talking have different username lengths time to determine the sender will be reduced due to the visible difference.
 
-## (X) Internal Structures
+Window Resizing
 
-### (X) Variables
+When the program first opens, it will be a standards size. If this is not the size of the user’s screen, then the user may not be able to see everything. Therefore, having the program be resizable is important. This will mean that the position of elements in the program’s GUI will have to be defined in terms of relative distances rather than absolute values. For example, a button might be positioned two-thirds of the way across the window’s width rather than exactly 40px in from the left since this position will update as the window changes. As well as relative positions for all elements in the GUI, the window will need to have constraints on how big or how small it can get as there gets the point where elements can no longer physically fit in the window. These measures combine to make a GUI that is accessible for users of all screen sizes and orientations.
 
-In both the client program and the server program, a socket will be needed. This will be the main variable which the rest of the programs will be built around as the networking will be at the core of the program.
+## Internal Structures
 
-Another variable that will need to be considered is the IP address that the sockets connect to. Since the server program will only listen from the IP address the host computer has, the client must connect to the IP. However, this value cannot be hardcoded into the program as the program will lose its portability if it is restricted to only running off one machine. Therefore, I will get the IP address of the server from a user input which will become the IP address variable that the socket will use when it connects to the server.
+### Variables
+
+| Variable              | Type          | Purpose                                                                                 | Justification                                                                                                  |
+|-----------------------|---------------|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| ClientSocket          | Socket        | Sends and receives messages from the server                                             | Necessary for the client to communicate with the server                                                        |
+| ServerSocket          | Socket        | Receives requests from clients and returns responses                                    | Clients need to connect to the server to contact other users                                                   |
+| Username              | String        | Holds the username that the user is trying to log in with                               | Connects the GUI field for the username and data for the login request                                         |
+| Password              | String        | Holds the password that the user is trying to log in with                               | Connects the GUI field for the password and data for the login request                                         |
+| MessageToSend         | String        | Holds the message to send to the selected recipient                                     | Connects the GUI field for the text and data for the message to the server                                     |
+| RecipientUsername     | String        | Holds the username of the intended recipient of the message                             | Connects the GUI field for the recipient and data for the message to the server                                |
+| ReceivedMessages      | List          | Holds all the messages received by a client from a user                                 | The View will bind to a list of messages so that the conversation view can be created                          |
+| ReceivedTransmissions | Queue         | Transmissions from the server need to be stored before they are handled                 | A FIFO data structure is needed as the order in which messages are received from the server is important       |
+| PrivateKey            | Base64 String | Decrypting inbound messages and signing outbound messages                               | The private key can only be held locally in plaintext so it will be kept in a variable after the login process |
+| RecipientPublicKey    | Base64 String | Encrypting outbound messages                                                            | The encryption key for the asymmetric encryption function is the recipient’s public key                        |
+| SenderPublicKey       | Base64 String | Verifying inbound message signatures                                                    | The decryption key for the signature’s encryption function is the sender’s public key                          |
+| ServerIP              | String        | Tells the ClientSocket where to connect to when the program starts up                   | The IP of the server needs to be coded into the program as there is no way for the program to know otherwise   |
+| ServerPort            | Integer       | Tells the ClientSocket where on the server’s host machine the server process is running | The server will only be bound to a single port so the client must know which port to connect to                |
 
 ### (X) Data Structures
+
+The queue for received messages
 
 ### (X) Class Diagrams
 
@@ -936,7 +1038,7 @@ Another variable that will need to be considered is the IP address that the sock
 | Parameters | None; (string) username and (string) password are fetched from UI during execution |
 | Returns    | (string) username and (string) password                                            |
 
-When a new account is created, GetValidCredentials is called. The function firstly gets the username and password the user entered into the UI. These credentials will then be checked against the requirements of the program, as specified by the stakeholders, to ensure their strength and correct length. The output of this function will be used in the subroutine CreateAccount that generates a keypair for the user, hashes the password, encrypts the private key, and sends all the necessary data associated with the account to the server.
+When a new account is created, GetValidCredentials is called. The function firstly gets the username and password from the corresponding GUI fields. These credentials will then be checked against the requirements of the program, as specified by the stakeholders, to ensure their strength and correct length. The output of this function will be used in the subroutine CreateAccount that generates a keypair for the user, hashes the password, encrypts the private key, and sends all the necessary data associated with the account to the server.
 
 The credentials supplied to CreateAccount must be valid as if they are empty or malformed, they will cause errors that may crash the client’s program, crash the server’s program, or make the login process vulnerable by storing incorrect usernames and passwords. Therefore, it is important to have test cases for each form of normal (N), erroneous (E) and boundary (B) data.
 
@@ -956,31 +1058,31 @@ Several low fidelity wireframes have been created for the different windows that
 
 **Conversation View**
 
-<img src="./media/image21.png" style="width:5.51181in;height:3.22958in" alt="Table Description automatically generated with medium confidence" />
+<img src="./media/image23.png" style="width:5.51181in;height:3.22958in" alt="Table Description automatically generated with medium confidence" />
 
-<img src="./media/image22.png" style="width:5.51181in;height:3.22958in" alt="Graphical user interface, application Description automatically generated" />
-
-<img src="./media/image23.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
-
-<img src="./media/image24.png" style="width:5.31496in;height:3.11424in" alt="Table Description automatically generated with medium confidence" />
+<img src="./media/image24.png" style="width:5.51181in;height:3.22958in" alt="Graphical user interface, application Description automatically generated" />
 
 <img src="./media/image25.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
 
+<img src="./media/image26.png" style="width:5.31496in;height:3.11424in" alt="Table Description automatically generated with medium confidence" />
+
+<img src="./media/image27.png" style="width:5.31496in;height:3.11424in" alt="Graphical user interface Description automatically generated" />
+
 **Login View**
 
-<img src="./media/image26.png" style="width:2.55906in;height:3.19882in" /><img src="./media/image27.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
+<img src="./media/image28.png" style="width:2.55906in;height:3.19882in" /><img src="./media/image29.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
 
-<img src="./media/image28.png" style="width:3.54331in;height:2.07616in" alt="A picture containing graphical user interface Description automatically generated" />
+<img src="./media/image30.png" style="width:3.54331in;height:2.07616in" alt="A picture containing graphical user interface Description automatically generated" />
 
-<img src="./media/image29.png" style="width:2.55903in;height:3.19861in" /><img src="./media/image30.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
+<img src="./media/image31.png" style="width:2.55903in;height:3.19861in" /><img src="./media/image32.png" style="width:3.54331in;height:2.07616in" alt="Graphical user interface Description automatically generated" />
 
-<img src="./media/image31.png" style="width:3.54331in;height:2.07616in" alt="Diagram Description automatically generated with medium confidence" />
+<img src="./media/image33.png" style="width:3.54331in;height:2.07616in" alt="Diagram Description automatically generated with medium confidence" />
 
 **Account creation views**
 
-<img src="./media/image32.png" style="width:4.72441in;height:2.76821in" alt="Text Description automatically generated" />
+<img src="./media/image34.png" style="width:4.72441in;height:2.76821in" alt="Text Description automatically generated" />
 
-<img src="./media/image33.png" style="width:3.54331in;height:4.42889in" alt="Diagram Description automatically generated with medium confidence" />
+<img src="./media/image35.png" style="width:3.54331in;height:4.42889in" alt="Diagram Description automatically generated with medium confidence" />
 
 ### (X) Interface Feedback 
 
@@ -1022,9 +1124,9 @@ A fundamental part of messaging apps is sending messages, to satisfy the stakeho
 
 Both the client and server require a socket to be networked together, to do this I used the System.Net.Sockets library and have created an abstract base class called SocketBase. SocketBase houses all the shared socket functionality which is extended in child classes for the server and client. This solves the problem of duplicate client-server code and reduces the chance of error.
 
-<img src="./media/image34.png" style="width:4.78261in;height:5.61182in" />
+<img src="./media/image36.png" style="width:4.78261in;height:5.61182in" />
 
-Figure 1. UML class diagram for SocketBase and its derived children
+Figure . UML class diagram for SocketBase and its derived children
 
 Since some methods need to be implemented differently depending on whether it is for the client or server, some methods have been declared but not defined in SocketBase. These are the abstract methods of the class as they will need to be defined by the child classes.
 
@@ -1032,9 +1134,9 @@ Since some methods need to be implemented differently depending on whether it is
 
 To allow communication between the client and server to be consistent, I have created a Protocol class that encodes text in a standardised way (UTF-8). This was done to address the problem found of incompatible character encodings from *1.2.2* *Existing Solution – Internet Relay Chat (IRC)*.
 
-<img src="./media/image35.png" style="width:2.7418in;height:3.22642in" alt="Text Description automatically generated" />
+<img src="./media/image37.png" style="width:2.7418in;height:3.22642in" alt="Text Description automatically generated" />
 
-Figure 2. MessengerAppShared.Protocol
+Figure . MessengerAppShared.Protocol
 
 I have used two constructors in this class as an instance of the Protocol needs be able to be created from a string (sending) or from binary (receiving).
 
@@ -1042,9 +1144,9 @@ In future iterations, this is where I will put the code used to encrypt and decr
 
 #### Creating the socket
 
-<img src="./media/image36.png" style="width:5.35559in;height:1.78302in" />
+<img src="./media/image38.png" style="width:5.35559in;height:1.78302in" />
 
-Figure 3. MessengerAppShared.SocketBase.SocketBase
+Figure . MessengerAppShared.SocketBase.SocketBase
 
 I have chosen the size of the socket’s buffer to be 2048 bytes as currently 2KiB of data is enough for the text that is being transferred. Once multimedia messages are implemented, this buffer could be increased.
 
@@ -1052,15 +1154,15 @@ Secondly, the server is currently only available to the computer it is running o
 
 #### Receiving a message
 
-<img src="./media/image37.png" style="width:6.31886in;height:0.9913in" />
+<img src="./media/image39.png" style="width:6.31886in;height:0.9913in" />
 
-Figure 4. MessengerAppShared.Receive
+Figure . MessengerAppShared.Receive
 
 Both child sockets will use these asynchronous methods for receiving data since synchronous methods would be blocking and so very disruptive for the user. A blocking method will halt the program’s processing until the receive method has finished. This will disable the GUI for the user for an indeterminate amount of time. Non-blocking methods on the other hand will run in the background and not affect the GUI. I have also made these methods virtual so the child classes can extend their functionality if they need to.
 
-<img src="./media/image38.png" style="width:3.91355in;height:2.65094in" alt="Text Description automatically generated" />
+<img src="./media/image40.png" style="width:3.91355in;height:2.65094in" alt="Text Description automatically generated" />
 
-Figure 5. MessengerAppShared.SocketBase.ReceiveCallback
+Figure . MessengerAppShared.SocketBase.ReceiveCallback
 
 In future iterations, the decoding of the message into text and passing to the message handler will have to be moved out of the shared method and into the child-specific overrides as decryption keys will need to be used by the client while message routing will need to be used by the server.
 
@@ -1070,45 +1172,45 @@ In future iterations, the decoding of the message into text and passing to the m
 
 ServerSocket is a child of SocketBase. Inside the server program’s main function, a ServerSocket instance is created and set to start. This will begin an infinite loop that accepts new connections from clients and creates a virtual thread for each client. In each of these threads is another infinite loop for receiving messages.
 
-<table><colgroup><col style="width: 48%" /><col style="width: 51%" /></colgroup><thead><tr class="header"><th><p><img src="./media/image39.png" style="width:2.95373in;height:1.68696in" alt="Text Description automatically generated" /></p><p>Figure 6. MessengerAppServer.Program.Main</p></th><th><p><img src="./media/image40.png" style="width:3.15103in;height:2.04348in" alt="Text Description automatically generated" /></p><p>Figure 7. MessengerAppServer.ServerSocket.Start</p></th></tr></thead><tbody><tr class="odd"><td><p><img src="./media/image41.png" style="width:2.77591in;height:0.56065in" alt="Graphical user interface, application Description automatically generated" /></p><p>Figure 8. Server socket as seen from Resource Monitor</p></td><td><p><img src="./media/image42.png" style="width:1.47935in;height:0.75892in" alt="Text Description automatically generated" /></p><p>Figure 9. Server console output upon start up</p></td></tr></tbody></table>
+<table><colgroup><col style="width: 48%" /><col style="width: 51%" /></colgroup><thead><tr class="header"><th><p><img src="./media/image41.png" style="width:2.95373in;height:1.68696in" alt="Text Description automatically generated" /></p><p>Figure . MessengerAppServer.Program.Main</p></th><th><p><img src="./media/image42.png" style="width:3.15103in;height:2.04348in" alt="Text Description automatically generated" /></p><p>Figure . MessengerAppServer.ServerSocket.Start</p></th></tr></thead><tbody><tr class="odd"><td><p><img src="./media/image43.png" style="width:2.77591in;height:0.56065in" alt="Graphical user interface, application Description automatically generated" /></p><p>Figure . Server socket as seen from Resource Monitor</p></td><td><p><img src="./media/image44.png" style="width:1.47935in;height:0.75892in" alt="Text Description automatically generated" /></p><p>Figure . Server console output upon starting</p></td></tr></tbody></table>
 
 This code should not need to be majorly changed for the rest of the development since the connection process will be the same even after adding user authentication and encryption. A possible change would be inserting the user authentication between accepting the user and making it its virtual thread, I will find out when authentication is implemented if this is needed.
 
 #### Stopping the server
 
-<img src="./media/image43.png" style="width:3.93455in;height:2.5913in" />
+<img src="./media/image45.png" style="width:3.93455in;height:2.5913in" />
 
-Figure 10. MessengerAppServer.ServerSocket.Stop
+Figure . MessengerAppServer.ServerSocket.Stop
 
 To stop the server, the ENTER key is pressed. In future iterations, this could be made more secure by requiring a passcode to be entered however it is not crucial so is not a priority now.
 
 Currently, there are two issues with the shutdown process. Firstly, the clients connected to the server are not notified that the server has been shut down. Which can cause fatal errors for the client if they try to send anything to the server. This problem can be solved by sending a shutdown notice to all connected clients before closing the socket. Secondly, a non-fatal error is thrown in the server program during the shutdown process, I believe this is because there is always an open receive happening and it is throwing an error when it is cut off.
 
-<img src="./media/image44.png" style="width:6.25984in;height:0.51461in" />
+<img src="./media/image46.png" style="width:6.25984in;height:0.51461in" />
 
-Figure 11. Server console output after \[enter\] is pressed
+Figure . Server console output after \[enter\] is pressed
 
 #### Accepting a new client
 
 This method is called at the end of ServerSocket.Start (*Figure 7*) to finalise the new client connection and will call ServerSocket.Start once it has finished continuing the infinite loop.
 
-<img src="./media/image45.png" style="width:4.97647in;height:2.5566in" />
+<img src="./media/image47.png" style="width:4.97647in;height:2.5566in" />
 
-Figure 12. MessengerAppServer.ServerSocket.AcceptCallback
+Figure . MessengerAppServer.ServerSocket.AcceptCallback
 
 In future iterations of the solution, this method will be extended by adding the user login system which will, in turn, improve the name and socket relations system in use here. The name and socket relations system currently consists of two dictionaries: one for IP to socket lookups and one for the socket to IP lookups. The IPs will be replaced with usernames for each socket’s unique identifier. Currently, to send a user a message the exact IP and port of the recipient must be entered. This is not user-friendly enough for the final solution so I plan to make a list of all the online users that the user can select to send their message to in a later iteration.
 
 #### Receiving a message from a client
 
-<img src="./media/image46.png" style="width:5.17234in;height:3.4717in" />
+<img src="./media/image48.png" style="width:5.17234in;height:3.4717in" />
 
-Figure 13. MessengerAppServer.ServerSocket.ReceiveCallback
+Figure . MessengerAppServer.ServerSocket.ReceiveCallback
 
 During development, I encountered the problem of the server crashing whenever a client program closed. I found the cause of this to be the infinite receive loop still trying to receive data from the client even though its connection has closed. To solve the problem, I added some validation to make sure the client is still connected before trying to read any data. This addition also had the added benefit of ensuring that the name to socket relation dictionaries is up to date with the connected clients
 
-<img src="./media/image47.png" style="width:2.80484in;height:1.06604in" alt="Text Description automatically generated" />
+<img src="./media/image49.png" style="width:2.80484in;height:1.06604in" alt="Text Description automatically generated" />
 
-Figure 14. Server output when a client connects (line 3) and then disconnects (line 4)
+Figure . Server output when a client connects (line 3) and then disconnects (line 4)
 
 In the future, I may move the client disconnect process to a separate method. This is because the process will only get longer and methods should only do one thing: just finish receiving the data, not also remove disconnected clients.
 
@@ -1116,9 +1218,9 @@ In the future, I may move the client disconnect process to a separate method. Th
 
 This method is called after receiving any data from the client. Firstly, data sanitation removes leading and trailing whitespace to ensure that all command word and parameter matches are accurate. Secondly, the string is split into an array of words which has been done to make reading specific parts of the message easier.
 
-<img src="./media/image48.png" style="width:4.98113in;height:6.1116in" />
+<img src="./media/image50.png" style="width:4.98113in;height:6.1116in" />
 
-Figure 15. MessengerAppServer.ServerSocket.HandleMessages
+Figure . MessengerAppServer.ServerSocket.HandleMessages
 
 To determine which command the message contains, the first words are matched against several cases. To avoid errors when the message is empty or null, the null coalescing operator (??) is used. This operator returns the left-hand side if it does not equal null, and the right-hand side if it is. This could have been done in an if statement before the switch but combining the two pieces of logic reduces code duplication and makes the method easier to maintain in the future.
 
@@ -1126,31 +1228,31 @@ In future iterations, this switch case block will have to be modified as the pla
 
 #### ECHO command handling
 
-<img src="./media/image49.png" style="width:4.94275in;height:4.60377in" />
+<img src="./media/image51.png" style="width:4.94275in;height:4.60377in" />
 
-Figure 16. MessengerAppServer.ServerSocket.Command_ECHO
+Figure . MessengerAppServer.ServerSocket.Command_ECHO
 
 This method will not be part of the final solution, instead, I am using it to test the sending of data between the client and server. By echoing any data sent back to the client, I can see immediately what data was transmitted, its form and therefore any problems, without the need to do variable watches in debugging.
 
-<img src="./media/image50.png" style="width:6.26806in;height:1.67847in" />
+<img src="./media/image52.png" style="width:6.26806in;height:1.67847in" />
 
-Figure 17. ECHO command as seen from client's and server's perspective
+Figure . ECHO command as seen from client's and server's perspective
 
 At this point in development, the server can see all messages in plaintext. This is not an issue as I am yet to implement the encryption process. In a future iteration when encryption has been implemented, the above situation should produce the same results on the client’s side while not showing “Hello World!” on the server’s side.
 
 #### SEND command handling
 
-<img src="./media/image51.png" style="width:5.94118in;height:9.12174in" />
+<img src="./media/image53.png" style="width:5.94118in;height:9.12174in" />
 
-Figure 18. MessengerAppClient.ServerSocket.Command_SEND
+Figure . MessengerAppClient.ServerSocket.Command_SEND
 
 One difficulty faced when writing this method was the command’s dependency on positional arguments. This required validation for the number of words in the message and tests of whether arguments were intended to be recipients or not, which meant there had to be many nested conditionals. This problem will be solved in future iterations where I will move away from a text-based protocol like this and into an object- or markup-based protocol as discussed in *2.1* *System Decomposition*.
 
 Another change I will make to this method in the future is changing the recipient argument into a username rather than an IP address and port. However, this can only be done once I have implemented user accounts. This will help the end-user by making the syntax easier and less likely to cause mistypes; although, in the final solution all commands will be generated by the client program so this improvement will lose its effect.
 
-<img src="./media/image52.png" style="width:5.91737in;height:2.83019in" />
+<img src="./media/image54.png" style="width:5.91737in;height:2.83019in" />
 
-Figure 19. SEND message from left (port 1070) to right (port 1071)
+Figure . SEND message from left (port 1070) to right (port 1071)
 
 As seen above, when sending a message, it is not immediately displayed by the recipient. I believe that this is because the client programs do not have an infinite receive loop like the server program. This means that they only read in data from their socket after they send a message to the server. Having a message waiting to be read by the socket introduces a permanent one-message delay on all communications from that program, which increases for each further message they receive via a SEND. To solve this problem, I will create a virtual thread that continually listens for messages from the server to process/display them in real-time.
 
@@ -1160,9 +1262,9 @@ As seen above, when sending a message, it is not immediately displayed by the re
 
 This method is used to interface the UI with the socket functions: pressing the “Connect to server” button will call this and once the socket has connected to the server, it will update the status label.
 
-<img src="./media/image53.png" style="width:3.42865in;height:1.9717in" alt="Text Description automatically generated" />
+<img src="./media/image55.png" style="width:3.42865in;height:1.9717in" alt="Text Description automatically generated" />
 
-Figure 20. MessengerAppClient.ShellViewModel.Connect
+Figure . MessengerAppClient.ShellViewModel.Connect
 
 One issue with this current method is that if the socket does not connect to the server successfully, the UI would still show “Connected” (currently the program crashes first, but if the crashing were fixed). This could be solved by adding a conditional to determine if the connection were successful.
 
@@ -1172,9 +1274,9 @@ In future iterations of the solution, this method to begin the connection with t
 
 This method is called when the “Send” button is pressed or the \[ENTER\] key is hit. It sends the message in the message text field to the server, gets a response from the server and displays the response. This linear process is needed as the response to the sent message is directly related to the sent message. However, this method is the only method used by the client to communicate with the server, which is not good when messages are sent to the client without the client first sending a message.
 
-<img src="./media/image54.png" style="width:3.50365in;height:2.66038in" alt="Text Description automatically generated" />
+<img src="./media/image56.png" style="width:3.50365in;height:2.66038in" alt="Text Description automatically generated" />
 
-Figure 21. MessengerAppClient.ShellViewModel.SendMessage
+Figure . MessengerAppClient.ShellViewModel.SendMessage
 
 I will solve this problem by adding an infinite receive loop like that seen in the server program. The consequences of not having this loop can be seen in the example from *3.1.3.7* *SEND command handling.*
 
@@ -1182,9 +1284,9 @@ Another problem I faced when writing this method was how will I store the messag
 
 #### Messaging screen
 
-<img src="./media/image55.png" style="width:4.56992in;height:2.56407in" />
+<img src="./media/image57.png" style="width:4.56992in;height:2.56407in" />
 
-Figure 22. Client program's user interface
+Figure . Client program's user interface
 
 The current UI has not been made for usability. It only has the essential components for testing and debugging the networking portion of the solution: my aim for this first iteration. In future iterations, I will focus more on recreating the designs that the stakeholders and I decided on. This includes adding the feature to send messages via pressing the enter key, connecting to the server automatically upon opening the program and most importantly, having the program write all the commands which are sent to the server, so the user only needs to write the message they want to send.
 
@@ -1200,8 +1302,8 @@ I will be testing this iteration through a predominantly black-box testing metho
 
 #### Testing results
 
-<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 56%" /><col style="width: 30%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image56.png" style="width:1.74904in;height:0.41532in" /></p><p>Server:</p><p><img src="./media/image57.png" style="width:1.33742in;height:0.16211in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>2</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image58.png" style="width:1.67986in;height:0.37398in" /></p><p>Server:</p><p><img src="./media/image59.png" style="width:2.58282in;height:0.17622in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>3</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image58.png" style="width:1.91007in;height:0.42524in" /></p><p>Server:</p><p><img src="./media/image59.png" style="width:2.58264in;height:0.1762in" /></p></td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message. This is good as it meant the data validation from other tests was working as expected</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender (127.0.0.1:62839):</p><p><img src="./media/image60.png" style="width:1.70144in;height:0.41437in" /></p><p>Recipient (127.0.0.1:63008):</p><p><img src="./media/image61.png" style="width:1.7446in;height:0.40557in" /></p><p>Server:</p><p><img src="./media/image62.png" style="width:2.11656in;height:0.25886in" /></p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server. This will need to be addressed in a later iteration</td></tr><tr class="odd"><td>5</td><td>Pass</td><td><p>Client:<br />
-<img src="./media/image63.png" style="width:2.31319in;height:0.4086in" /></p><p>Server:</p><p><img src="./media/image64.png" style="width:3.28221in;height:0.19273in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>6</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image65.png" style="width:1.90659in;height:0.43484in" /></p><p>Server:</p><p><img src="./media/image66.png" style="width:2.6319in;height:0.18027in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>7</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image67.png" style="width:2.30521in;height:0.39835in" /></p><p>Server:</p><p><img src="./media/image68.png" style="width:3.41791in;height:0.17696in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>8</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image69.png" style="width:2.2678in;height:0.39326in" /></p><p>Server:</p><p><img src="./media/image70.png" style="width:3.37421in;height:0.17101in" /></p></td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message. This is good as it meant an error was not thrown</td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image71.png" style="width:1.80256in;height:0.40659in" /></p><p>Server:</p><p><img src="./media/image72.png" style="width:2.83742in;height:0.17477in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image73.png" style="width:2.06593in;height:0.45831in" /></p><p>Server:</p><p><img src="./media/image74.png" style="width:2.60736in;height:0.18226in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>12</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image75.png" style="width:2.02198in;height:0.44552in" /></p><p>Server:</p><p><img src="./media/image76.png" style="width:1.3777in;height:0.17353in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>13</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image77.png" style="width:1.83517in;height:0.3937in" /></p><p>Server:</p><p><img src="./media/image78.png" style="width:2.45092in;height:0.17797in" /></p></td><td>When splitting the string on space characters, the recipient parameter was replaced by an empty string.</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image79.png" style="width:1.95604in;height:0.42347in" /></p><p>Server Part 1:</p><p><img src="./media/image80.png" style="width:2.57826in;height:0.14358in" /></p><p><img src="./media/image80.png" style="width:2.56957in;height:0.14885in" /></p><p>Server Part 2:</p><p><img src="./media/image81.png" style="width:2.57113in;height:0.18472in" /></p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td><p>Expected output</p><p><img src="./media/image82.png" style="width:1.29384in;height:0.72367in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
+<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 56%" /><col style="width: 30%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image58.png" style="width:1.74904in;height:0.41532in" /></p><p>Server:</p><p><img src="./media/image59.png" style="width:1.33742in;height:0.16211in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>2</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image60.png" style="width:1.67986in;height:0.37398in" /></p><p>Server:</p><p><img src="./media/image61.png" style="width:2.58282in;height:0.17622in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>3</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image60.png" style="width:1.91007in;height:0.42524in" /></p><p>Server:</p><p><img src="./media/image61.png" style="width:2.58264in;height:0.1762in" /></p></td><td>The whitespace message was removed by the data sanitisation earlier in the algorithm, so the transmission appeared as having no message. This is good as it meant the data validation from other tests was working as expected</td></tr><tr class="even"><td>4</td><td>Fail</td><td><p>Sender (127.0.0.1:62839):</p><p><img src="./media/image62.png" style="width:1.70144in;height:0.41437in" /></p><p>Recipient (127.0.0.1:63008):</p><p><img src="./media/image63.png" style="width:1.7446in;height:0.40557in" /></p><p>Server:</p><p><img src="./media/image64.png" style="width:2.11656in;height:0.25886in" /></p></td><td>Due to the lack of an infinite receive loop on the client, the recipient does not receive the message until they next communicate with the server. This will need to be addressed in a later iteration</td></tr><tr class="odd"><td>5</td><td>Pass</td><td><p>Client:<br />
+<img src="./media/image65.png" style="width:2.31319in;height:0.4086in" /></p><p>Server:</p><p><img src="./media/image66.png" style="width:3.28221in;height:0.19273in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>6</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image67.png" style="width:1.90659in;height:0.43484in" /></p><p>Server:</p><p><img src="./media/image68.png" style="width:2.6319in;height:0.18027in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>7</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image69.png" style="width:2.30521in;height:0.39835in" /></p><p>Server:</p><p><img src="./media/image70.png" style="width:3.41791in;height:0.17696in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>8</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image71.png" style="width:2.2678in;height:0.39326in" /></p><p>Server:</p><p><img src="./media/image72.png" style="width:3.37421in;height:0.17101in" /></p></td><td>Like test 3, the whitespace message was removed by data sanitisation earlier in the algorithm, so the transmission appeared as having no message. This is good as it meant an error was not thrown</td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image73.png" style="width:1.80256in;height:0.40659in" /></p><p>Server:</p><p><img src="./media/image74.png" style="width:2.83742in;height:0.17477in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>10</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>11</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image75.png" style="width:2.06593in;height:0.45831in" /></p><p>Server:</p><p><img src="./media/image76.png" style="width:2.60736in;height:0.18226in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>12</td><td>Pass</td><td><p>Client:</p><p><img src="./media/image77.png" style="width:2.02198in;height:0.44552in" /></p><p>Server:</p><p><img src="./media/image78.png" style="width:1.3777in;height:0.17353in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>13</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image79.png" style="width:1.83517in;height:0.3937in" /></p><p>Server:</p><p><img src="./media/image80.png" style="width:2.45092in;height:0.17797in" /></p></td><td>When splitting the string on space characters, the recipient parameter was replaced by an empty string.</td></tr><tr class="even"><td>14</td><td>Fail</td><td><p>Client:</p><p><img src="./media/image81.png" style="width:1.95604in;height:0.42347in" /></p><p>Server Part 1:</p><p><img src="./media/image82.png" style="width:2.57826in;height:0.14358in" /></p><p><img src="./media/image82.png" style="width:2.56957in;height:0.14885in" /></p><p>Server Part 2:</p><p><img src="./media/image83.png" style="width:2.57113in;height:0.18472in" /></p></td><td>The first 2048 bytes were processed correctly. The remainder was processed as in independent command, so caused a command not found error. The 2<sup>nd</sup> message suffered the same timing issue as test 4</td></tr><tr class="odd"><td>15</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="even"><td>16</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr><tr class="odd"><td>17</td><td>Pass</td><td><p>Expected output</p><p><img src="./media/image84.png" style="width:1.29384in;height:0.72367in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>18</td><td>Fail</td><td>(Program hung, had to be killed)</td><td>An unknown error caused the program to hang, I will investigate the cause</td></tr></tbody></table>
 
 #### Addressing Failed Tests
 
@@ -1276,7 +1378,7 @@ In this iteration, I successfully transitioned the program’s application layer
 
 Class diagram
 
-<img src="./media/image83.png" style="width:6.26111in;height:2.10417in" alt="Text Description automatically generated" />
+<img src="./media/image85.png" style="width:6.26111in;height:2.10417in" alt="Text Description automatically generated" />
 
 Implementation
 
@@ -1288,9 +1390,9 @@ For some parts of the program, I only partially transitioned to the object-based
 
 #### Serialisation and deserialisation
 
-<img src="./media/image84.png" style="width:5.05014in;height:3.98113in" alt="Text Description automatically generated" />
+<img src="./media/image86.png" style="width:5.05014in;height:3.98113in" alt="Text Description automatically generated" />
 
-Figure 23. MessengerAppShared.MesssageBase.Serialise and MessengerAppShared.MessageBase.Deserialise
+Figure . MessengerAppShared.MesssageBase.Serialise and MessengerAppShared.MessageBase.Deserialise
 
 These methods from MessageBase facilitate the object-based protocol as only binary can be transmitted across the program’s sockets.
 
@@ -1304,9 +1406,9 @@ To improve these methods and act on the findings found in *3.1.4.2* *Testing res
 
 #### Handling an inbound message
 
-<img src="./media/image85.png" style="width:5.36548in;height:3.86792in" alt="Text Description automatically generated" />
+<img src="./media/image87.png" style="width:5.36548in;height:3.86792in" alt="Text Description automatically generated" />
 
-Figure 24. MessengerAppServer.ServerSocket.HandleObject
+Figure . MessengerAppServer.ServerSocket.HandleObject
 
 This function is called after the socket receives an object. Its purpose is to call the object’s corresponding handling routine. This is achieved through a switch-case block that switches on the object’s type. I chose this as it is the most succinct conditional for this scenario, the alternative is many if-statements containing very similar conditions that add unnecessary repetition. A benefit of this function is that it allows me to in future implement actions easily as all I need to do is add another case to pass on to that action’s handler.
 
@@ -1318,9 +1420,9 @@ The purpose of the MessageEcho class was mentioned above in *3.6.2* *Serialisati
 
 #### Login procedure
 
-<img src="./media/image86.png" style="width:5.96434in;height:4.77359in" alt="Text Description automatically generated" />
+<img src="./media/image88.png" style="width:5.96434in;height:4.77359in" alt="Text Description automatically generated" />
 
-Figure 25. MessengerAppServer.ServerSocket.HandleObject_Login
+Figure . MessengerAppServer.ServerSocket.HandleObject_Login
 
 This method is triggered by the received object handler explained in the section above. The method compares the username and password provided by the user to all the stored usernames and passwords in the AccountCredentials.csv file. When a match is found, an appropriate message is returned to the user as a pop-up box.
 
@@ -1330,9 +1432,9 @@ On the server’s side, the dictionary that contains the relations between clien
 
 #### CSV handling
 
-<img src="./media/image87.png" style="width:5.84663in;height:2.14151in" />
+<img src="./media/image89.png" style="width:5.84663in;height:2.14151in" />
 
-Figure 26. MessengerAppServer.CSVHandler
+Figure . MessengerAppServer.CSVHandler
 
 This class handles reading data from AccountCredentials.csv by the server. When called it reads the file and transforms each record into an Account object. The Account class has attributes corresponding to each header in the CSV (Username, Password) and no methods, it merely exists to hold data. The list of Account objects is then returned to the program so that it can be searched as seen above in the *3.8.2* *Login procedure*.
 
@@ -1346,9 +1448,9 @@ As all login attempts are processed by the server by checking the supplied crede
 
 #### Login request
 
-<img src="./media/image88.png" style="width:5.29667in;height:2.29245in" alt="Text Description automatically generated" />
+<img src="./media/image90.png" style="width:5.29667in;height:2.29245in" alt="Text Description automatically generated" />
 
-Figure 27. MessengerAppClient.LoginViewModel.LoginButton
+Figure . MessengerAppClient.LoginViewModel.LoginButton
 
 This function is called when the user clicks the “Log in” button on the login dialogue (as seen *in* *3.10* *Iteration 2, Client UI*). The contents of the username and password field are used to create a new MessageLogin object. This object is then sent to the server and the server’s response is received. The UI fields are also cleared.
 
@@ -1360,7 +1462,7 @@ When a response is received from the server, the client shows a pop-up box to th
 
 #### Login screen 
 
-<table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th rowspan="2"><p><img src="./media/image89.png" style="width:2.93396in;height:3.74099in" alt="Graphical user interface Description automatically generated" /></p><p>Figure 28. Client login screen</p></th><th><p><img src="./media/image90.png" style="width:1.6194in;height:1.1344in" alt="Graphical user interface, application Description automatically generated" /></p><p>Figure 29. Unsuccessful login attempt</p></th></tr><tr class="odd"><th><p><img src="./media/image91.png" style="width:2.8694in;height:1.18623in" alt="Graphical user interface, text, application Description automatically generated" /></p><p>Figure 30. Successful login attempt for user "test"</p></th></tr></thead><tbody></tbody></table>
+<table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th rowspan="2"><p><img src="./media/image91.png" style="width:2.93396in;height:3.74099in" alt="Graphical user interface Description automatically generated" /></p><p>Figure . Client login screen</p></th><th><p><img src="./media/image92.png" style="width:1.6194in;height:1.1344in" alt="Graphical user interface, application Description automatically generated" /></p><p>Figure . Unsuccessful login attempt</p></th></tr><tr class="odd"><th><p><img src="./media/image93.png" style="width:2.8694in;height:1.18623in" alt="Graphical user interface, text, application Description automatically generated" /></p><p>Figure . Successful login attempt for user "test"</p></th></tr></thead><tbody></tbody></table>
 
 When the user runs the program, they are shown the login screen above. After filling out the fields they can click the “Log in” button (defined above in 3.9.1 Login request) to attempt to log into the server. If the server finds a matching pair of credentials in their CSV, the client is shown the successful login attempt message (Figure 30). If the server cannot find a matching pair of credentials, the client is shown the unsuccessful login attempt message (Figure 29). The user can then close these pop-up boxes and they are shown the login screen again.
 
@@ -1378,7 +1480,7 @@ In this iteration’s testing, I will mainly carry out black-box tests of all th
 
 #### Testing results
 
-<table><colgroup><col style="width: 5%" /><col style="width: 8%" /><col style="width: 46%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1.0</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image92.png" style="width:2.4362in;height:0.15495in" /></p><p>Client:</p><p><img src="./media/image93.png" style="width:2.464in;height:1.01982in" /></p></td><td>The request successfully reached the server and was processed as expected. However, when the response reached the client, the user was not passed to the messaging screen as this functionality has not yet been implemented</td></tr><tr class="even"><td>1.1</td><td>Fail</td><td><p>Server:</p><p>[nothing]</p><p>Client:</p><p><img src="./media/image94.png" style="width:1.4in;height:0.86637in" /></p></td><td>A request was never made to the server and the user was shown an “under construction” placeholder. This is because the signup functionality has not yet been implemented</td></tr><tr class="odd"><td>2.0</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image92.png" style="width:2.26859in;height:0.14429in" /></p><p>Client:</p><p><img src="./media/image93.png" style="width:2.464in;height:1.01982in" /></p></td><td>Output is as expected</td></tr><tr class="even"><td>2.1</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image95.png" style="width:2.64764in;height:0.15208in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output is as expected</td></tr><tr class="odd"><td>2.2</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image97.png" style="width:1.736in;height:0.15858in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output is as expected</td></tr><tr class="even"><td>2.3</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image95.png" style="width:2.64764in;height:0.15208in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output is as expected</td></tr><tr class="odd"><td>2.4</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image98.png" style="width:1.536in;height:0.1562in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>The user is not stopped from sending a login request with an empty field. This is because data validation has not been implemented yet</td></tr><tr class="even"><td>2.5</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image99.png" style="width:1.55694in;height:0.12152in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>The user is not stopped from sending a login request with an empty field. This is because data validation has not been implemented yet</td></tr><tr class="odd"><td>2.6</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image98.png" style="width:1.536in;height:0.1562in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>The user is not stopped from sending a login request with empty fields. This is because data validation has not been implemented yet</td></tr><tr class="even"><td>2.7</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image100.png" style="width:1.712in;height:0.14959in" /></p><p>Client:</p><p><img src="./media/image96.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output as expected</td></tr></tbody></table>
+<table><colgroup><col style="width: 5%" /><col style="width: 8%" /><col style="width: 46%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1.0</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image94.png" style="width:2.4362in;height:0.15495in" /></p><p>Client:</p><p><img src="./media/image95.png" style="width:2.464in;height:1.01982in" /></p></td><td>The request successfully reached the server and was processed as expected. However, when the response reached the client, the user was not passed to the messaging screen as this functionality has not yet been implemented</td></tr><tr class="even"><td>1.1</td><td>Fail</td><td><p>Server:</p><p>[nothing]</p><p>Client:</p><p><img src="./media/image96.png" style="width:1.4in;height:0.86637in" /></p></td><td>A request was never made to the server and the user was shown an “under construction” placeholder. This is because the signup functionality has not yet been implemented</td></tr><tr class="odd"><td>2.0</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image94.png" style="width:2.26859in;height:0.14429in" /></p><p>Client:</p><p><img src="./media/image95.png" style="width:2.464in;height:1.01982in" /></p></td><td>Output is as expected</td></tr><tr class="even"><td>2.1</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image97.png" style="width:2.64764in;height:0.15208in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output is as expected</td></tr><tr class="odd"><td>2.2</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image99.png" style="width:1.736in;height:0.15858in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output is as expected</td></tr><tr class="even"><td>2.3</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image97.png" style="width:2.64764in;height:0.15208in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output is as expected</td></tr><tr class="odd"><td>2.4</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image100.png" style="width:1.536in;height:0.1562in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>The user is not stopped from sending a login request with an empty field. This is because data validation has not been implemented yet</td></tr><tr class="even"><td>2.5</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image101.png" style="width:1.55694in;height:0.12152in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>The user is not stopped from sending a login request with an empty field. This is because data validation has not been implemented yet</td></tr><tr class="odd"><td>2.6</td><td>Fail</td><td><p>Server:</p><p><img src="./media/image100.png" style="width:1.536in;height:0.1562in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>The user is not stopped from sending a login request with empty fields. This is because data validation has not been implemented yet</td></tr><tr class="even"><td>2.7</td><td>Pass</td><td><p>Server:</p><p><img src="./media/image102.png" style="width:1.712in;height:0.14959in" /></p><p>Client:</p><p><img src="./media/image98.png" style="width:1.216in;height:0.84137in" /></p></td><td>Output as expected</td></tr></tbody></table>
 
 #### Addressing Failed Tests
 
@@ -1449,23 +1551,23 @@ To control these Screens, I made three Conductor ViewModels. One for the login s
 
 A pattern that needed to be implemented alongside Conductors was dependency injection. DI is where objects are injected into another object which requires them. This was needed in my case as the Conductors needed access to the Screens they acted on. The pattern was implemented starting at the bootstrapper where an IoC container is made to handle the injecting of objects. This bootstrapper then loads ShellViewModel which is injected with the Conductors for login and messaging. When each of the Conductors is instantiated, they are injected with the Screens they control. The Conductors then takes the screens that have been injected into them and add them to a Screen Collection. This allows the Conductor to control which Screen is the active screen. In the case of the ShellViewModel Conductor, it allows control over which Conductor is the active Conductor.
 
-<img src="./media/image101.png" style="width:6.25479in;height:4.87708in" />
+<img src="./media/image103.png" style="width:6.25479in;height:4.87708in" />
 
-Figure 31. Class diagram of Screen and Conductor relationships for all current ViewModels
+Figure . Class diagram of Screen and Conductor relationships for all current ViewModels
 
 Because I transitioned from having each of my Views being a Window to being a UserControl, they can all be displayed in the same Window. This Window is called ShellView and is the View for ShellViewModel (the root object in the diagram above). ShellViewModel is the entry point of the program and is the Conductor for the other Conductors so allows the top-down approach for my handling of navigation. When I want to implement activation and deactivation logic for the program (e.g., connecting the socket at start-up and disconnecting the socket at exit) it will be done in this class.
 
 #### Example Conductor: ShellViewModel
 
-<img src="./media/image102.png" style="width:5.90551in;height:2.97537in" />
+<img src="./media/image104.png" style="width:5.90551in;height:2.97537in" />
 
-Figure 32. Class diagram of ShellViewModel
+Figure . Class diagram of ShellViewModel
 
 Since all the Conductors have similar inheritance, constructors, and Screen handling logic, they all approximately fit the class diagram above. Therefore, I will only explain the first Conductor: ShellViewModel.
 
-<img src="./media/image103.png" style="width:4.35075in;height:2.4035in" alt="Text Description automatically generated" />
+<img src="./media/image105.png" style="width:4.35075in;height:2.4035in" alt="Text Description automatically generated" />
 
-Figure 33. ShellViewModel constructor
+Figure . ShellViewModel constructor
 
 ShellViewModel inherits from the Conductor class. The specific Conductor inherited from supports Screen Collections and only one active Screen. I choose these modes as all the ViewModels that this Conductor controls are Screens (through inheritance, see Figure 31). Secondly, only a single Screen will be displayed at a time so OneActive was chosen, rather than AllActive which can display multiple Screens.
 
@@ -1473,21 +1575,21 @@ A LoginConductorViewModel and ContentConductorViewModel were injected into the c
 
 #### Example Screen: SignupViewModel
 
-<img src="./media/image104.png" style="width:5.51181in;height:1.868in" alt="Graphical user interface, application Description automatically generated" />
+<img src="./media/image106.png" style="width:5.51181in;height:1.868in" alt="Graphical user interface, application Description automatically generated" />
 
-Figure 34. Class diagram of SignupViewModel
+Figure . Class diagram of SignupViewModel
 
 Like Conductors, since all the Screens have similar inheritance, constructors, and message publishing logic, they all approximately fit the class diagram above. Therefore, I will only explain one of the Screens: SignupViewModel. Once more complex program logic is added to the Screens, they will begin to diverge from one another, so the details I explain with be the common features that will remain.
 
-<img src="./media/image105.png" style="width:4.26119in;height:2.1122in" alt="Text Description automatically generated" />
+<img src="./media/image107.png" style="width:4.26119in;height:2.1122in" alt="Text Description automatically generated" />
 
-Figure 35. SignupViewModel
+Figure . SignupViewModel
 
 SignupViewModel inherits from Screen. This provides the class with the necessary methods for being activated and deactivated.
 
-<img src="./media/image106.png" style="width:3.984in;height:2.25639in" alt="Graphical user interface, application Description automatically generated" />
+<img src="./media/image108.png" style="width:3.984in;height:2.25639in" alt="Graphical user interface, application Description automatically generated" />
 
-Figure 36. SignupView's design
+Figure . SignupView's design
 
 Like in ShellViewModel, SignupViewModel implements the Event Aggregator interface to enable the class to publish messages that tell the Conductor to change the displayed Screen. The navigation message for SignupViewModel is published when the “Back” button is pressed as can be seen in Figure 35.
 
@@ -1495,9 +1597,9 @@ Like in ShellViewModel, SignupViewModel implements the Event Aggregator interfac
 
 After putting in place the Screens and Conductors to solve issue 1, an Event Aggregator was needed to handle the communications between all the objects to solve issue 2.
 
-<img src="./media/image107.png" style="width:5.58261in;height:4.35723in" />
+<img src="./media/image109.png" style="width:5.58261in;height:4.35723in" />
 
-Figure 37. Class diagram of which messages each object publishes and subscribes to through IEventAggregator
+Figure . Class diagram of which messages each object publishes and subscribes to through IEventAggregator
 
 The first implementation of the EventAggregator interface (IEventAggregator) is with the ShellViewModel. The messages that this object subscribes to are ValidLoginMessage and LogOutMessage, these tell the Conductor that the user wants to go to the messaging screen or login screen respectively.
 
@@ -1528,14 +1630,14 @@ In this iteration’s testing, I will solely carry out UI testing. This is becau
 
 | ID  | Status | Actual Output                                                               | Comments                                                                                                              |
 |-----|--------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| 1.0 | Pass   | <img src="./media/image108.png" style="width:2.7987in;height:1.76957in" />  | Output as expected                                                                                                    |
-| 1.1 | Fail   | <img src="./media/image109.png" style="width:2.79861in;height:1.76859in" /> | The “Signup” button in SignupView was disabled so it could not be pressed to test if the navigation link was working  |
-| 1.2 | Pass   | <img src="./media/image110.png" style="width:2.79861in;height:1.76456in" /> | Output as expected                                                                                                    |
-| 2.0 | Pass   | <img src="./media/image111.png" style="width:2.77677in;height:1.75325in" /> | Output as expected                                                                                                    |
-| 2.1 | Pass   | <img src="./media/image112.png" style="width:2.74026in;height:1.73019in" /> | Output as expected                                                                                                    |
-| 2.2 | Pass   | <img src="./media/image110.png" style="width:2.79861in;height:1.76456in" /> | Output as expected                                                                                                    |
-| 3.0 | Fail   | <img src="./media/image113.png" style="width:1.02597in;height:2.4315in" />  | All the buttons and fields were eventually lost from being compacted too close to each other in too small of a window |
-| 3.1 | Fail   | <img src="./media/image114.png" style="width:1.24026in;height:1.47414in" /> | All the buttons and fields were eventually lost from being compacted too close to each other in too small of a window |
+| 1.0 | Pass   | <img src="./media/image110.png" style="width:2.7987in;height:1.76957in" />  | Output as expected                                                                                                    |
+| 1.1 | Fail   | <img src="./media/image111.png" style="width:2.79861in;height:1.76859in" /> | The “Signup” button in SignupView was disabled so it could not be pressed to test if the navigation link was working  |
+| 1.2 | Pass   | <img src="./media/image112.png" style="width:2.79861in;height:1.76456in" /> | Output as expected                                                                                                    |
+| 2.0 | Pass   | <img src="./media/image113.png" style="width:2.77677in;height:1.75325in" /> | Output as expected                                                                                                    |
+| 2.1 | Pass   | <img src="./media/image114.png" style="width:2.74026in;height:1.73019in" /> | Output as expected                                                                                                    |
+| 2.2 | Pass   | <img src="./media/image112.png" style="width:2.79861in;height:1.76456in" /> | Output as expected                                                                                                    |
+| 3.0 | Fail   | <img src="./media/image115.png" style="width:1.02597in;height:2.4315in" />  | All the buttons and fields were eventually lost from being compacted too close to each other in too small of a window |
+| 3.1 | Fail   | <img src="./media/image116.png" style="width:1.24026in;height:1.47414in" /> | All the buttons and fields were eventually lost from being compacted too close to each other in too small of a window |
 
 #### Addressing Failed Tests
 
@@ -1616,6 +1718,116 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
 
 \[1\] J. Schwartz, “Messaging Apps: Average Usage Time Around the World,” SimilarWeb, 30 June 2016. \[Online\]. Available: www.similarweb.com/corp/blog/messaging-apps/. \[Accessed 18 April 2021\].\[2\] C. Corberly, “Discord has surpassed 250 million registered users,” TechSpot, 13 May 2019. \[Online\]. Available: www.techspot.com/news/80064-discord-has-surpassed-250-million-registered-users.html. \[Accessed 12 February 2021\].\[3\] A. Gelhausen, “IRC Networks - Top 10 in the annual comparison,” Netsplit, 2005. \[Online\]. Available: netsplit.de/networks/top10.php?year=2005. \[Accessed 19 February 2021\].\[4\] A. Gelhausen, “IRC Network QuakeNet,” Netsplit, \[Online\]. Available: netsplit.de/networks/QuakeNet/. \[Accessed 19 February 2021\].\[5\] Collaborative, “.NET Core 3.1 - Supported OS Versions,” 15 October 2019. \[Online\]. Available: github.com/dotnet/core/blob/main/release-notes/3.1/3.1-supported-os.md. \[Accessed 18 March 2021\].
 
+# Appendix
+
+## LaTeX Source Code
+
+1.  \\documentclass{article}
+
+2.  \\usepackage{amsmath}
+
+3.  \\usepackage{algorithm}
+
+4.  \\usepackage\[noend\]{algpseudocode}
+
+5.  
+
+6.  \\begin{document}
+
+7.  \\begin{algorithm}
+
+8.  \\caption{Creating a new user account - Client Side}
+
+9.  \\begin{algorithmic}\[1\]
+
+10. 
+
+11. \\Procedure{GetValidCredentials}{}
+
+12. % Loop until valid
+
+13. \\Repeat
+
+14. % Getting username and password
+
+15. \\State $valid \\gets true$
+
+16. \\State $username \\gets \\textbf{input}$ \\Comment{Fetched from UI}
+
+17. \\State $password \\gets \\textbf{input}$
+
+18. 
+
+19. % Checking for valid username
+
+20. \\If {$\\textrm{invalid } username$}
+
+21. \\State $\\textbf{output} \\textrm{ \`\`Invalid username\`\`}$
+
+22. \\State $valid \\gets false$
+
+23. \\Else
+
+24. \\State $username \\gets username + \`\`\\#\`\` + discriminator$
+
+25. \\EndIf
+
+26. 
+
+27. % Checking for valid password
+
+28. \\If {$\\textrm{invalid } password$}
+
+29. \\State $\\textbf{output} \\textrm{ \`\`Invalid password\`\`}$
+
+30. \\State $valid \\gets false$
+
+31. \\EndIf
+
+32. \\Until{$valid$}
+
+33. 
+
+34. % Return credentials
+
+35. \\State $\\textbf{return } username \\textrm{ and } password$
+
+36. \\EndProcedure
+
+37. 
+
+38. % Blank line
+
+39. \\State
+
+40. 
+
+41. \\Procedure{CreateAccount}{}
+
+42. \\State $username, \\, password \\gets \\textsc{GetValidCredentials}$
+
+43. \\State $public\\\_key,\\,private\\\_key \\gets \\textsc{RSA\\\_KeyGen}$
+
+44. \\State $derived\\\_key \\gets$ \\textsc{KDF(input=$password$)}
+
+45. \\State $encrypted\\\_private\\\_key \\gets$ \\textsc{AES(text=$private\\\_key$, key=$derived\\\_key$)}
+
+46. \\State $password\\\_hash \\gets$ \\textsc{MD5(input=$password$)}
+
+47. \\State \\textbf{send} $username\\textrm{ and } password$ to server
+
+48. \\State \\textbf{send} $public\\\_key\\textrm{ and }encrypted\\\_private\\\_key$ to server
+
+49. \\EndProcedure
+
+50. 
+
+51. \\end{algorithmic}
+
+52. \\end{algorithm}
+
+53. \\end{document}
+
   [1 Analysis 4]: #analysis
   [1.1 Problem Identification 4]: #problem-identification
   [1.1.1 Problem and Proposed Solution 4]: #problem-and-proposed-solution
@@ -1633,7 +1845,7 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
   [1.4.1 Essential Features 21]: #essential-features
   [1.4.2 Identifying Limitations 22]: #identifying-limitations
   [1.5 Requirements 23]: #requirements
-  [1.5.1 Stakeholders 23]: #stakeholders-1
+  [1.5.1 Stakeholders 23]: #stakeholder
   [1.5.2 Software 24]: #software
   [1.6 Success Criteria 25]: #success-criteria
   [2 Design 27]: #design
@@ -1642,17 +1854,15 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
   [2.1.2 Encryption 29]: #encryption
   [2.1.3 Interface 30]: #interface
   [2.1.4 Accounts 31]: #accounts
-  [2.2 (X) Solution Structure 32]: #x-solution-structure
-  [2.2.1 (X) Client 32]: #x-client
-  [2.2.2 (X) Server 32]: #x-server
-  [2.2.3 (X) Shared 32]: #x-shared
+  [2.2 (X) Solution Structure 32]: #solution-structure
+  [2.2.2 (X) Server 32]: #_Toc95572209
+  [2.2.3 (X) Shared 32]: #_Toc95572210
   [2.3 Algorithms 33]: #_Toc95572211
   [2.3.1 Logging in 33]: #logging-in
-  [2.3.2 Creating an account 34]: #creating-an-account
-  [2.3.3 Creating an account (revised) 36]: #creating-an-account-revised
+  [2.3.2 Creating an account 34]: #signing-up
   [2.4 Usability Features 37]: #usability-features
-  [2.5 (X) Internal Structures 38]: #x-internal-structures
-  [2.5.1 (X) Variables 38]: #x-variables
+  [2.5 (X) Internal Structures 38]: #internal-structures
+  [2.5.1 (X) Variables 38]: #variables
   [2.5.2 (X) Data Structures 39]: #x-data-structures
   [2.5.3 (X) Class Diagrams 39]: #x-class-diagrams
   [2.6 Data 40]: #data

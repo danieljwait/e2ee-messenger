@@ -4,7 +4,7 @@
 
 [1.1 Problem Identification 4][]
 
-[1.1.1 Problem and Proposed Solution 4][]
+[1.1.1 Problem and Proposed Solutions 4][]
 
 [1.1.2 Computational Methods 5][]
 
@@ -36,7 +36,9 @@
 
 [1.5.1 Stakeholder 23][]
 
-[1.5.2 Software 24][]
+[1.5.2 Hardware 24][]
+
+[1.5.3 Software 24][]
 
 [1.6 Success Criteria 25][]
 
@@ -90,8 +92,6 @@
 
 [2.7 (?) Interface Design 49][]
 
-[2.7.1 (?) Interface Designs 49][]
-
 [3 Development 54][]
 
 [3.1 Iteration 1 54][]
@@ -134,57 +134,57 @@
 
 [3.3.5 Evaluation 98][]
 
-[3.4 (X) Iteration 4 99][]
+[3.4 Iteration 4 99][]
 
 [3.4.1 Plan 99][]
 
-[3.4.2 (X) Encryption 100][]
+[3.4.2 Encryption 100][]
 
-[3.4.3 (X) Client 100][]
+[3.4.3 Client 101][]
 
-[3.4.4 (X) Testing 100][]
+[3.4.4 Testing 103][]
 
-[3.4.5 (X) Evaluation 100][]
+[3.4.5 Evaluation 105][]
 
-[4 (X) Evaluation 101][]
+[4 Evaluation 106][]
 
-[4.1 (X) Success Criteria 101][]
+[4.1 Post-Development Testing 106][]
 
-[4.1.1 Testing Plan 101][]
+[4.1.1 Functionality 106][]
 
-[4.1.2 Testing Results 103][]
+[4.1.2 Robustness 113][]
 
-[4.1.3 (X) Evaluation 108][]
+[4.1.3 Usability Features 117][]
 
-[4.1.4 (X) Addressing Unmet Criteria 108][]
+[4.2 Success Criteria 121][]
 
-[4.2 (X) Usability Features 109][]
+[4.2.1 Evaluation 121][]
 
-[4.2.1 Testing Plan 109][]
+[4.2.2 (X) Addressing Unmet Criteria 122][]
 
-[4.2.2 Testing Results 110][]
+[4.3 (X) Usability Features 123][]
 
-[4.2.3 (X) Evaluation 113][]
+[4.3.1 (X) Evaluation 123][]
 
-[4.2.4 (X) Addressing Unmet Features 113][]
+[4.3.2 (X) Addressing Unmet Features 123][]
 
-[4.3 (X) Maintenance Issues and Limitations 114][]
+[4.4 (X) Maintenance Issues and Limitations 124][]
 
-[4.3.1 (X) Evaluation 114][]
+[4.4.1 (X) Evaluation 124][]
 
-[4.3.2 (X) Addressing Limitations 114][]
+[4.4.2 (X) Addressing Limitations 124][]
 
-[5 References 115][]
+[5 References 125][]
 
-[6 Appendix 116][]
+[6 Appendix 126][]
 
-[6.1 LaTeX Source Code 116][]
+[6.1 LaTeX Source Code 126][]
 
 # Analysis
 
 ## Problem Identification
 
-### Problem and Proposed Solution
+### Problem and Proposed Solutions
 
 Currently, the most widely used encryption system for instant messaging apps is encryption in-transit. This system is based on the assumption that the client and server are secure, but the connection between them (the internet) is not. The process for encryption in-transit is for the sender to encrypt the message before it is sent to the server, the server then decrypts and reads the message, then the server encrypts the message again and sends it to the recipient. Lastly, the recipient decrypts the message and reads its contents.
 
@@ -720,9 +720,23 @@ These features were also raised in the sections stated above. However, they are 
 | Standardised usernames                           | Users using the platform for work would benefit from standardised usernames              | *1.3.3* *Survey Results* (Q7)                                                                |
 | Send files greater than 8 MB                     | This is a paid feature of Discord that the stakeholders would like to see in the program | *1.3.1* *Interview with Ethan S* (Topic: Discord research) and *1.3.3* *Survey Results* (Q8) |
 
+### Hardware
+
+Computer
+
+A computer will be required to run the solution. This is because the solution requires the .NET runtime which is only available on computers (the exact OS needed will be specified in the software requirements below).
+
+Monitor
+
+A monitor that is between 1366 by 768 and 3840 by 2160 pixels will be required to see the interface of the solution. The reason that this range was chosen is that any smaller and the interface’s buttons would not all fit on the screen and any bigger and the labels on the fields would be too small to read comfortably. There are no requirements on the colour specification of the monitor (e.g., greyscale or 32-bit colour) because the interface will not need colour to differentiate the interface components.
+
+Network
+
+The computer that is running the client will need to be connected to the same network as the server. This can either be a WAN such as the internet or a LAN such as a home network. This is a requirement because the client program must be able to connect to the server and unless the server and client are on the same machine the transmission will need to be sent across a network
+
 ### Software
 
-For simplicity, I will only be building a Windows x86 version of the solution for development and the final evaluation. However, using the dotnet compiler, executables for all the following operating systems can be built from the source.
+Operating system and CPU architecture
 
 | OS         | Version                    | Architectures     |
 |------------|----------------------------|-------------------|
@@ -735,9 +749,15 @@ For simplicity, I will only be building a Windows x86 version of the solution fo
 
 Information from the .NET Core GitHub repository \[5\]
 
-The final user of the program will not be required to install the .NET runtime as the solution will be published self-contained. This means that the download will be larger as it will contain the .NET libraries, runtime and dependencies needed. I will use this format of distribution for the program as one of the stakeholder groups required an easy program setup with no configuration etc.
+For simplicity, I will only be building a Windows x86 version of the solution for development and the final evaluation. However, using the dotnet compiler, executables for all the following operating systems can be built from the source.
 
-Internet access will be required to run the program as the client program needs to communicate with the server. During the installation of the program, admin privileges will be required if the program needs access to the internet as it will need a firewall port opening.
+.NET runtime
+
+The final user of the program will not be required to install the .NET runtime as the solution will be published self-contained. This means that the download will be larger as it will contain the .NET libraries, runtime and dependencies needed. I will use this format of distribution for the program because one of the stakeholder groups required an easy program setup with no configuration etc.
+
+Admin privileges
+
+During the installation of the program, admin privileges will be required. This is needed because the program needs to access a port on the computer and ports are typically protected for security.
 
 ## Success Criteria
 
@@ -1040,7 +1060,7 @@ When the program first opens, it will be a standards size. If this is not the si
 
 Queue
 
-When the client receives messages from the server, they will have an order. Therefore, if the client receives a login success message and inbound text message their order must be preserved. The data structure that will allow the order to be preserved is a queue. Queues are first in first out (FIFO) data structures so if the program enqueues incoming messages and dequeues messages to process them there will be no altering of the message order. The same applies to the server program when it receives multiple requests from the same client: all the requests will need to be stored in a queue to preserver order.
+When the client receives messages from the server, they will have an order. Therefore, if the client receives a login success message and an inbound text message their order must be preserved. The data structure that will allow the order to be preserved is a queue. Queues are first in first out (FIFO) data structures so if the program enqueues incoming messages and dequeues messages to process them there will be no altering of the message order. The same applies to the server program when it receives multiple requests from the same client: all the requests will need to be stored in a queue to preserver order.
 
 Dictionary
 
@@ -1094,7 +1114,7 @@ Conversely, most fields will also require a maximum input size. Since the socket
 
 Standardised usernames
 
-Standardised usernames were identified by the stakeholders as a requirement. This means that when users want to create a new account, the username they attempt to use must pass data validation criteria before being sent to the server. The standardisation can be in many forms, but I will assume the stakeholders wants to incorporate the user’s first name and last name since business usage was also identified as a use case for messaging apps. A possible grammar for the username and passwords is outlined in Extended Backus-Naur Form below.
+Standardised usernames were identified by the stakeholders as a requirement. This means that when users want to create a new account, the username they attempt to use must pass data validation criteria before being sent to the server. The standardisation can be in many forms, but I will assume the stakeholders wants to incorporate the user’s first name and last name since business usage was also identified as a use case for messaging apps. A possible grammar for the username and passwords is outlined in the Extended Backus-Naur Form below.
 
 <table><colgroup><col style="width: 100%" /></colgroup><thead><tr class="header"><th>Username and password grammar (EBNF)</th></tr></thead><tbody><tr class="odd"><td><p>upper ::= [A-Z]</p><p>lower ::= [a-z]</p><p>digit ::= [0-9]</p><p>special ::= "$" | "#" | "@" | "!" | "%" | "^" | "&amp;" | "*"</p><p>character ::= [A-Z] | [a-z] | [0-9] | special</p><p>first_name ::= upper { lower }</p><p>last_name ::= upper { lower | "-" upper }</p><p>username ::= first_name [ "_" last_name ]</p><p>password ::= character { character }</p></td></tr></tbody></table>
 
@@ -1155,8 +1175,6 @@ Another part of the program which will require permanent storage is historic mes
 | Frank   | Eve       | Hey Eve!     | 22:16 |
 
 ## (?) Interface Design
-
-### (?) Interface Designs
 
 Several low fidelity wireframes have been created for the different windows that will be shown in the program. These designs have incorporated the ideas from the *1.3.1* *Interview with Ethan S* as well as some alternative ideas I have come up with inspired by the existing solutions seen in *1.2* *Research*. After getting feedback on these I will convert them to medium to high fidelity wireframes and prototypes to again send to the stakeholders for feedback.
 
@@ -1753,7 +1771,7 @@ The opening and closing routines for the program have been extended to include w
 
 Now that the login system is complete (except for the signup process, which is not a priority), I will move on to reconnecting the logic for the program so that the client can connect to the server again. Then, I will focus on the client-client messaging in the next iteration.
 
-## (X) Iteration 4
+## Iteration 4
 
 ### Plan
 
@@ -1775,25 +1793,94 @@ Criteria 11 and 12 are being targeted for this iteration so that choosing a clie
 
 The rest of the targeted criteria (15 through to 21) enable end-to-end encryption, message integrity and user authenticity. These will be the final layers to be added to the messaging app once the rest of the processes are complete and reliable.
 
-### (X) Encryption
+### Encryption
 
-### (X) Client
+A static model called EncryptionModel has been made in the client to house the solution’s encryption logic. This was chosen because it centralises all the encryption processes for code consistency and having the model in the client codebase detaches the encryption logic from the server – an important idea in end-to-end encryption.
 
-### (X) Testing
+<table><colgroup><col style="width: 49%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th><p><img src="./media/image119.png" style="width:2.98293in;height:3.07087in" alt="Text Description automatically generated" /></p><p>Figure 42. EncryptionModel.RSAEncrypt</p></th><th><p><img src="./media/image120.png" style="width:2.98898in;height:3.07087in" /></p><p>Figure 43. EncryptionModel.RSADecrypt</p></th></tr></thead><tbody></tbody></table>
 
-#### (X) Testing plan
+These methods handle the encryption and decryption processes for the model. They both have strings for their inputs but immediately convert the inputs to binary arrays. This is because the cryptographic service provider only deals with binary arrays for its encrypt and decrypt methods. As a result, the returned binary must be converted to a string. The encoding chosen for the encrypted string was base 64, I chose this because it produces standard characters (A-Z, a-z, 0-9, +/=) that can be easily printed and stored by most character encoding.
 
-#### (X) Testing results
+<img src="./media/image121.png" style="width:3.76042in;height:3.08565in" alt="Text Description automatically generated" />
 
-#### (X) Addressing failed test
+Figure 44. EncryptionModel.RSAKeyGen
 
-### (X) Evaluation
+This method initialises a new RSA cryptographic service provider and extracts the generated key. This key is then returned as an XML string to be stored or used. The method was used to generate the encryption keys for storage in the user credentials CSV, and the encryption/decryption of messages. However, the method had to be used in isolation since the rest of the functionality to create a new user does not yet exist.
 
-# (X) Evaluation
+### Client
 
-## (X) Success Criteria
+#### Sending a message
 
-### Testing Plan
+This method is a modification of the already existing SendMessage method that is triggered when the client presses the “Send” button in the user interface or presses the “Enter” key to send the specified message to the specified recipient user.
+
+<img src="./media/image122.png" style="width:6.11956in;height:4.46797in" alt="Text Description automatically generated" />
+
+Figure 45. HomeViewModel.SendMessage
+
+The only modification to this method is that after the normal message object is created and displayed in the conversation for the sender’s UI another message object is created. This object is identical to the original object with the only difference being that the text has been passed through the encryption model’s encryption function. Because the encryption function returns a base 64 string there is no need for the data type of the encryption message text to be different than a standard message.
+
+The recipient’s public key used to encrypt the message is stored in the selected user property that is bound to the selected user of the combo box that displays all online users to the client. This property is updated every time a new user is selected from the combo box so is up to date with the user to whom the sender wants to send the message.
+
+#### Receiving a message
+
+This message is called when the infinite receive thread in the client receives a message. The thread publishes the message, and the content conductor’s message handling routine is triggered. This routine calls the method below.
+
+<img src="./media/image123.png" style="width:5.49257in;height:2.76042in" alt="Text Description automatically generated" />
+
+Figure 46. HomeViewModel.ReceiveMessage
+
+This method takes the received message and finds the sender in the list of online users that the client has. Once the sender is found, the client uses its private key to decrypt the message and add it to the list of messages from that user. When the message is added to the list the UI is updated because the list is a bindable collection that updates the UI whenever changes are made.
+
+As with the added encryption functionality in the sending routine, this process has minimal changes from the previous iteration and still deals with the same data types (MessageModel and string).
+
+### Testing
+
+#### Testing plan
+
+| ID  | Testing                                                 | Input Data                           | Expected Output                                          |
+|-----|---------------------------------------------------------|--------------------------------------|----------------------------------------------------------|
+| 1.0 | Sending a message to another user                       | Pressing the “Send” button           | The message is sent to the recipient user                |
+| 1.1 | Receiving a message from another user                   | Receiving a message                  | The message’s text is displayed in the conversation view |
+| 1.2 | Messages are encrypted with the recipient's public key  | Send a message                       | The send message’s text is encrypted                     |
+| 1.3 | Messages are decrypted with the recipient's private key | Receive a message                    | The received message can be decrypted                    |
+| 2.0 | Users can see a list of contacts                        | Messaging screen is open             | Combo box populated with usernames of other users        |
+| 2.1 | Users can click on a contact to message with them       | Click a user from a list of contacts | User is stored as the selected user                      |
+
+#### Testing results
+
+<table><colgroup><col style="width: 6%" /><col style="width: 9%" /><col style="width: 47%" /><col style="width: 37%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1.0</td><td>Pass</td><td><p>Alice – Sender</p><p><img src="./media/image124.png" style="width:2.79861in;height:1.59375in" alt="Graphical user interface, text, application Description automatically generated" /></p></td><td><p>Output as expected</p><p>The message was sent from Alice to Bob successfully</p></td></tr><tr class="even"><td>1.1</td><td>Pass</td><td><p>Bob – Recipient</p><p><img src="./media/image125.png" style="width:2.79861in;height:1.59028in" alt="Graphical user interface, text, application, email Description automatically generated" /></p></td><td><p>Output as expected</p><p>The message was sent from Alice to Bob successfully</p></td></tr><tr class="odd"><td>1.2</td><td>Pass</td><td><img src="./media/image126.png" style="width:2.79861in;height:0.61319in" alt="Table Description automatically generated" /></td><td><p>Output as expected</p><p>The message text was encrypted and converted to base 64 successfully</p></td></tr><tr class="even"><td>1.3</td><td>Pass</td><td><img src="./media/image127.png" style="width:2.79861in;height:0.61111in" alt="Table Description automatically generated" /></td><td><p>Output as expected</p><p>The message text was converted from base 64 and decrypted successfully</p></td></tr><tr class="odd"><td>11</td><td>Pass</td><td><img src="./media/image128.png" style="width:2.79861in;height:1.59028in" alt="Graphical user interface, application, email Description automatically generated" /></td><td><p>Output as expected</p><p>The combo box was populated with the names of online users successfully</p></td></tr><tr class="even"><td>2.1</td><td>Pass</td><td><img src="./media/image129.png" style="width:2.79861in;height:1.58819in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td><p>Output as expected</p><p>The selected user caused the conversation view to show their conversation successfully</p></td></tr></tbody></table>
+
+### Evaluation
+
+| ID  | Requirement                                             |
+|-----|---------------------------------------------------------|
+| 11  | Users can see a list of contacts                        |
+| 12  | Users can click on a contact to message with them       |
+| 15  | Messages are encrypted with the recipient's public key  |
+| 16  | Messages are decrypted with the recipient's private key |
+| 17  | Messages are signed with the sender’s private key       |
+| 18  | Signatures are checked with the sender’s public key     |
+| 19  | Messages cannot be read while in the server             |
+| 20  | Key pairs can be generated                              |
+| 21  | Public keys can be accessed by anyone                   |
+
+In the messaging screen interface, there is a combo box with all the online users that the client can select a recipient from. This satisfies criteria 11 and 12.
+
+When sending and receiving messages, the text is encrypted and decrypted with the recipient’s public and private keys, respectively. This satisfies criteria 15, 16 and 19.
+
+Digital signatures were not implemented in this iteration despite being a target. This was due to time constraints limiting the number of features I could include. Therefore, criteria 17 and 18 were not satisfied.
+
+The server can generate pairs of RSA keys that are stored as XML in AccountCredentials.csv for any user to request access to. This satisfies criteria 20 and 21. However, the generation function is not used in the current build of the program as the functionality to create an account (where the function would be called) has not been implemented yet.
+
+This will be the final iteration of the program because I have now satisfied the most important criteria and have a working solution.
+
+# Evaluation
+
+## Post-Development Testing
+
+### Functionality
+
+#### Testing plan
 
 | ID  | Criterion                                                                         | Input                                               | Expected Output                                             |
 |-----|-----------------------------------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------|
@@ -1811,7 +1898,7 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
 | 12  | Users can click on a contact to message with them                                 | Click a user from a list of contacts                | User is stored as the selected user                         |
 | 13  | Users can see past conversations with a contact                                   | Open a conversation view with another user          | Historic messages with that user are shown                  |
 | 14  | Users can be added to contacts by searching their username                        | Username is entered into the search field           | Specified user is added to contacts list                    |
-| 15  | Messages are encrypted with the recipient's public key                            | Send a message                                      | Send message is encrypted                                   |
+| 15  | Messages are encrypted with the recipient's public key                            | Send a message                                      | The send message’s text is encrypted                        |
 | 16  | Messages are decrypted with the recipient's private key                           | Receive a message                                   | The received message can be decrypted                       |
 | 17  | Messages are signed with the sender's private key                                 | Send a message                                      | Send message is signed                                      |
 | 18  | Signatures are checked with the sender's public key                               | Receive a message                                   | The received message can be verified                        |
@@ -1826,17 +1913,35 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
 | 27  | Messages are held in the server if the recipient is not connected                 | Send a message to an offline user                   | The message is held on the server                           |
 | 28  | Undelivered messages are sent the next time the recipient connects                | Offline user comes online                           | Messages held in the server are sent to this user           |
 
-### Testing Results
+#### Testing results
 
-<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 47%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><img src="./media/image119.png" style="width:2.79861in;height:0.18681in" /></td><td>Output as expected</td></tr><tr class="even"><td>2</td><td>Pass</td><td><img src="./media/image120.png" style="width:2.79861in;height:0.14375in" /></td><td>Output as expected</td></tr><tr class="odd"><td>3</td><td>Fail</td><td>Not implemented</td><td>Client to server heartbeat messages was not implemented in the solution</td></tr><tr class="even"><td>4</td><td>Pass</td><td><img src="./media/image121.png" style="width:2.79861in;height:1.5875in" /></td><td>Output as expected</td></tr><tr class="odd"><td>5</td><td>Partial</td><td><img src="./media/image122.png" style="width:2.79861in;height:1.58472in" /></td><td>The interface to create an account was implemented but the functionality to request a new account was not, so the test partially failed</td></tr><tr class="even"><td>6</td><td>Pass</td><td><img src="./media/image123.png" style="width:2.79861in;height:1.30556in" /></td><td>Output as expected</td></tr><tr class="odd"><td>7</td><td>Fail</td><td><img src="./media/image122.png" style="width:2.79861in;height:1.58472in" /></td><td>There are no checks on the length or availability of the username, so the test failed</td></tr><tr class="even"><td>8</td><td>Fail</td><td><img src="./media/image122.png" style="width:2.79861in;height:1.58472in" /></td><td>There are no checks on the length or strength of the password, so the test failed</td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Alice – Sender</p><p><img src="./media/image124.png" style="width:2.79861in;height:1.59375in" /></p><p>Bob – Recipient</p><p><img src="./media/image125.png" style="width:2.79861in;height:1.59028in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>10</td><td>Pass</td><td><p>Alice – Sender</p><p><img src="./media/image126.png" style="width:2.79861in;height:1.58611in" /></p><p>Bob – Recipient</p><p><img src="./media/image127.png" style="width:2.79861in;height:1.59167in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>11</td><td>Pass</td><td><img src="./media/image128.png" style="width:2.79861in;height:1.59028in" /></td><td>Output as expected</td></tr><tr class="even"><td>12</td><td>Pass</td><td><img src="./media/image129.png" style="width:2.79861in;height:1.58819in" /></td><td>Output as expected</td></tr><tr class="odd"><td>13</td><td>Fail</td><td><p>Alice</p><p><img src="./media/image130.png" style="width:2.79861in;height:1.58958in" /></p><p>Bob</p><p><img src="./media/image131.png" style="width:2.79861in;height:1.59167in" /></p></td><td><p>Alice and Bob had two messaging sessions between which Bob closed his client, but Alice did not.</p><p>Alice can still see the old messages as well as new ones, but Bob can only see the new messages.</p><p>This fails the test as Bob should be able to see both sets of messages.</p></td></tr><tr class="even"><td>14</td><td>Partial</td><td>Not implemented</td><td><p>Users cannot be added to a contacts list via a username search as the criterion wanted.</p><p>Instead, all users have a shared contacts list that contains all online users and dynamically updates.</p><p>This fails the specified test but the functionality the test is there to prove still exists, just in a different implementation.</p></td></tr><tr class="odd"><td>15</td><td>Pass</td><td><p><img src="./media/image132.png" style="width:2.79861in;height:2.8875in" /></p><p><img src="./media/image133.png" style="width:2.79861in;height:0.61319in" /></p></td><td>Output as expected</td></tr><tr class="even"><td>16</td><td>Pass</td><td><p><img src="./media/image134.png" style="width:2.79861in;height:2.84931in" /></p><p><img src="./media/image135.png" style="width:2.79861in;height:0.61111in" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>17</td><td>Fail</td><td>Not implemented</td><td>Signatures were not implemented so clients cannot sign outbound messages</td></tr><tr class="even"><td>18</td><td>Fail</td><td>Not implemented</td><td>Signatures were not implemented so clients cannot verify inbound messages</td></tr><tr class="odd"><td>19</td><td>Pass</td><td><img src="./media/image136.png" style="width:2.79861in;height:0.57917in" /></td><td>Output as expected</td></tr><tr class="even"><td>20</td><td>Partial</td><td><p><img src="./media/image137.png" style="width:2.79861in;height:2.27292in" /></p><p><img src="./media/image138.png" style="width:2.79861in;height:0.85764in" /></p></td><td><p>The encryption model class has the functionality to generate key pairs.</p><p>This method was used in isolation to populate the PublicKey and PrivateKey fields of the manually added users’ credentials.</p><p>Although, the rest of the program is yet to use this method as creating user accounts was not implemented.s</p></td></tr><tr class="odd"><td>21</td><td>Pass</td><td><img src="./media/image139.png" style="width:2.79861in;height:0.34583in" /></td><td>Output as expected</td></tr><tr class="even"><td>22</td><td>Pass</td><td><img src="./media/image140.png" style="width:2.79861in;height:0.18403in" /></td><td>Output as expected</td></tr><tr class="odd"><td>23</td><td>Pass</td><td><img src="./media/image141.png" style="width:2.79861in;height:1.19861in" /></td><td>Output as expected</td></tr><tr class="even"><td>24</td><td>Pass</td><td><img src="./media/image142.png" style="width:2.79861in;height:1.79375in" /></td><td>Output as expected</td></tr><tr class="odd"><td>25</td><td>Fail</td><td>Not implemented</td><td>Creating new user accounts was not implemented</td></tr><tr class="even"><td>26</td><td>Pass</td><td><img src="./media/image143.png" style="width:2.79861in;height:0.19722in" /></td><td>Output as expected</td></tr><tr class="odd"><td>27</td><td>Fail</td><td>Not implemented</td><td>Historic messages were not implemented</td></tr><tr class="even"><td>28</td><td>Fail</td><td>Not implemented</td><td>Historic messages were not implemented</td></tr></tbody></table>
+<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 47%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><img src="./media/image130.png" style="width:2.79861in;height:0.18681in" /></td><td>Output as expected</td></tr><tr class="even"><td>2</td><td>Pass</td><td><img src="./media/image131.png" style="width:2.79861in;height:0.14375in" /></td><td>Output as expected</td></tr><tr class="odd"><td>3</td><td>Fail</td><td>Not implemented</td><td>Client to server heartbeat messages was not implemented in the solution</td></tr><tr class="even"><td>4</td><td>Pass</td><td><img src="./media/image132.png" style="width:2.79861in;height:1.5875in" alt="Graphical user interface, application Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>5</td><td>Partial</td><td><img src="./media/image133.png" style="width:2.79861in;height:1.58472in" alt="Graphical user interface, application Description automatically generated" /></td><td>The interface to create an account was implemented but the functionality to request a new account was not, so the test partially failed</td></tr><tr class="even"><td>6</td><td>Pass</td><td><img src="./media/image134.png" style="width:2.79861in;height:1.30556in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>7</td><td>Fail</td><td><img src="./media/image133.png" style="width:2.79861in;height:1.58472in" alt="Graphical user interface, application Description automatically generated" /></td><td>There are no checks on the length or availability of the username, so the test failed</td></tr><tr class="even"><td>8</td><td>Fail</td><td><img src="./media/image133.png" style="width:2.79861in;height:1.58472in" alt="Graphical user interface, application Description automatically generated" /></td><td>There are no checks on the length or strength of the password, so the test failed</td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Alice – Sender</p><p><img src="./media/image124.png" style="width:2.79861in;height:1.59375in" alt="Graphical user interface, text, application Description automatically generated" /></p><p>Bob – Recipient</p><p><img src="./media/image125.png" style="width:2.79861in;height:1.59028in" alt="Graphical user interface, text, application, email Description automatically generated" /></p></td><td>Output as expected</td></tr><tr class="even"><td>10</td><td>Pass</td><td><p>Alice – Sender</p><p><img src="./media/image135.png" style="width:2.79861in;height:1.58611in" alt="Graphical user interface, text, application, email Description automatically generated" /></p><p>Bob – Recipient</p><p><img src="./media/image136.png" style="width:2.79861in;height:1.59167in" alt="Graphical user interface, text, application, email Description automatically generated" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>11</td><td>Pass</td><td><img src="./media/image128.png" style="width:2.79861in;height:1.59028in" alt="Graphical user interface, application, email Description automatically generated" /></td><td>Output as expected</td></tr><tr class="even"><td>12</td><td>Pass</td><td><img src="./media/image129.png" style="width:2.79861in;height:1.58819in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>13</td><td>Fail</td><td><p>Alice</p><p><img src="./media/image137.png" style="width:2.79861in;height:1.58958in" alt="Graphical user interface, text Description automatically generated" /></p><p>Bob</p><p><img src="./media/image138.png" style="width:2.79861in;height:1.59167in" alt="Graphical user interface, text, application Description automatically generated" /></p></td><td><p>Alice and Bob had two messaging sessions between which Bob closed his client, but Alice did not.</p><p>Alice can still see the old messages as well as new ones, but Bob can only see the new messages.</p><p>This fails the test as Bob should be able to see both sets of messages.</p></td></tr><tr class="even"><td>14</td><td>Partial</td><td>Not implemented</td><td><p>Users cannot be added to a contacts list via a username search as the criterion wanted.</p><p>Instead, all users have a shared contacts list that contains all online users and dynamically updates.</p><p>This fails the specified test but the functionality the test is there to prove still exists, just in a different implementation.</p></td></tr><tr class="odd"><td>15</td><td>Pass</td><td><p><img src="./media/image139.png" style="width:2.79861in;height:2.8875in" alt="Text Description automatically generated" /></p><p><img src="./media/image126.png" style="width:2.79861in;height:0.61319in" alt="Table Description automatically generated" /></p></td><td>Output as expected</td></tr><tr class="even"><td>16</td><td>Pass</td><td><p><img src="./media/image140.png" style="width:2.79861in;height:2.84931in" alt="Text Description automatically generated" /></p><p><img src="./media/image127.png" style="width:2.79861in;height:0.61111in" alt="Table Description automatically generated" /></p></td><td>Output as expected</td></tr><tr class="odd"><td>17</td><td>Fail</td><td>Not implemented</td><td>Signatures were not implemented so clients cannot sign outbound messages</td></tr><tr class="even"><td>18</td><td>Fail</td><td>Not implemented</td><td>Signatures were not implemented so clients cannot verify inbound messages</td></tr><tr class="odd"><td>19</td><td>Pass</td><td><img src="./media/image141.png" style="width:2.79861in;height:0.57917in" alt="Table Description automatically generated" /></td><td>Output as expected</td></tr><tr class="even"><td>20</td><td>Partial</td><td><p><img src="./media/image142.png" style="width:2.79861in;height:2.27292in" alt="Text Description automatically generated" /></p><p><img src="./media/image143.png" style="width:2.79861in;height:0.85764in" alt="Text Description automatically generated" /></p></td><td><p>The encryption model class has the functionality to generate key pairs.</p><p>This method was used in isolation to populate the PublicKey and PrivateKey fields of the manually added users’ credentials.</p><p>Although, the rest of the program is yet to use this method as creating user accounts was not implemented.</p></td></tr><tr class="odd"><td>21</td><td>Pass</td><td><img src="./media/image144.png" style="width:2.79861in;height:0.34583in" alt="Text Description automatically generated" /></td><td>Output as expected</td></tr><tr class="even"><td>22</td><td>Pass</td><td><img src="./media/image145.png" style="width:2.79861in;height:0.18403in" /></td><td>Output as expected</td></tr><tr class="odd"><td>23</td><td>Pass</td><td><img src="./media/image146.png" style="width:2.79861in;height:1.19861in" alt="A screenshot of a computer Description automatically generated with medium confidence" /></td><td>Output as expected</td></tr><tr class="even"><td>24</td><td>Pass</td><td><img src="./media/image147.png" style="width:2.79861in;height:1.79375in" alt="Text Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>25</td><td>Fail</td><td>Not implemented</td><td>Creating new user accounts was not implemented</td></tr><tr class="even"><td>26</td><td>Pass</td><td><img src="./media/image148.png" style="width:2.79861in;height:0.19722in" /></td><td>Output as expected</td></tr><tr class="odd"><td>27</td><td>Fail</td><td>Not implemented</td><td>Historic messages were not implemented</td></tr><tr class="even"><td>28</td><td>Fail</td><td>Not implemented</td><td>Historic messages were not implemented</td></tr></tbody></table>
 
-### (X) Evaluation
+### Robustness
 
-### (X) Addressing Unmet Criteria
+#### Testing plan
 
-## (X) Usability Features
+| ID  | Testing                                       | Input                                            | Expected Output                      |
+|-----|-----------------------------------------------|--------------------------------------------------|--------------------------------------|
+| 1   | Opening the client when the server is offline | Open the client program                          | The client is not allowed to open    |
+| 2   | Closing the server when clients are online    | Close the client program                         | The clients are closed               |
+| 3   | Empty username field                          | Login request with a blank username              | The login response is “unsuccessful” |
+| 4   | Empty password field                          | Login request with a blank password              | The login response is “unsuccessful” |
+| 5   | A login input field longer than the buffer    | Login request with field bigger than 2048 bytes  | The login response is “unsuccessful” |
+| 6   | Foreign characters in the input fields        | A string of non-Latin characters                 | The login response is “unsuccessful” |
+| 7   | Sending a message longer than the buffer      | A message with text bigger than 2048 bytes       | The message sent to the recipient    |
+| 8   | Sending an empty message                      | A message with its text of length zero           | The message sent to the recipient    |
+| 9   | Foreign characters in the message field       | A string of non-Latin characters                 | The message is sent to the recipient |
+| 10  | Sending a message to an offline client        | Send a message to an offline user                | The message is not sent              |
+| 11  | Sending a message with no recipient           | Send a message without a selected recipient user | The message is not sent              |
 
-### Testing Plan
+#### Testing results
+
+<table><colgroup><col style="width: 4%" /><col style="width: 8%" /><col style="width: 47%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><img src="./media/image134.png" style="width:2.79861in;height:1.30556in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td><p>Output as expected</p><p>The client does not open, instead a pop-up is shown, and the program closes when OK is clicked</p></td></tr><tr class="even"><td>2</td><td>Pass</td><td><img src="./media/image149.png" style="width:2.79861in;height:1.57361in" /></td><td><p>Output as expected</p><p>A pop-up is triggered on all clients in which the program closes when OK is clicked</p></td></tr><tr class="odd"><td>3</td><td>Pass</td><td><img src="./media/image150.png" style="width:2.79861in;height:1.57847in" /></td><td><p>Output as expected</p><p>The login is processed normally, and no errors are thrown</p></td></tr><tr class="even"><td>4</td><td>Pass</td><td><img src="./media/image151.png" style="width:2.79861in;height:1.57292in" /></td><td><p>Output as expected</p><p>The login is processed normally, and no errors are thrown</p></td></tr><tr class="odd"><td>5</td><td>Fail</td><td><img src="./media/image152.png" style="width:2.79861in;height:0.24236in" /></td><td><p>Since the stream only accepts the first 2048 bytes, not all that message’s data is transmitted in one.</p><p>This incomplete transmission causes an error that forces the server to end its connection with that client</p></td></tr><tr class="even"><td>6</td><td>Pass</td><td><p>Client View<img src="./media/image153.png" style="width:2.79861in;height:1.58056in" /></p><p>Server View<img src="./media/image154.png" style="width:2.79861in;height:0.15833in" /></p></td><td><p>The login is processed normally, and no errors are thrown.</p><p>However, the output to the server console does not support the foreign script.</p></td></tr><tr class="odd"><td>7</td><td>Fail</td><td><img src="./media/image152.png" style="width:2.79861in;height:0.24236in" /></td><td><p>Since the stream only accepts the first 2048 bytes, not all that message’s data is transmitted in one.</p><p>This incomplete transmission causes an error that forces the server to end its connection with that client</p></td></tr><tr class="even"><td>8</td><td>Fail</td><td><img src="./media/image155.png" style="width:2.79861in;height:0.19028in" /></td><td><p>The client program crashed while trying to encrypt a string of length zero.</p><p>Validation to ensure that the input length is not zero would prevent this error.</p></td></tr><tr class="odd"><td>9</td><td>Pass</td><td><p>Alice - Sender</p><p><img src="./media/image156.png" style="width:2.79861in;height:1.58056in" /></p><p>Bob - Recipient<img src="./media/image157.png" style="width:2.79861in;height:1.57014in" /></p></td><td><p>Output as expected</p><p>The script is encrypted and decrypted without issue and displayed properly on both sender and recipient programs.</p></td></tr><tr class="even"><td>10</td><td>Fail</td><td><p>Sender Client<img src="./media/image158.png" style="width:2.79861in;height:1.57708in" /></p><p>Server<img src="./media/image155.png" style="width:2.79861in;height:0.19028in" /></p></td><td><p>The sender client sends the message to the server. The server then tries and fails to send the message to the offline recipient client.</p><p>This causes an error in the server that closes the connection with the sender client.</p></td></tr><tr class="odd"><td>11</td><td>Fail</td><td><img src="./media/image155.png" style="width:2.79861in;height:0.19028in" /></td><td>The client crashes when it tries to fetch the encryption key of a recipient that does not exist</td></tr></tbody></table>
+
+### Usability Features
+
+#### Testing Plan
 
 | ID  | Feature                           | Input                                                                    | Expected Output                                                                                    |
 |-----|-----------------------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
@@ -1853,9 +1958,55 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
 | 6.0 | Window resizing                   | Resize login screen                                                      | Controls are preserved and usable                                                                  |
 | 6.1 | Window resizing                   | Resize messaging screen                                                  | Controls are preserved and usable                                                                  |
 
-### Testing Results
+#### Testing Results
 
-<table><colgroup><col style="width: 6%" /><col style="width: 9%" /><col style="width: 44%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><img src="./media/image129.png" style="width:2.64904in;height:1.50331in" /></td><td>Output as expected</td></tr><tr class="even"><td>2.0</td><td>Pass</td><td><img src="./media/image121.png" style="width:2.65417in;height:1.50556in" /></td><td>Output as expected</td></tr><tr class="odd"><td>2.1</td><td>Partial</td><td><img src="./media/image121.png" style="width:2.65694in;height:1.50714in" /></td><td>The username and password fields are cleared but no feedback is given to the user to say the login failed.</td></tr><tr class="even"><td>2.2</td><td>Fail</td><td><img src="./media/image122.png" style="width:2.65484in;height:1.50331in" /></td><td>The user cannot send a sign-up request so text cannot be entered into the GUI fields to test if they are descriptive.</td></tr><tr class="odd"><td>3</td><td>Pass</td><td><img src="./media/image144.png" style="width:2.65694in;height:1.50625in" /></td><td><p>Output as expected.</p><p>Error thrown was caused by server closing while clients are still logged in.</p></td></tr><tr class="even"><td>4.0</td><td>Pass</td><td><img src="./media/image122.png" style="width:2.65484in;height:1.50331in" /></td><td>Output as expected</td></tr><tr class="odd"><td>4.1</td><td>Pass</td><td><img src="./media/image145.png" style="width:2.65694in;height:1.5in" /></td><td>Output as expected</td></tr><tr class="even"><td>4.2</td><td>Pass</td><td><img src="./media/image121.png" style="width:2.65694in;height:1.50714in" /></td><td>Output as expected</td></tr><tr class="odd"><td>5.0</td><td>Pass</td><td><img src="./media/image146.png" style="width:2.65694in;height:1.50139in" /></td><td>Output as expected</td></tr><tr class="even"><td>5.1</td><td>Pass</td><td><img src="./media/image147.png" style="width:2.65694in;height:1.49792in" /></td><td>Output as expected</td></tr><tr class="odd"><td>6.0</td><td>Fail</td><td><p>Horizontal resizing</p><p><img src="./media/image148.png" style="width:0.87857in;height:2.19643in" /></p><p>Vertical resizing</p><p><img src="./media/image149.png" style="width:2.65694in;height:0.75486in" /></p></td><td><p>Horizontal resizing</p><p>The buttons were lost so the user could not reasonably use the program anymore, meaning the test failed.</p><p>Vertical resizing</p><p>The buttons and input fields were lost so the user could not reasonably use the program anymore, meaning the test failed.</p></td></tr><tr class="even"><td>6.1</td><td>Partial</td><td><p>Horizontal resizing</p><p><img src="./media/image150.png" style="width:1.78571in;height:2.45174in" /></p><p>Vertical resizing</p><p><img src="./media/image151.png" style="width:2.65694in;height:0.65347in" /></p></td><td><p>Horizontal resizing</p><p>The buttons and conversation remained visual so the user could still use the program, meaning the test passed.</p><p>Vertical resizing</p><p>The buttons and conversation were lost so the user could not reasonably use the program anymore, meaning the test failed.</p><p>Since the horizontal resizing passed and the vertical resizing failed, overall, the test was a partial success.</p></td></tr></tbody></table>
+<table><colgroup><col style="width: 6%" /><col style="width: 9%" /><col style="width: 44%" /><col style="width: 39%" /></colgroup><thead><tr class="header"><th>ID</th><th>Status</th><th>Actual Output</th><th>Comments</th></tr></thead><tbody><tr class="odd"><td>1</td><td>Pass</td><td><img src="./media/image129.png" style="width:2.64904in;height:1.50331in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td>Output as expected</td></tr><tr class="even"><td>2.0</td><td>Pass</td><td><img src="./media/image132.png" style="width:2.65417in;height:1.50556in" alt="Graphical user interface, application Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>2.1</td><td>Partial</td><td><img src="./media/image132.png" style="width:2.65694in;height:1.50714in" alt="Graphical user interface, application Description automatically generated" /></td><td>The username and password fields are cleared but no feedback is given to the user to say the login failed.</td></tr><tr class="even"><td>2.2</td><td>Fail</td><td><img src="./media/image133.png" style="width:2.65484in;height:1.50331in" alt="Graphical user interface, application Description automatically generated" /></td><td>The user cannot send a sign-up request so text cannot be entered into the GUI fields to test if they are descriptive.</td></tr><tr class="odd"><td>3</td><td>Pass</td><td><img src="./media/image159.png" style="width:2.65694in;height:1.50625in" alt="Graphical user interface, text, application Description automatically generated" /></td><td><p>Output as expected.</p><p>Error thrown was caused by server closing while clients are still logged in.</p></td></tr><tr class="even"><td>4.0</td><td>Pass</td><td><img src="./media/image133.png" style="width:2.65484in;height:1.50331in" alt="Graphical user interface, application Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>4.1</td><td>Pass</td><td><img src="./media/image160.png" style="width:2.65694in;height:1.5in" alt="Graphical user interface, text, application Description automatically generated" /></td><td>Output as expected</td></tr><tr class="even"><td>4.2</td><td>Pass</td><td><img src="./media/image132.png" style="width:2.65694in;height:1.50714in" alt="Graphical user interface, application Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>5.0</td><td>Pass</td><td><img src="./media/image161.png" style="width:2.65694in;height:1.50139in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td>Output as expected</td></tr><tr class="even"><td>5.1</td><td>Pass</td><td><img src="./media/image162.png" style="width:2.65694in;height:1.49792in" alt="Graphical user interface, text, application, email Description automatically generated" /></td><td>Output as expected</td></tr><tr class="odd"><td>6.0</td><td>Fail</td><td><p>Horizontal resizing</p><p><img src="./media/image163.png" style="width:0.87857in;height:2.19643in" alt="Graphical user interface, application Description automatically generated" /></p><p>Vertical resizing</p><p><img src="./media/image164.png" style="width:2.65694in;height:0.75486in" alt="Graphical user interface, application Description automatically generated" /></p></td><td><p>Horizontal resizing</p><p>The buttons were lost so the user could not reasonably use the program anymore, meaning the test failed.</p><p>Vertical resizing</p><p>The buttons and input fields were lost so the user could not reasonably use the program anymore, meaning the test failed.</p></td></tr><tr class="even"><td>6.1</td><td>Partial</td><td><p>Horizontal resizing</p><p><img src="./media/image165.png" style="width:1.78571in;height:2.45174in" alt="Graphical user interface, application Description automatically generated" /></p><p>Vertical resizing</p><p><img src="./media/image166.png" style="width:2.65694in;height:0.65347in" alt="Graphical user interface, application Description automatically generated with medium confidence" /></p></td><td><p>Horizontal resizing</p><p>The buttons and conversation remained visual so the user could still use the program, meaning the test passed.</p><p>Vertical resizing</p><p>The buttons and conversation were lost so the user could not reasonably use the program anymore, meaning the test failed.</p><p>Since the horizontal resizing passed and the vertical resizing failed, overall, the test was a partial success.</p></td></tr></tbody></table>
+
+## Success Criteria
+
+### Evaluation
+
+The results of the success criteria’s functionality tests above have identified which tests passed, partially passed, or failed. By extension, this identified which success criteria were fully met, partially met, or unmet, respectively.
+
+Networking (IDs 1, 2, 3, 6, 22, 23 & 26)
+
+This group consists of the criteria that make up the networking of the solution. Six of the seven tests passed for this group meaning most of the criteria in this group were fully met. Some of the functionality that this group provided for the solution was connecting to the server and communicating with other clients.
+
+The test that failed in this group was ID 3. The corresponding criterion that was not met was the heartbeat between the server and client.
+
+Login (IDs 4 & 24)
+
+This group consists of the criteria that make up the login process of the solution. Both the tests passed for this group meaning that both the success criteria were fully met. The functionality that these criteria implemented into the solution were making the user log into the program when it starts and checking login requests again the server’s database.
+
+User Interaction (IDs 9, 10, 11, 12 & 14)
+
+This group consists of the criteria that make up how the user interacts with the solution. Four of the five tests passed for this group meaning most of the criteria in this group were fully met. Some of the functionality that this group provided for the solution was having the user choose the recipient from a list of clients and being able to send a message with the “Enter” button.
+
+The test that partially failed in this group was ID 14. The corresponding criterion that was only partially met was that users can be added to the contacts list by searching their username.
+
+Encryption (IDs 15, 16, 17, 18, 19, 20 & 21)
+
+This group consists of the criteria that make up the encryption processes in the solution. Four of the seven tests passed for this group meaning that approximately half of the success criteria in this group were fully met. Some of the functionality that these success criteria implemented into the solution were encryption and decryption of client-to-client messages.
+
+The test that partially failed in this group was ID 20. The corresponding criterion that was only partially met was that keys pairs can be generated.
+
+The two tests that failed in this group were IDs 17 and 18. The corresponding criterion that was unmet were messages being signed and message signatures being verified.
+
+Historic messages (IDs 13, 27 & 28)
+
+This group consists of the criteria that make up the historic message handling and viewing in the solution. None of the tests passed for this group meaning that all the success criteria in this group were unmet. The functionality that this group planned to implement was the server holding onto messages for users when they are offline and sending held messages to users when they log in.
+
+The tests that failed in this group were IDs 13, 27 and 28. The corresponding criteria that were unmet were storing messages sent to offline users and sending messages to users when they come online.
+
+Signup (IDs 5, 7, 8 & 25)
+
+This group consists of the criteria that allow users to create new accounts instead of logging in. One test in this group partially passed with the other three failing meaning that most of the success criteria in this group were unmet. Some of the functionality that these success criteria were supposed to implement was the checks on the availability of new usernames and the checks on the strength requirements of new passwords.
+
+The test that partially passed was ID 5, this was because the functionality to pass the test exists in the program, it is just unreachable. Therefore, the corresponding success criterion was only partially met.
+
+### (X) Addressing Unmet Criteria
+
+## (X) Usability Features
 
 ### (X) Evaluation
 
@@ -1990,9 +2141,9 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
 
   [1 Analysis 4]: #analysis
   [1.1 Problem Identification 4]: #problem-identification
-  [1.1.1 Problem and Proposed Solution 4]: #problem-and-proposed-solution
+  [1.1.1 Problem and Proposed Solutions 4]: #problem-and-proposed-solutions
   [1.1.2 Computational Methods 5]: #computational-methods
-  [1.2 Stakeholders 6]: #_Toc96364032
+  [1.2 Stakeholders 6]: #_Toc96812414
   [1.2.1 Stakeholder Identification 6]: #stakeholder-identification
   [1.2.2 Interview with Ethan S 7]: #interview-with-ethan-s
   [1.2.3 General Stakeholder Survey 9]: #general-stakeholder-survey
@@ -2006,7 +2157,8 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
   [1.4.2 Identifying Limitations 22]: #identifying-limitations
   [1.5 Requirements 23]: #requirements
   [1.5.1 Stakeholder 23]: #stakeholder
-  [1.5.2 Software 24]: #software
+  [1.5.2 Hardware 24]: #hardware
+  [1.5.3 Software 24]: #software
   [1.6 Success Criteria 25]: #success-criteria
   [2 Design 27]: #design
   [2.1 Problem Decomposition 27]: #problem-decomposition
@@ -2015,7 +2167,7 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
   [2.1.3 Interface 30]: #interface
   [2.1.4 Accounts 31]: #accounts
   [2.2 Solution Structure 32]: #solution-structure
-  [2.3 Algorithms 33]: #_Toc96364055
+  [2.3 Algorithms 33]: #_Toc96812438
   [2.3.1 Logging In 33]: #logging-in
   [2.3.2 Signing Up 34]: #signing-up
   [2.3.3 Validation and Keys 35]: #validation-and-keys
@@ -2033,7 +2185,6 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
   [2.6.3 Message Test Data 47]: #message-test-data
   [2.6.4 Further Data 48]: #further-data
   [2.7 (?) Interface Design 49]: #interface-design
-  [2.7.1 (?) Interface Designs 49]: #interface-designs
   [3 Development 54]: #development
   [3.1 Iteration 1 54]: #iteration-1
   [3.1.1 Plan 54]: #plan
@@ -2055,27 +2206,27 @@ The rest of the targeted criteria (15 through to 21) enable end-to-end encryptio
   [3.3.3 Event Aggregator 93]: #event-aggregator
   [3.3.4 Testing 94]: #testing-2
   [3.3.5 Evaluation 98]: #evaluation-2
-  [3.4 (X) Iteration 4 99]: #x-iteration-4
+  [3.4 Iteration 4 99]: #iteration-4
   [3.4.1 Plan 99]: #plan-3
-  [3.4.2 (X) Encryption 100]: #x-encryption
-  [3.4.3 (X) Client 100]: #x-client
-  [3.4.4 (X) Testing 100]: #x-testing
-  [3.4.5 (X) Evaluation 100]: #x-evaluation
-  [4 (X) Evaluation 101]: #x-evaluation-1
-  [4.1 (X) Success Criteria 101]: #x-success-criteria
-  [4.1.1 Testing Plan 101]: #testing-plan-3
-  [4.1.2 Testing Results 103]: #testing-results-3
-  [4.1.3 (X) Evaluation 108]: #x-evaluation-2
-  [4.1.4 (X) Addressing Unmet Criteria 108]: #x-addressing-unmet-criteria
-  [4.2 (X) Usability Features 109]: #x-usability-features
-  [4.2.1 Testing Plan 109]: #testing-plan-4
-  [4.2.2 Testing Results 110]: #testing-results-4
-  [4.2.3 (X) Evaluation 113]: #x-evaluation-3
-  [4.2.4 (X) Addressing Unmet Features 113]: #x-addressing-unmet-features
-  [4.3 (X) Maintenance Issues and Limitations 114]: #x-maintenance-issues-and-limitations
-  [4.3.1 (X) Evaluation 114]: #x-evaluation-4
-  [4.3.2 (X) Addressing Limitations 114]: #x-addressing-limitations
-  [5 References 115]: #_Toc96364115
-  [6 Appendix 116]: #appendix
-  [6.1 LaTeX Source Code 116]: #latex-source-code
+  [3.4.2 Encryption 100]: #encryption-1
+  [3.4.3 Client 101]: #client-2
+  [3.4.4 Testing 103]: #testing-3
+  [3.4.5 Evaluation 105]: #evaluation-3
+  [4 Evaluation 106]: #evaluation-4
+  [4.1 Post-Development Testing 106]: #post-development-testing
+  [4.1.1 Functionality 106]: #functionality
+  [4.1.2 Robustness 113]: #robustness
+  [4.1.3 Usability Features 117]: #usability-features-1
+  [4.2 Success Criteria 121]: #success-criteria-1
+  [4.2.1 Evaluation 121]: #evaluation-5
+  [4.2.2 (X) Addressing Unmet Criteria 122]: #x-addressing-unmet-criteria
+  [4.3 (X) Usability Features 123]: #x-usability-features
+  [4.3.1 (X) Evaluation 123]: #x-evaluation
+  [4.3.2 (X) Addressing Unmet Features 123]: #x-addressing-unmet-features
+  [4.4 (X) Maintenance Issues and Limitations 124]: #x-maintenance-issues-and-limitations
+  [4.4.1 (X) Evaluation 124]: #x-evaluation-1
+  [4.4.2 (X) Addressing Limitations 124]: #x-addressing-limitations
+  [5 References 125]: #_Toc96812497
+  [6 Appendix 126]: #appendix
+  [6.1 LaTeX Source Code 126]: #latex-source-code
   [WeeChat.org]: https://weechat.org/about/screenshots/

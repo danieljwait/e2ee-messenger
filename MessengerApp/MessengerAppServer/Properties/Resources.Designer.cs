@@ -62,8 +62,7 @@ namespace MessengerAppServer.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Username,Password,PublicKey,PrivateKey
-        ///username,password,#####,#####
-        ///test,test,#####,#####.
+        ///alice,alice,&lt;RSAKeyValue&gt;&lt;Modulus&gt;sGswQnHrIOp6GaOzx3KJm6d1qf/glKORbcqwy5DkMga5Itdsq2njZ4G7kj+MAEqrEu0WjdBvWYjZK2qd/nwItj8jZthAQeHWwYkRCjx5SQiJ6D//eYdvN7A6EsZZCSD7JLMjG4HeHkaujIso3I8h3a3sqvtJHqqsnBl9AJs2UOU=&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;/RSAKeyValue&gt;,&lt;RSAKeyValue&gt;&lt;Modulus&gt;sGswQnHrIOp6GaOzx3KJm6d1qf/glKORbcqwy5DkMga5Itdsq2njZ4G7kj+MAEqrEu0WjdBvWYjZK2qd/nwItj8jZthAQeHWwYkRCjx5SQiJ6D//eYdvN7A6EsZZCSD7JLMjG4HeHkaujIso3I8h3a3sqvtJHqqsnBl9AJs2UOU=&lt;/Modulus&gt;&lt;Exponent&gt;AQ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AccountCredentials {
             get {

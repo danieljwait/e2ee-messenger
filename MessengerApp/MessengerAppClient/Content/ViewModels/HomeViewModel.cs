@@ -104,8 +104,10 @@ namespace MessengerAppClient.Content.ViewModels
             _eventAggregator.PublishOnUIThread(InternalMessage);
         }
 
+        // Receiving a message
         private void ReceiveMessage(MessageModel message)
         {
+            // Find recipient's key
             foreach (UserModel User in Users)
             {
                 if (User.Username == message.Sender)

@@ -180,6 +180,50 @@
 
 [6.1 LaTeX Source Code 126][]
 
+[6.2 Client Source Code 127][]
+
+[6.2.1 Content/Messages/ 127][]
+
+[6.2.2 Content/Models/ 128][]
+
+[6.2.3 Content/ViewModels/ 131][]
+
+[6.2.4 Content/Views/ 141][]
+
+[6.2.5 Login/Messages/ 149][]
+
+[6.2.6 Login/ViewModels/ 150][]
+
+[6.2.7 Login/Views/ 153][]
+
+[6.2.8 Shell/Messages/ 156][]
+
+[6.2.9 Shell/Models/ 157][]
+
+[6.2.10 Shell/ViewModels/ 158][]
+
+[6.2.11 Shell/Views/ 162][]
+
+[6.2.12 Bootstrapper.cs 163][]
+
+[6.3 Server Source Code 164][]
+
+[6.3.1 CSVHelper.cs 164][]
+
+[6.3.2 Program.cs 166][]
+
+[6.3.3 ServerSocket.cs 167][]
+
+[6.4 Shared Source Code 172][]
+
+[6.4.1 Messages/ 172][]
+
+[6.4.2 Models/ 174][]
+
+[6.4.3 Protocol.cs 176][]
+
+[6.4.4 SocketBase.cs 177][]
+
 # Analysis
 
 ## Problem Identification
@@ -2139,11 +2183,3651 @@ The test that partially passed was ID 5, this was because the functionality to p
 
 53. \\end{document}
 
+## Client Source Code
+
+### Content/Messages/
+
+#### ContentNavMessage.cs
+
+namespace MessengerAppClient.Content.Messages
+
+{
+
+public sealed class ContentNavMessage
+
+{
+
+public ContentPage NavigateTo;
+
+public ContentNavMessage(ContentPage navigateTo)
+
+{
+
+NavigateTo = navigateTo;
+
+}
+
+}
+
+public enum ContentPage
+
+{
+
+Home,
+
+Settings
+
+}
+
+}
+
+### Content/Models/
+
+#### EncryptionModel.cs
+
+using System;
+
+using System.Collections.Generic;
+
+using System.Security.Cryptography;
+
+using System.Text;
+
+namespace MessengerAppClient.Content.Models
+
+{
+
+public class EncryptionModel
+
+{
+
+// Allows encoding scheme to be changed centrally
+
+private static readonly Encoding \_encoding = Encoding.UTF8;
+
+// Input plaintext string and XML key, output Base64 string
+
+public static string RSAEncrypt(string data, string key_info)
+
+{
+
+// Input string -> binary
+
+byte\[\] plaintext = \_encoding.GetBytes(data);
+
+byte\[\] encrypted;
+
+using (var csp = new RSACryptoServiceProvider())
+
+{
+
+try
+
+{
+
+// Imports contents of key information
+
+csp.FromXmlString(key_info);
+
+// Encrypts the data and pads
+
+encrypted = csp.Encrypt(plaintext, false);
+
+}
+
+finally
+
+{
+
+// Stops keys being stored in Windows
+
+csp.PersistKeyInCsp = false;
+
+}
+
+}
+
+// Return Base64 string
+
+return Convert.ToBase64String(encrypted);
+
+}
+
+// Input Base64 string and XML key, output plaintext string
+
+public static string RSADecrypt(string data, string key_info)
+
+{
+
+// Input Base64 -> binary
+
+byte\[\] encrypted = Convert.FromBase64String(data);
+
+byte\[\] plaintext;
+
+using (var csp = new RSACryptoServiceProvider())
+
+{
+
+try
+
+{
+
+// Imports contents of key information
+
+csp.FromXmlString(key_info);
+
+// Decrypts the data
+
+plaintext = csp.Decrypt(encrypted, false);
+
+}
+
+finally
+
+{
+
+// Stops keys being stored in Windows
+
+csp.PersistKeyInCsp = false;
+
+}
+
+}
+
+// Return binary to string
+
+return \_encoding.GetString(plaintext);
+
+}
+
+// Generates a key pair, returns XML representation of key pair
+
+public static Dictionary\<string, string> RSAKeyGen(int bit_length = 1024)
+
+{
+
+Dictionary\<string, string> key_pair = new Dictionary\<string, string>();
+
+// 1024 bit key
+
+using (var csp = new RSACryptoServiceProvider(bit_length))
+
+{
+
+try
+
+{
+
+// Gets public and private keys as XML
+
+string public_key = csp.ToXmlString(false);
+
+string private_key = csp.ToXmlString(true);
+
+key_pair.Add("PublicKey", public_key);
+
+key_pair.Add("PrivateKey", private_key);
+
+return key_pair;
+
+}
+
+finally
+
+{
+
+// Stops keys being stored in Windows
+
+csp.PersistKeyInCsp = false;
+
+}
+
+}
+
+}
+
+}
+
+}
+
+#### UserModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Content.ViewModels;
+
+namespace MessengerAppClient.Content.Models
+
+{
+
+public class UserModel
+
+{
+
+public string Username { get; set; }
+
+public string PublicKey { get; set; }
+
+public BindableCollection\<BaseMessageViewModel> Messages { get; set; }
+
+}
+
+}
+
+### Content/ViewModels/
+
+#### BaseMessageViewModel.cs
+
+using MessengerAppShared.Models;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class BaseMessageViewModel
+
+{
+
+private readonly MessageModel \_message;
+
+public string Sender => \_message.Sender;
+
+public string Recipient => \_message.Recipient;
+
+public string Text => \_message.Text;
+
+public string Time => \_message.Time.ToShortTimeString();
+
+public BaseMessageViewModel(MessageModel message)
+
+{
+
+\_message = message;
+
+}
+
+}
+
+}
+
+#### ContentConductorViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Content.Messages;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class ContentConductorViewModel : Conductor\<Screen>.Collection.OneActive,
+
+IHandle\<ContentNavMessage>
+
+{
+
+private readonly IEventAggregator \_eventAggregator;
+
+private readonly HomeViewModel \_homeViewModel;
+
+private readonly SettingsViewModel \_settingsViewModel;
+
+public SideBarViewModel SideBar { get; }
+
+public ContentConductorViewModel(
+
+IEventAggregator eventAggregator,
+
+SideBarViewModel sideBarViewModel,
+
+HomeViewModel homeViewModel,
+
+SettingsViewModel settingsViewModel)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+SideBar = sideBarViewModel;
+
+\_homeViewModel = homeViewModel;
+
+\_settingsViewModel = settingsViewModel;
+
+}
+
+// When instantiated, begin listening to EventAggregator and show HomeViewModel
+
+protected override void OnActivate()
+
+{
+
+base.OnActivate();
+
+\_eventAggregator.Subscribe(this);
+
+ActivateItem(\_homeViewModel);
+
+}
+
+// When deleted, stop listening to EventAggregator
+
+protected override void OnDeactivate(bool close)
+
+{
+
+base.OnDeactivate(close);
+
+\_eventAggregator.Unsubscribe(this);
+
+}
+
+// Determine which Screen to show using attribute of message
+
+public void Handle(ContentNavMessage message)
+
+{
+
+switch (message.NavigateTo)
+
+{
+
+case ContentPage.Home:
+
+ActivateItem(\_homeViewModel);
+
+break;
+
+case ContentPage.Settings:
+
+ActivateItem(\_settingsViewModel);
+
+break;
+
+}
+
+}
+
+}
+
+}
+
+#### HomeViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Content.Models;
+
+using MessengerAppClient.Shell.Messages;
+
+using MessengerAppShared.Messages;
+
+using MessengerAppShared.Models;
+
+using System;
+
+using System.Collections.Generic;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class HomeViewModel : Screen,
+
+IHandle\<InternalClientMessage>
+
+{
+
+// Event Aggregator instance
+
+private readonly IEventAggregator \_eventAggregator;
+
+public HomeViewModel(IEventAggregator eventAggregator)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+}
+
+// Collection of currently logged in users
+
+private BindableCollection\<UserModel> \_users = new BindableCollection\<UserModel>();
+
+public BindableCollection\<UserModel> Users
+
+{
+
+get { return \_users; }
+
+set
+
+{
+
+\_users = value;
+
+NotifyOfPropertyChange(() => Users);
+
+NotifyOfPropertyChange(() => SelectedUser);
+
+}
+
+}
+
+// User that is selected in the combo box
+
+private UserModel \_selectedUser;
+
+public UserModel SelectedUser
+
+{
+
+get { return \_selectedUser; }
+
+set
+
+{
+
+\_selectedUser = value;
+
+NotifyOfPropertyChange(() => SelectedUser);
+
+}
+
+}
+
+// Fields to input and display messages
+
+private string \_messageToSend;
+
+public string MessageToSend
+
+{
+
+get { return \_messageToSend; }
+
+set
+
+{
+
+\_messageToSend = value;
+
+NotifyOfPropertyChange(() => MessageToSend);
+
+}
+
+}
+
+// Store keys for encryption
+
+private string \_private_key;
+
+// Holds user's username
+
+private string \_username;
+
+public string Username
+
+{
+
+get { return \_username; }
+
+set
+
+{
+
+\_username = value;
+
+NotifyOfPropertyChange(() => Username);
+
+}
+
+}
+
+// Send message to server
+
+public void SendMessage()
+
+{
+
+// Message to show on this client's screen
+
+var standard_message = new MessageModel()
+
+{
+
+Sender = Username,
+
+Recipient = SelectedUser.Username,
+
+Text = MessageToSend,
+
+Time = DateTime.Now
+
+};
+
+// Clear message UI field
+
+MessageToSend = "";
+
+// Add to own list of messages
+
+SelectedUser.Messages.Add(new OutboundMessageViewModel(standard_message));
+
+// Encrypted message, remaking object avoids reference issues after encryption
+
+var encrypted_message = new MessageModel()
+
+{
+
+Sender = standard_message.Sender,
+
+Recipient = standard_message.Recipient,
+
+Text = EncryptionModel.RSAEncrypt(standard_message.Text, SelectedUser.PublicKey),
+
+Time = standard_message.Time
+
+};
+
+// Send to recipient
+
+var ServerMessage = new ClientToServerMessage(ClientCommand.Message, encrypted_message);
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.SendMessage, ServerMessage);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+// Receiving a message
+
+private void ReceiveMessage(MessageModel message)
+
+{
+
+// Find recipient's key
+
+foreach (UserModel User in Users)
+
+{
+
+if (User.Username == message.Sender)
+
+{
+
+// Decrypt message
+
+message.Text = EncryptionModel.RSADecrypt(message.Text, \_private_key);
+
+User.Messages.Add(new InboundMessageViewModel(message));
+
+return;
+
+}
+
+}
+
+}
+
+// Receive list of clients from server and add to combo box
+
+private void ReceiveClientList(List\<AccountModel> credentials_list)
+
+{
+
+Users.Clear();
+
+foreach (AccountModel credentials in credentials_list)
+
+{
+
+//Stops self being in list
+
+if (credentials.Username != Username)
+
+{
+
+AddClient(credentials);
+
+}
+
+}
+
+}
+
+// Update combo box to remove a user
+
+private void RemoveClient(string username)
+
+{
+
+// Error from deleting element in Users while iterating through Users
+
+try
+
+{
+
+foreach (UserModel user in Users)
+
+{
+
+if (user.Username == username)
+
+{
+
+Users.Remove(user);
+
+}
+
+}
+
+}
+
+catch { }
+
+}
+
+// Update combo box to add a user
+
+private void AddClient(AccountModel credentials)
+
+{
+
+// Stops self being in list
+
+if (credentials.Username != Username)
+
+{
+
+var new_user = new UserModel()
+
+{
+
+Username = credentials.Username,
+
+PublicKey = credentials.PublicKey,
+
+Messages = new BindableCollection\<BaseMessageViewModel>()
+
+};
+
+Users.Add(new_user);
+
+}
+
+}
+
+// Store the credentials received from the server
+
+private void SetLoginDetails(AccountModel credentials)
+
+{
+
+Username = credentials.Username;
+
+\_private_key = credentials.PrivateKey;
+
+foreach (UserModel user in Users)
+
+{
+
+// Remove connections to self from user list
+
+if (user.Username == Username)
+
+{
+
+Users.Remove(user);
+
+}
+
+}
+
+}
+
+// Handle internal
+
+public void Handle(InternalClientMessage message)
+
+{
+
+// Switch on the Command enum in the message
+
+switch (message.Command)
+
+{
+
+case InternalClientCommand.LoginDetails:
+
+SetLoginDetails((AccountModel)message.Data);
+
+break;
+
+case InternalClientCommand.ClientConnect:
+
+AddClient((AccountModel)message.Data);
+
+break;
+
+case InternalClientCommand.ClientDisconnect:
+
+RemoveClient((string)message.Data);
+
+break;
+
+case InternalClientCommand.ReceiveClientList:
+
+ReceiveClientList((List\<AccountModel>)message.Data);
+
+break;
+
+case InternalClientCommand.ReceiveMessage:
+
+ReceiveMessage((MessageModel)message.Data);
+
+break;
+
+case InternalClientCommand.LogOut:
+
+break;
+
+}
+
+}
+
+// When screen opened, begin listening to EventAggregator
+
+protected override void OnActivate()
+
+{
+
+base.OnActivate();
+
+\_eventAggregator.Subscribe(this);
+
+}
+
+// When screen closed, stop listening to EventAggregator
+
+protected override void OnDeactivate(bool close)
+
+{
+
+base.OnDeactivate(close);
+
+\_eventAggregator.Unsubscribe(this);
+
+}
+
+}
+
+}
+
+#### InboundMessageViewModel.cs
+
+using MessengerAppShared.Models;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class InboundMessageViewModel : BaseMessageViewModel
+
+{
+
+public InboundMessageViewModel(MessageModel message) : base(message)
+
+{
+
+}
+
+}
+
+}
+
+#### OutboundMessageViewModel.cs
+
+using MessengerAppShared.Models;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class OutboundMessageViewModel : BaseMessageViewModel
+
+{
+
+public OutboundMessageViewModel(MessageModel message) : base(message)
+
+{
+
+}
+
+}
+
+}
+
+#### SettingsViewModel.cs
+
+using Caliburn.Micro;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class SettingsViewModel : Screen
+
+{
+
+private readonly IEventAggregator \_eventAggregator;
+
+public SettingsViewModel(IEventAggregator eventAggregator)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+}
+
+}
+
+}
+
+#### SideBarViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Content.Messages;
+
+using MessengerAppClient.Shell.Messages;
+
+using MessengerAppShared.Models;
+
+namespace MessengerAppClient.Content.ViewModels
+
+{
+
+public class SideBarViewModel : Screen, IHandle\<InternalClientMessage>
+
+{
+
+private readonly IEventAggregator \_eventAggregator;
+
+private string \_username;
+
+public string Username
+
+{
+
+get { return \_username; }
+
+set
+
+{
+
+\_username = value;
+
+NotifyOfPropertyChange(() => Username);
+
+}
+
+}
+
+public SideBarViewModel(IEventAggregator eventAggregator)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+\_eventAggregator.Subscribe(this);
+
+}
+
+// Tells Conductor to navigate to HomeViewModel
+
+public void NavigateHome()
+
+{
+
+var InternalMessage = new ContentNavMessage(ContentPage.Home);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+// Tells Conductor to navigate to SettingsViewModel
+
+public void NavigateSettings()
+
+{
+
+var InternalMessage = new ContentNavMessage(ContentPage.Settings);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+// Tells Conductor to navigate to LoginViewModel
+
+public void NavigateLogOut()
+
+{
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.LogOut);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+// Handle internal
+
+public void Handle(InternalClientMessage message)
+
+{
+
+// Switch on the Command enum in the message
+
+switch (message.Command)
+
+{
+
+case InternalClientCommand.LoginDetails:
+
+var credentials = (AccountModel)message.Data;
+
+Username = credentials.Username;
+
+break;
+
+}
+
+}
+
+}
+
+}
+
+### Content/Views/
+
+#### BaseMessageView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.BaseMessageView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+mc:Ignorable="d">
+
+\</UserControl>
+
+#### ContentConductorView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.ContentConductorView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="800">
+
+\<Grid>
+
+\<Grid.ColumnDefinitions>
+
+\<ColumnDefinition Width="Auto"/>
+
+\<ColumnDefinition Width="\*"/>
+
+\</Grid.ColumnDefinitions>
+
+\<ContentControl Grid.Column="0" x:Name="SideBar"/>
+
+\<ContentControl Grid.Column="1" x:Name="ActiveItem"/>
+
+\</Grid>
+
+\</UserControl>
+
+#### HomeView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.HomeView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+xmlns:viewmodels="clr-namespace:MessengerAppClient.Content.ViewModels"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="800">
+
+\<Grid>
+
+\<Grid.ColumnDefinitions>
+
+\<ColumnDefinition Width="20"/>
+
+\<ColumnDefinition Width="\*"/>
+
+\<ColumnDefinition Width="20"/>
+
+\</Grid.ColumnDefinitions>
+
+\<Grid.RowDefinitions>
+
+\<RowDefinition Height="20"/>
+
+\<RowDefinition Height="auto"/>
+
+\<RowDefinition Height="\*"/>
+
+\<RowDefinition Height="60"/>
+
+\<RowDefinition Height="20"/>
+
+\</Grid.RowDefinitions>
+
+\<!-- Select recipient combo box -->
+
+\<DockPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Grid.ColumnSpan="1">
+
+\<TextBlock Text="Select recipient: " VerticalAlignment="Center"/>
+
+\<ComboBox x:Name="Users" SelectedItem="{Binding SelectedUser}">
+
+\<ComboBox.ItemTemplate>
+
+\<DataTemplate>
+
+\<TextBlock Text="{Binding Username}"/>
+
+\</DataTemplate>
+
+\</ComboBox.ItemTemplate>
+
+\</ComboBox>
+
+\</DockPanel>
+
+\<!-- Message output area -->
+
+\<Border Grid.Row="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="1">
+
+\<ScrollViewer>
+
+\<ItemsControl ItemsSource="{Binding SelectedUser.Messages}">
+
+\<ItemsControl.Resources>
+
+\<!-- Inbound messages -->
+
+\<DataTemplate DataType="{x:Type viewmodels:InboundMessageViewModel}">
+
+\<local:InboundMessageView DataContext="{Binding}"/>
+
+\</DataTemplate>
+
+\<!-- Outbound messages -->
+
+\<DataTemplate DataType="{x:Type viewmodels:OutboundMessageViewModel}">
+
+\<local:OutboundMessageView DataContext="{Binding}"/>
+
+\</DataTemplate>
+
+\<!-- Unknown/default messages -->
+
+\<DataTemplate DataType="{x:Type viewmodels:BaseMessageViewModel}">
+
+\<local:BaseMessageView DataContext="{Binding}"/>
+
+\</DataTemplate>
+
+\</ItemsControl.Resources>
+
+\<ItemsControl.ItemsPanel>
+
+\<ItemsPanelTemplate>
+
+\<StackPanel VerticalAlignment="Bottom" Margin="10,0"/>
+
+\</ItemsPanelTemplate>
+
+\</ItemsControl.ItemsPanel>
+
+\</ItemsControl>
+
+\</ScrollViewer>
+
+\</Border>
+
+\<!-- Message input box and send button -->
+
+\<Grid Grid.Row="3" Grid.Column="1">
+
+\<Grid.ColumnDefinitions>
+
+\<ColumnDefinition Width="\*"/>
+
+\<ColumnDefinition Width="100"/>
+
+\</Grid.ColumnDefinitions>
+
+\<TextBox Grid.Column="0" x:Name="MessageToSend" Margin="0,10,0,0"
+
+VerticalAlignment="Center" Padding="5"
+
+Text="Type your message here..."/>
+
+\<Button Grid.Column="1" x:Name="SendMessage" Margin="10,10,0,0"
+
+Content="Send" IsDefault="True"/>
+
+\</Grid>
+
+\</Grid>
+
+\</UserControl>
+
+#### InboundMessageView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.InboundMessageView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+mc:Ignorable="d">
+
+\<UserControl.Resources>
+
+\<Style TargetType="TextBlock">
+
+\<Setter Property="VerticalAlignment" Value="Center"/>
+
+\<Setter Property="Margin" Value="5,2.5"/>
+
+\</Style>
+
+\</UserControl.Resources>
+
+\<DockPanel LastChildFill="True" Margin="0,5">
+
+\<Border Background="AliceBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="8" DockPanel.Dock="Left">
+
+\<StackPanel Margin="0,2.5">
+
+\<!-- Sender name -->
+
+\<TextBlock FontWeight="Bold"
+
+Text="{Binding Sender}" />
+
+\<!-- Message -->
+
+\<TextBlock TextWrapping="Wrap"
+
+Text="{Binding Text, FallbackValue='Lorem ipsum dolor sit amet'}"/>
+
+\<!-- Time -->
+
+\<TextBlock HorizontalAlignment="Right" FontSize="10"
+
+Text="{Binding Time, FallbackValue='00:00'}" FontWeight="Bold"/>
+
+\</StackPanel>
+
+\</Border>
+
+\<Canvas DockPanel.Dock="Right"/>
+
+\</DockPanel>
+
+\</UserControl>
+
+#### OutboundMessageView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.OutboundMessageView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+mc:Ignorable="d">
+
+\<UserControl.Resources>
+
+\<Style TargetType="TextBlock">
+
+\<Setter Property="VerticalAlignment" Value="Center"/>
+
+\<Setter Property="Margin" Value="5,2.5"/>
+
+\</Style>
+
+\</UserControl.Resources>
+
+\<DockPanel LastChildFill="True" Margin="0,5">
+
+\<Border Background="LightGray" BorderBrush="Black" BorderThickness="1" CornerRadius="8" DockPanel.Dock="Right">
+
+\<StackPanel Margin="0,2.5">
+
+\<!-- Message -->
+
+\<TextBlock TextWrapping="Wrap"
+
+Text="{Binding Text, FallbackValue='Lorem ipsum dolor sit amet'}"/>
+
+\<!-- Time -->
+
+\<TextBlock HorizontalAlignment="Right" FontSize="10"
+
+Text="{Binding Time, FallbackValue='00:00'}" FontWeight="Bold"/>
+
+\</StackPanel>
+
+\</Border>
+
+\<Canvas DockPanel.Dock="Left"/>
+
+\</DockPanel>
+
+\</UserControl>
+
+#### SettingsView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.SettingsView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="800">
+
+\<Grid>
+
+\<TextBlock Text="Settings" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+\</Grid>
+
+\</UserControl>
+
+#### SideBarView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Content.Views.SideBarView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Content.Views"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="120">
+
+\<!-- Style gives all buttons set dimensions -->
+
+\<UserControl.Resources>
+
+\<Style TargetType="Button">
+
+\<Setter Property="Height" Value="50"/>
+
+\<Setter Property="Margin" Value="10"/>
+
+\</Style>
+
+\</UserControl.Resources>
+
+\<Grid Background="{DynamicResource AccentColour}">
+
+\<Grid.RowDefinitions>
+
+\<RowDefinition Height="\*"/>
+
+\<RowDefinition Height="Auto"/>
+
+\</Grid.RowDefinitions>
+
+\<Grid.ColumnDefinitions>
+
+\<ColumnDefinition Width="120"/>
+
+\</Grid.ColumnDefinitions>
+
+\<!-- Home and Settings buttons -->
+
+\<StackPanel Grid.Row="0">
+
+\<Button x:Name="NavigateHome" Content="Home"/>
+
+\<Button x:Name="NavigateSettings" Content="Settings"/>
+
+\</StackPanel>
+
+\<!-- Username and Log Out button -->
+
+\<StackPanel Grid.Row="1">
+
+\<TextBlock Text="Logged in as:" TextAlignment="Center"/>
+
+\<TextBlock x:Name="Username" TextAlignment="Center"/>
+
+\<Button x:Name="NavigateLogOut" Content="Log Out"/>
+
+\</StackPanel>
+
+\</Grid>
+
+\</UserControl>
+
+### Login/Messages/
+
+#### LoginNavMessage.cs
+
+namespace MessengerAppClient.Login.Messages
+
+{
+
+public sealed class LoginNavMessage
+
+{
+
+public LoginPage NavigateTo;
+
+public LoginNavMessage(LoginPage navigateTo)
+
+{
+
+NavigateTo = navigateTo;
+
+}
+
+}
+
+public enum LoginPage
+
+{
+
+Login,
+
+Signup
+
+}
+
+}
+
+### Login/ViewModels/
+
+#### LoginConductorViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Login.Messages;
+
+namespace MessengerAppClient.Login.ViewModels
+
+{
+
+public class LoginConductorViewModel : Conductor\<Screen>.Collection.OneActive,
+
+IHandle\<LoginNavMessage>
+
+{
+
+private readonly IEventAggregator \_eventAggregator;
+
+private readonly LoginViewModel \_loginViewModel;
+
+private readonly SignupViewModel \_signupViewModel;
+
+public LoginConductorViewModel(
+
+IEventAggregator eventAggregator,
+
+LoginViewModel loginViewModel,
+
+SignupViewModel signupViewModel)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+\_loginViewModel = loginViewModel;
+
+\_signupViewModel = signupViewModel;
+
+}
+
+// When instantiated, begin listening to EventAggregator and show LoginViewModel
+
+protected override void OnActivate()
+
+{
+
+base.OnActivate();
+
+\_eventAggregator.Subscribe(this);
+
+ActivateItem(\_loginViewModel);
+
+}
+
+// When deleted, stop listening to EventAggregator
+
+protected override void OnDeactivate(bool close)
+
+{
+
+base.OnDeactivate(close);
+
+\_eventAggregator.Unsubscribe(this);
+
+}
+
+// Determine which Screen to show using attribute of message
+
+public void Handle(LoginNavMessage message)
+
+{
+
+switch (message.NavigateTo)
+
+{
+
+case LoginPage.Login:
+
+ActivateItem(\_loginViewModel);
+
+break;
+
+case LoginPage.Signup:
+
+ActivateItem(\_signupViewModel);
+
+break;
+
+default:
+
+break;
+
+}
+
+}
+
+}
+
+}
+
+#### LoginViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Login.Messages;
+
+using MessengerAppClient.Shell.Messages;
+
+using MessengerAppShared.Messages;
+
+using System.Collections.Generic;
+
+namespace MessengerAppClient.Login.ViewModels
+
+{
+
+public class LoginViewModel : Screen
+
+{
+
+private readonly IEventAggregator \_eventAggregator;
+
+// GUI input fields
+
+private string \_usernameInput;
+
+private string \_passwordInput;
+
+public string UsernameInput
+
+{
+
+get { return \_usernameInput; }
+
+set
+
+{
+
+\_usernameInput = value;
+
+NotifyOfPropertyChange(() => UsernameInput);
+
+}
+
+}
+
+public string PasswordInput
+
+{
+
+get { return \_passwordInput; }
+
+set
+
+{
+
+\_passwordInput = value;
+
+NotifyOfPropertyChange(() => PasswordInput);
+
+}
+
+}
+
+// When programs first starts up, create server connection
+
+public LoginViewModel(IEventAggregator eventAggregator)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+}
+
+// Send login request when "login" button pressed
+
+public void LoginButton()
+
+{
+
+// Gets credentials from GUI fields
+
+var Credentials = new Dictionary\<string, string>()
+
+{
+
+{"Username", UsernameInput },
+
+{"Password", PasswordInput }
+
+};
+
+// Sends the login request to server
+
+var ServerMessage = new ClientToServerMessage(ClientCommand.Login, Credentials);
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.SendMessage, ServerMessage);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+// Clear the two input fields
+
+UsernameInput = "";
+
+PasswordInput = "";
+
+}
+
+public void SignupButton()
+
+{
+
+// Tell Conductor to navigate to the SignupViewModel
+
+\_eventAggregator.PublishOnUIThread(new LoginNavMessage(LoginPage.Signup));
+
+}
+
+}
+
+}
+
+#### SignupViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Login.Messages;
+
+namespace MessengerAppClient.Login.ViewModels
+
+{
+
+public class SignupViewModel : Screen
+
+{
+
+private readonly IEventAggregator \_eventAggregator;
+
+public SignupViewModel(IEventAggregator eventAggregator)
+
+{
+
+\_eventAggregator = eventAggregator;
+
+}
+
+public void BackToLoginButton()
+
+{
+
+// Tells Conductor to navigate back to LoginViewModel
+
+var InternalMessage = new LoginNavMessage(LoginPage.Login);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+}
+
+}
+
+### Login/Views/
+
+#### LoginConductorView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Login.Views.LoginConductorView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Login.Views"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="800">
+
+\<Grid>
+
+\<ContentControl x:Name="ActiveItem"/>
+
+\</Grid>
+
+\</UserControl>
+
+#### LoginView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Login.Views.LoginView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Login.Views"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="800">
+
+\<Grid>
+
+\<Grid.ColumnDefinitions>
+
+\<ColumnDefinition Width="20"/>
+
+\<ColumnDefinition Width="\*"/>
+
+\<ColumnDefinition Width="3\*"/>
+
+\<ColumnDefinition Width="\*"/>
+
+\<ColumnDefinition Width="20"/>
+
+\</Grid.ColumnDefinitions>
+
+\<Grid.RowDefinitions>
+
+\<RowDefinition Height="20"/>
+
+\<RowDefinition Height="\*"/>
+
+\<RowDefinition Height="3\*"/>
+
+\<RowDefinition Height="2\*"/>
+
+\<RowDefinition Height="20" />
+
+\</Grid.RowDefinitions>
+
+\<!-- Header banner text -->
+
+\<TextBlock Grid.Row="1" Grid.Column="2" Text="Logging in"
+
+HorizontalAlignment="Center" VerticalAlignment="Center"
+
+FontSize="30" FontWeight="Bold"/>
+
+\<StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Center">
+
+\<!-- Username field -->
+
+\<StackPanel Margin="0,0,0,5">
+
+\<TextBlock Text="Username:" Margin="0,5"/>
+
+\<TextBox x:Name="UsernameInput" Padding="5"/>
+
+\</StackPanel>
+
+\<!-- Password field -->
+
+\<StackPanel Margin="0,10">
+
+\<TextBlock Text="Password:" Margin="0,5"/>
+
+\<TextBox x:Name="PasswordInput" Padding="5"
+
+FontFamily="{StaticResource PasswordFont}"/>
+
+\</StackPanel>
+
+\</StackPanel>
+
+\<!-- Coloured background behind buttons -->
+
+\<Rectangle Grid.ColumnSpan="5" Grid.RowSpan="2"
+
+Grid.Column="0" Grid.Row="3" Fill="{DynamicResource AccentColour}"/>
+
+\<!-- Login and signup button -->
+
+\<StackPanel Grid.Row="3" Grid.Column="2">
+
+\<Button Margin="0,25,0,20" Width="175" Height="50"
+
+x:Name="LoginButton" Content="Log in" IsDefault="True"/>
+
+\<Button Width="75" Height="30"
+
+x:Name="SignupButton" Content="Sign up"/>
+
+\</StackPanel>
+
+\</Grid>
+
+\</UserControl>
+
+#### SignupView.xaml
+
+\<UserControl x:Class="MessengerAppClient.Login.Views.SignupView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:local="clr-namespace:MessengerAppClient.Login.Views"
+
+mc:Ignorable="d"
+
+d:DesignHeight="450" d:DesignWidth="800">
+
+\<Grid>
+
+\<Grid.ColumnDefinitions>
+
+\<ColumnDefinition Width="20"/>
+
+\<ColumnDefinition Width="\*"/>
+
+\<ColumnDefinition Width="3\*"/>
+
+\<ColumnDefinition Width="\*"/>
+
+\<ColumnDefinition Width="20"/>
+
+\</Grid.ColumnDefinitions>
+
+\<Grid.RowDefinitions>
+
+\<RowDefinition Height="20"/>
+
+\<RowDefinition Height="\*"/>
+
+\<RowDefinition Height="3\*"/>
+
+\<RowDefinition Height="2\*"/>
+
+\<RowDefinition Height="20" />
+
+\</Grid.RowDefinitions>
+
+\<!-- Header banner text -->
+
+\<TextBlock Grid.Row="1" Grid.Column="2" Text="Creating an account"
+
+HorizontalAlignment="Center" VerticalAlignment="Center"
+
+FontSize="30" FontWeight="Bold"/>
+
+\<StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Center">
+
+\<!-- Username field -->
+
+\<StackPanel Margin="0,0,0,5">
+
+\<TextBlock Text="Username:" Margin="0,5"/>
+
+\<TextBox x:Name="UsernameInput" IsEnabled="False" Padding="5"/>
+
+\</StackPanel>
+
+\<!-- Password field -->
+
+\<StackPanel Margin="0,10">
+
+\<TextBlock Text="Password:" Margin="0,5"/>
+
+\<TextBox x:Name="PasswordInput" IsEnabled="False" Padding="5"
+
+FontFamily="{StaticResource PasswordFont}"/>
+
+\</StackPanel>
+
+\</StackPanel>
+
+\<!-- Coloured background behind buttons -->
+
+\<Rectangle Grid.ColumnSpan="5" Grid.RowSpan="2"
+
+Grid.Column="0" Grid.Row="3" Fill="{DynamicResource AccentColour}"/>
+
+\<!-- Login and signup button -->
+
+\<StackPanel Grid.Row="3" Grid.Column="2">
+
+\<Button Margin="0,25,0,20" Width="175" Height="50"
+
+x:Name="SignupButton" Content="Sign up" IsDefault="True" IsEnabled="False"/>
+
+\<Button Width="75" Height="30"
+
+x:Name="BackToLoginButton" Content="Back"/>
+
+\</StackPanel>
+
+\</Grid>
+
+\</UserControl>
+
+### Shell/Messages/
+
+#### InternalClientMessage.cs
+
+namespace MessengerAppClient.Shell.Messages
+
+{
+
+public sealed class InternalClientMessage
+
+{
+
+public InternalClientCommand Command;
+
+public object Data;
+
+public InternalClientMessage(InternalClientCommand command_in, object data_in = null)
+
+{
+
+Command = command_in;
+
+Data = data_in;
+
+}
+
+}
+
+public enum InternalClientCommand
+
+{
+
+Connect,
+
+Disconnect,
+
+LogOut,
+
+ValidLogin,
+
+SendMessage,
+
+ClientConnect,
+
+ClientDisconnect,
+
+ReceiveClientList,
+
+LoginDetails,
+
+ReceiveMessage
+
+}
+
+}
+
+### Shell/Models/
+
+#### SocketHandler.cs
+
+using MessengerAppShared;
+
+using System;
+
+using System.Collections.Generic;
+
+using System.Net.Sockets;
+
+namespace MessengerAppClient.Shell.Models
+
+{
+
+public class SocketHandler : SocketBase
+
+{
+
+// List of currently connected users
+
+public List\<string> ConnectedUsers = new List\<string>();
+
+// Connect to server
+
+public void Connect()
+
+{
+
+// Connects to the server
+
+Socket.Connect(EndPoint);
+
+}
+
+// Send object to server
+
+public void SendToServer(object message)
+
+{
+
+// Serialises object into binary
+
+byte\[\] serialised = Protocol.Serialise(message);
+
+// Sends data {buffer, offset, size, flags}
+
+Socket.Send(serialised, 0, serialised.Length, SocketFlags.None);
+
+}
+
+// Begins a receive loop with a specified callback
+
+public void ReceiveLoop(Action\<IAsyncResult> Callback)
+
+{
+
+Socket.BeginReceive(
+
+Buffer, // Buffer
+
+0, // Offset
+
+Buffer.Length, // Size
+
+SocketFlags.None, // Flags
+
+new AsyncCallback(Callback), // Callback
+
+Socket // State
+
+);
+
+}
+
+}
+
+}
+
+### Shell/ViewModels/
+
+#### ShellViewModel.cs
+
+using Caliburn.Micro;
+
+using MessengerAppClient.Content.ViewModels;
+
+using MessengerAppClient.Login.ViewModels;
+
+using MessengerAppClient.Shell.Messages;
+
+using MessengerAppClient.Shell.Models;
+
+using MessengerAppShared;
+
+using MessengerAppShared.Messages;
+
+using System;
+
+using System.Threading;
+
+using System.Windows;
+
+namespace MessengerAppClient.Shell.ViewModels
+
+{
+
+public class ShellViewModel : Conductor\<Screen>.Collection.OneActive,
+
+IHandle\<InternalClientMessage>, IHandle\<ServerToClientMessage>
+
+{
+
+// Socket for networking
+
+private SocketHandler \_socketHandler;
+
+// Handle prevents program from closing before necessary routines finish
+
+private AutoResetEvent \_shutdownWaitHandle = new AutoResetEvent(false);
+
+// Event Aggregator instance
+
+private readonly IEventAggregator \_eventAggregator;
+
+// Screen Collection
+
+private readonly LoginConductorViewModel \_loginConductorViewModel;
+
+private readonly ContentConductorViewModel \_contentConductorViewModel;
+
+// Constructor
+
+public ShellViewModel(
+
+IEventAggregator eventAggregator,
+
+LoginConductorViewModel loginConductorViewModel,
+
+ContentConductorViewModel contentConductorViewModel)
+
+{
+
+// Dependency injection
+
+\_eventAggregator = eventAggregator;
+
+\_loginConductorViewModel = loginConductorViewModel;
+
+\_contentConductorViewModel = contentConductorViewModel;
+
+// Creating server connection
+
+\_socketHandler = new SocketHandler();
+
+// Try connect to server, if fail close program
+
+try
+
+{
+
+\_socketHandler.Connect();
+
+}
+
+catch(Exception exception)
+
+{
+
+// Shut down program, report server disabled error to Windows
+
+FatalError(exception, 1341);
+
+}
+
+// Begin receiving from server
+
+\_socketHandler.ReceiveLoop(ReceiveLoopCallback);
+
+}
+
+// Ends the receive; publish message; calls ReceiveLoop to start again
+
+private void ReceiveLoopCallback(IAsyncResult asyncResult)
+
+{
+
+try
+
+{
+
+// Gets object that was received
+
+object received_object = Protocol.GetObject(asyncResult, \_socketHandler.Buffer);
+
+// Publishes message that a new SocketServerMessage has been received
+
+\_eventAggregator.PublishOnUIThread((ServerToClientMessage)received_object);
+
+// Continues infinite receive loop
+
+\_socketHandler.ReceiveLoop(ReceiveLoopCallback);
+
+}
+
+catch (Exception exception)
+
+{
+
+// Shut down program, report unknown network error to Windows
+
+FatalError(exception, 59);
+
+}
+
+}
+
+// Tell server about disconnect
+
+private void DisconnectRoutine()
+
+{
+
+// Directly sends disconnect notice to server
+
+var ServerMessage = new ClientToServerMessage(ClientCommand.Disconnect);
+
+\_socketHandler.SendToServer(ServerMessage);
+
+// Close socket
+
+\_socketHandler.Disconnect();
+
+\_shutdownWaitHandle.Set();
+
+}
+
+// Tell server about log out and change screen
+
+private void LogOutRoutine()
+
+{
+
+// Sends log out notice to server
+
+var ServerMessage = new ClientToServerMessage(ClientCommand.LogOut);
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.SendMessage, ServerMessage);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+// Goes back to login screen
+
+ActivateItem(\_loginConductorViewModel);
+
+}
+
+// Handle internal
+
+public void Handle(InternalClientMessage message)
+
+{
+
+// Switch on the Command enum in the message
+
+switch (message.Command)
+
+{
+
+case InternalClientCommand.Connect:
+
+\_socketHandler.Connect();
+
+break;
+
+case InternalClientCommand.Disconnect:
+
+DisconnectRoutine();
+
+break;
+
+case InternalClientCommand.LogOut:
+
+LogOutRoutine();
+
+break;
+
+case InternalClientCommand.ValidLogin:
+
+ValidLoginRoutine(message.Data);
+
+break;
+
+case InternalClientCommand.SendMessage:
+
+\_socketHandler.SendToServer(message.Data);
+
+break;
+
+}
+
+}
+
+// Handle from server
+
+public void Handle(ServerToClientMessage message)
+
+{
+
+InternalClientMessage InternalMessage;
+
+switch (message.Command)
+
+{
+
+case ServerCommand.LoginResult:
+
+LoginResultRoutine(message.Data);
+
+break;
+
+case ServerCommand.ClientConnect:
+
+InternalMessage = new InternalClientMessage(InternalClientCommand.ClientConnect, message.Data);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+break;
+
+case ServerCommand.ClientDisconnect:
+
+InternalMessage = new InternalClientMessage(InternalClientCommand.ClientDisconnect, message.Data);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+break;
+
+case ServerCommand.SendClientsList:
+
+InternalMessage = new InternalClientMessage(InternalClientCommand.ReceiveClientList, message.Data);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+break;
+
+case ServerCommand.Message:
+
+InternalMessage = new InternalClientMessage(InternalClientCommand.ReceiveMessage, message.Data);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+break;
+
+}
+
+}
+
+// Pass control to content Conductor and publish login details
+
+private void ValidLoginRoutine(object details_object)
+
+{
+
+// Pass control over to content Conductor from login Conductor
+
+ActivateItem(\_contentConductorViewModel);
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.LoginDetails, details_object);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+// Determine if login attempt was success
+
+private void LoginResultRoutine(object data)
+
+{
+
+// When login is invalid, data is false
+
+if (data is false)
+
+{
+
+return;
+
+}
+
+// Notify of valid login
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.ValidLogin, data);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+}
+
+// When the \[X\] button is pressed, disconnect socket first
+
+public override void CanClose(Action\<bool> callback)
+
+{
+
+try
+
+{
+
+// Send log out notice to server
+
+var InternalMessage = new InternalClientMessage(InternalClientCommand.Disconnect);
+
+\_eventAggregator.PublishOnUIThread(InternalMessage);
+
+// Pause closing until handle is set by completing the send to the server
+
+\_shutdownWaitHandle.WaitOne();
+
+}
+
+catch { }
+
+// Closes the window
+
+base.CanClose(callback);
+
+}
+
+// When a fatal error is thrown, close program
+
+private void FatalError(Exception exception, int error_code=0)
+
+{
+
+MessageBox.Show($"Error: {exception.Message}\\n\\nPress OK to close the program", "A fatal error was caught");
+
+// Close window
+
+TryClose();
+
+// Close program
+
+Environment.Exit(1341);
+
+}
+
+// When window opened, begin listening to EventAggregator and show LoginConductorViewModel
+
+protected override void OnActivate()
+
+{
+
+base.OnActivate();
+
+\_eventAggregator.Subscribe(this);
+
+ActivateItem(\_loginConductorViewModel);
+
+}
+
+// When window closed, stop listening to EventAggregator
+
+protected override void OnDeactivate(bool close)
+
+{
+
+base.OnDeactivate(close);
+
+\_eventAggregator.Unsubscribe(this);
+
+}
+
+}
+
+}
+
+### Shell/Views/
+
+#### ShellView.xaml
+
+\<Window x:Class="MessengerAppClient.Shell.Views.ShellView"
+
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+xmlns:local="clr-namespace:MessengerAppClient.Shell.Views"
+
+mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+
+Title="ShellView" Height="450" Width="800">
+
+\<!-- Style gives all buttons rounded corners -->
+
+\<Window.Resources>
+
+\<Style TargetType="{x:Type Button}">
+
+\<Style.Resources>
+
+\<Style TargetType="Border">
+
+\<Setter Property="CornerRadius" Value="5"/>
+
+\</Style>
+
+\</Style.Resources>
+
+\</Style>
+
+\<SolidColorBrush x:Key="AccentColour">#FF6495ED\</SolidColorBrush>
+
+\</Window.Resources>
+
+\<Grid>
+
+\<ContentControl x:Name="ActiveItem"/>
+
+\</Grid>
+
+\</Window>
+
+### Bootstrapper.cs
+
+using Autofac;
+
+using Caliburn.Micro.Autofac;
+
+using MessengerAppClient.Content.ViewModels;
+
+using MessengerAppClient.Login.ViewModels;
+
+using MessengerAppClient.Shell.Models;
+
+using MessengerAppClient.Shell.ViewModels;
+
+using System.Windows;
+
+namespace MessengerAppClient
+
+{
+
+public class Bootstrapper : AutofacBootstrapper\<ShellViewModel>
+
+{
+
+public Bootstrapper()
+
+{
+
+Initialize();
+
+}
+
+protected override void ConfigureContainer(ContainerBuilder builder)
+
+{
+
+// An IoC container is created and used to facilitate the dependency injection
+
+// ViewModel which is loaded by the bootstrapper
+
+builder.RegisterType\<ShellViewModel>().SingleInstance();
+
+builder.RegisterType\<SocketHandler>().SingleInstance();
+
+// ViewModels for the Login
+
+builder.RegisterType\<LoginConductorViewModel>().SingleInstance();
+
+builder.RegisterType\<LoginViewModel>().SingleInstance();
+
+builder.RegisterType\<SignupViewModel>().SingleInstance();
+
+// ViewModels for the Messaging
+
+builder.RegisterType\<ContentConductorViewModel>().SingleInstance();
+
+builder.RegisterType\<HomeViewModel>().SingleInstance();
+
+builder.RegisterType\<SettingsViewModel>().SingleInstance();
+
+builder.RegisterType\<SideBarViewModel>().SingleInstance();
+
+}
+
+protected override void ConfigureBootstrapper()
+
+{
+
+base.ConfigureBootstrapper();
+
+EnforceNamespaceConvention = false;
+
+}
+
+protected override void OnStartup(object sender, StartupEventArgs e)
+
+{
+
+// Note:
+
+// DisplayRootViewFor\<T> was changed in CaliburnMicro>=v4.0 so v3.2.0 is used instead
+
+// See caliburnmicro.com/documentation/bootstrapper
+
+DisplayRootViewFor\<ShellViewModel>();
+
+}
+
+}
+
+}
+
+## Server Source Code
+
+### CSVHelper.cs
+
+using CsvHelper;
+
+using MessengerAppShared.Models;
+
+using System.Collections.Generic;
+
+using System.Globalization;
+
+using System.IO;
+
+using System.Linq;
+
+namespace MessengerAppServer
+
+{
+
+// Object that interfaces with the CSV file
+
+public static class CSVHandler
+
+{
+
+// Returns objects for all users in CSV
+
+public static IEnumerable\<AccountModel> GetAllAccounts()
+
+{
+
+// Opens the CSV file from resources
+
+StringReader stringReader = new StringReader(Properties.Resources.AccountCredentials);
+
+// Reads the contents from the stream reader
+
+CsvReader csvReader = new CsvReader(stringReader, CultureInfo.CurrentCulture);
+
+// Gets all the records from the contents
+
+IEnumerable\<AccountModel> accounts = csvReader.GetRecords\<AccountModel>();
+
+return accounts;
+
+}
+
+// Returns account with username and public key for specified username
+
+public static AccountModel GetUserPublicCredentials(string username)
+
+{
+
+var account_full = GetAccount(username);
+
+var account_public = new AccountModel()
+
+{
+
+Username = account_full.Username,
+
+PublicKey = account_full.PublicKey
+
+};
+
+return account_public;
+
+}
+
+// Returns account with username, public key and private key for specified username
+
+public static AccountModel GetUserPrivateCredentials(string username)
+
+{
+
+var account_full = GetAccount(username);
+
+var account_private = new AccountModel()
+
+{
+
+Username = account_full.Username,
+
+PublicKey = account_full.PublicKey,
+
+PrivateKey = account_full.PrivateKey
+
+};
+
+return account_private;
+
+}
+
+// Get account from CSV with specified name
+
+private static AccountModel GetAccount(string username)
+
+{
+
+// Query to get the account of the user with specified username
+
+var user_account = (from account in GetAllAccounts()
+
+where account.Username == username
+
+select account).FirstOrDefault();
+
+return user_account;
+
+}
+
+// Gets the public credentials (username, public key) of several users
+
+public static List\<AccountModel> GetMutiPublicCredentials(List\<string> users)
+
+{
+
+var all_credentials = new List\<AccountModel>();
+
+foreach (var username in users)
+
+{
+
+all_credentials.Add(GetUserPublicCredentials(username));
+
+}
+
+return all_credentials;
+
+}
+
+}
+
+}
+
+### Program.cs
+
+using System;
+
+namespace MessengerAppServer
+
+{
+
+public class Program
+
+{
+
+public static void Main()
+
+{
+
+// Sets the title of the console's window
+
+Console.Title = "MessengerApp Server";
+
+// Creates a new server socket and starts it running
+
+ServerSocket serverSocket = new ServerSocket();
+
+serverSocket.Start();
+
+// User presses enter to close the server
+
+\_ = Console.ReadLine();
+
+serverSocket.Stop();
+
+}
+
+}
+
+}
+
+### ServerSocket.cs
+
+using MessengerAppShared;
+
+using MessengerAppShared.Messages;
+
+using MessengerAppShared.Models;
+
+using System;
+
+using System.Collections.Generic;
+
+using System.Linq;
+
+using System.Net.Sockets;
+
+namespace MessengerAppServer
+
+{
+
+public class ServerSocket : SocketBase
+
+{
+
+// For not logged in users
+
+private List\<Socket> NotAuthedUsers = new List\<Socket>();
+
+// For logged in users \<username, socket>
+
+private Dictionary\<string, Socket> AuthedUsers = new Dictionary\<string, Socket>();
+
+private Dictionary\<Socket, string> AuthedUsersReverse = new Dictionary\<Socket, string>();
+
+// Maximum length of the connection queue for new clients
+
+private const int BACKLOG = 5;
+
+// Start socket listening on a port, begins accept client loop
+
+public void Start()
+
+{
+
+PrintMessage("Starting server...");
+
+// Socket binds to a port on the computer
+
+Socket.Bind(EndPoint);
+
+// Socket starts listening for data from the port
+
+// BACKLOG is the maximum length of the connection queue
+
+Socket.Listen(BACKLOG);
+
+PrintMessage("Server started");
+
+// Start of infinite accepting clients loop
+
+Socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+
+}
+
+// Disconnect socket to end server
+
+public void Stop()
+
+{
+
+PrintMessage("Stopping server...");
+
+// Try used in case errors are thrown
+
+try
+
+{
+
+Disconnect();
+
+}
+
+catch (Exception e)
+
+{
+
+PrintMessage("Error: " + e.Message);
+
+}
+
+PrintMessage("Server stopped");
+
+}
+
+// Accepts incoming client connection
+
+private void AcceptCallback(IAsyncResult asyncResult)
+
+{
+
+// Creates a socket for the new client to handle the connection
+
+Socket clientSocket = Socket.EndAccept(asyncResult);
+
+// Add user to list of not signed in users
+
+AddUser(clientSocket);
+
+// Starts listening for data from the new client
+
+ReceiveObject(clientSocket);
+
+// Starts accepting the next client (continues infinite loop)
+
+Socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+
+}
+
+// Starts receive of data from client
+
+private void ReceiveObject(Socket socket)
+
+{
+
+// Starts reading data into Buffer array, starting at index 0 for a max of Buffer.Length bytes (2048)
+
+socket.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveObjectCallback), socket);
+
+}
+
+// Finishes receive of data from client, then starts loop again
+
+private void ReceiveObjectCallback(IAsyncResult asyncResult)
+
+{
+
+try
+
+{
+
+// Recreates socket to handle connection
+
+Socket socketHandler = (Socket)asyncResult.AsyncState;
+
+// Deserialises object from binary
+
+object received_object = Protocol.GetObject(asyncResult, Buffer);
+
+// Handles the object, gets exit code
+
+int exit_code = Handle(socketHandler, (ClientToServerMessage)received_object);
+
+// An exit code of 1 means the client is disconnecting
+
+if (exit_code == 1)
+
+{
+
+// Remove client from dictionaries and close socket
+
+RemoveUser(socketHandler);
+
+return;
+
+}
+
+// Continues infinite receive loop
+
+ReceiveObject(socketHandler);
+
+}
+
+catch (Exception e)
+
+{
+
+PrintMessage($"Error: {e.Message}");
+
+PrintMessage($"Action: Ending conversation with culprit client");
+
+}
+
+}
+
+// Moves user from not authorised status to authorised
+
+private void MakeUserAuthed(string username, Socket socket)
+
+{
+
+// Move to dictionaries of authorised users
+
+NotAuthedUsers.Remove(socket);
+
+AuthedUsers.Add(username, socket);
+
+AuthedUsersReverse.Add(socket, username);
+
+PrintMessage($"{socket.RemoteEndPoint} logged in as '{username}'");
+
+}
+
+// Sends all connected users the new user
+
+private void TellClientUserConnect(string username)
+
+{
+
+var credentials = CSVHandler.GetUserPublicCredentials(username);
+
+// For each connected and authorised client
+
+foreach (Socket connectedSocket in AuthedUsers.Values)
+
+{
+
+// Send new username
+
+var ClientMessage = new ServerToClientMessage(ServerCommand.ClientConnect, credentials);
+
+SendToClient(ClientMessage, connectedSocket);
+
+}
+
+PrintMessage($"Updated clients' about new user");
+
+}
+
+// Sends all connected users the disconnected user
+
+private void TellClientUserDisconnect(string username)
+
+{
+
+// For each connected and authorised client
+
+foreach (Socket connectedSocket in AuthedUsers.Values)
+
+{
+
+// Send disconnected username
+
+var ClientMessage = new ServerToClientMessage(ServerCommand.ClientDisconnect, username);
+
+SendToClient(ClientMessage, connectedSocket);
+
+}
+
+PrintMessage($"Updated clients' about disconnected user");
+
+}
+
+private void SendClientList(Socket client_socket)
+
+{
+
+// List of online users' usernames
+
+var online_clients = AuthedUsers.Keys.ToList();
+
+// List of credentials of online users
+
+var client_credentials = CSVHandler.GetMutiPublicCredentials(online_clients);
+
+var ClientMessage = new ServerToClientMessage(ServerCommand.SendClientsList, client_credentials);
+
+SendToClient(ClientMessage, client_socket);
+
+PrintMessage($"Sent {AuthedUsersReverse\[client_socket\]} list of clients' credentials");
+
+}
+
+// Adds a user who is not logged in
+
+private void AddUser(Socket socket)
+
+{
+
+// Add user to list of not signed in users
+
+NotAuthedUsers.Add(socket);
+
+PrintMessage($"{socket.RemoteEndPoint} connected");
+
+}
+
+// Move user from authed to not authed
+
+private void MakeUserNotAuthed(Socket socket)
+
+{
+
+// Gets username
+
+string username = AuthedUsersReverse\[socket\];
+
+// Removes from dictionaries
+
+AuthedUsers.Remove(username);
+
+AuthedUsersReverse.Remove(socket);
+
+// Move to dictionaries of authorised users
+
+NotAuthedUsers.Add(socket);
+
+PrintMessage($"{socket.RemoteEndPoint} logged out of '{username}'");
+
+}
+
+// Removes a client
+
+private void RemoveUser(Socket socket)
+
+{
+
+// Remove client from list (not authed) or dictionaries (authed)
+
+if (!NotAuthedUsers.Remove(socket))
+
+{
+
+// Gets username
+
+string username = AuthedUsersReverse\[socket\];
+
+// Removes from dictionaries
+
+AuthedUsers.Remove(username);
+
+AuthedUsersReverse.Remove(socket);
+
+}
+
+// Closes connection with socket
+
+socket.Disconnect(false);
+
+PrintMessage($"{socket.RemoteEndPoint} disconnected");
+
+}
+
+// Delegates received message to relevant routine
+
+private int Handle(Socket socket, ClientToServerMessage message)
+
+{
+
+switch (message.Command)
+
+{
+
+case ClientCommand.Disconnect:
+
+RemoveUser(socket);
+
+return 1;
+
+case ClientCommand.LogOut:
+
+TellClientUserDisconnect(AuthedUsersReverse\[socket\]);
+
+MakeUserNotAuthed(socket);
+
+break;
+
+case ClientCommand.Login:
+
+VerifyLogin(socket, (Dictionary\<string, string>)message.Data);
+
+break;
+
+case ClientCommand.Message:
+
+ProcessMessage((MessageModel)message.Data);
+
+break;
+
+}
+
+return 0;
+
+}
+
+// Routes the message to intended recipient
+
+private void ProcessMessage(MessageModel data)
+
+{
+
+PrintMessage($"Received message from {data.Sender} to {data.Recipient}");
+
+// Get the socket from the dictionary using the username in the Recipient field
+
+var recipient_socket = AuthedUsers\[data.Recipient\];
+
+// Message for client telling them of the new message
+
+var client_message = new ServerToClientMessage(ServerCommand.Message, data);
+
+// Routes message to recipient
+
+SendToClient(client_message, recipient_socket);
+
+PrintMessage($"Sent message to {data.Recipient}");
+
+}
+
+// Checks if username and password are in CSV of credentials
+
+private bool CheckCredentials(string username, string password)
+
+{
+
+// Gets all the credentials from the CSV
+
+IEnumerable\<AccountModel> accounts = CSVHandler.GetAllAccounts();
+
+// Compares the username and password against all of those in the CSV
+
+foreach (AccountModel account in accounts)
+
+{
+
+// If there is a match who is not already logged in, set login flag and break loop
+
+if (account.Username == username && account.Password == password && !AuthedUsers.ContainsKey(username))
+
+{
+
+return true;
+
+}
+
+}
+
+// If not found
+
+return false;
+
+}
+
+// Processes a login request
+
+private void VerifyLogin(Socket socket, Dictionary\<string, string> attempted_credentials)
+
+{
+
+// Checks CSV for credentials pair
+
+if (CheckCredentials(attempted_credentials\["Username"\], attempted_credentials\["Password"\]))
+
+{
+
+ValidLogin(socket, attempted_credentials);
+
+}
+
+else
+
+{
+
+// Object to be returned to user, false signifies failed attempt
+
+var response = new ServerToClientMessage(ServerCommand.LoginResult, false);
+
+// Sends the result to client
+
+SendToClient(response, socket);
+
+PrintMessage($"{socket.RemoteEndPoint} attempted login to '{attempted_credentials\["Username"\]}'");
+
+}
+
+}
+
+// Tells the user of valid login and sends credentials
+
+private void ValidLogin(Socket socket, Dictionary\<string, string> attempted_credentials)
+
+{
+
+// Object to be returned to user
+
+var response = new ServerToClientMessage(ServerCommand.LoginResult);
+
+// Gets the user's full credentials from the CSV
+
+var real_credentials = CSVHandler.GetUserPrivateCredentials(attempted_credentials\["Username"\]);
+
+// Returning not false means valid
+
+response.Data = real_credentials;
+
+// Sends the result to client
+
+SendToClient(response, socket);
+
+// Move to dictionaries of authorised users
+
+MakeUserAuthed(real_credentials.Username, socket);
+
+// Send client list of connected clients
+
+SendClientList(socket);
+
+// Tells other clients about the new login
+
+TellClientUserConnect(real_credentials.Username);
+
+}
+
+// Send object to client
+
+public void SendToClient(object message, Socket client_socket)
+
+{
+
+// Serialises object into binary
+
+byte\[\] serialised = Protocol.Serialise(message);
+
+// Sends data {buffer, offset, size, flags}
+
+client_socket.Send(serialised, 0, serialised.Length, SocketFlags.None);
+
+}
+
+// Output messages to the server console with time-stamp
+
+private static void PrintMessage(string message)
+
+{
+
+string time = DateTime.Now.ToString("HH:mm ss.fff");
+
+Console.WriteLine($"\[{time}\] {message}");
+
+}
+
+}
+
+}
+
+## Shared Source Code
+
+### Messages/
+
+#### ClientToServerMessage.cs
+
+using System;
+
+namespace MessengerAppShared.Messages
+
+{
+
+// (-> Server) General message to server
+
+\[Serializable\]
+
+public sealed class ClientToServerMessage
+
+{
+
+public ClientCommand Command;
+
+public object Data;
+
+public ClientToServerMessage(ClientCommand command_in, object object_in = null)
+
+{
+
+Command = command_in;
+
+Data = object_in;
+
+}
+
+}
+
+\[Serializable\]
+
+public enum ClientCommand
+
+{
+
+Disconnect,
+
+LogOut,
+
+Login,
+
+Message
+
+}
+
+}
+
+#### ServerToClientMessage.cs
+
+using System;
+
+namespace MessengerAppShared.Messages
+
+{
+
+// (-> Client) General message to client
+
+\[Serializable\]
+
+public sealed class ServerToClientMessage
+
+{
+
+public ServerCommand Command;
+
+public object Data;
+
+public ServerToClientMessage(ServerCommand command_in, object object_in = null)
+
+{
+
+Command = command_in;
+
+Data = object_in;
+
+}
+
+}
+
+\[Serializable\]
+
+public enum ServerCommand
+
+{
+
+LoginResult,
+
+ClientConnect,
+
+ClientDisconnect,
+
+SendClientsList,
+
+Message
+
+}
+
+}
+
+### Models/
+
+#### Account.cs
+
+using System;
+
+namespace MessengerAppShared.Models
+
+{
+
+// Object for each record in credentials CSV
+
+\[Serializable\]
+
+public class AccountModel
+
+{
+
+public string Username { get; set; }
+
+public string Password { get; set; }
+
+public string PublicKey { get; set; }
+
+public string PrivateKey { get; set; }
+
+}
+
+}
+
+#### MessagesModel.cs
+
+using System;
+
+namespace MessengerAppShared.Models
+
+{
+
+// Object for client to client messages
+
+\[Serializable\]
+
+public class MessageModel
+
+{
+
+public string Sender { get; set; }
+
+public string Recipient { get; set; }
+
+public string Text { get; set; }
+
+public DateTime Time { get; set; }
+
+}
+
+}
+
+### Protocol.cs
+
+using System;
+
+using System.IO;
+
+using System.Net.Sockets;
+
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace MessengerAppShared
+
+{
+
+public static class Protocol
+
+{
+
+public static byte\[\] Serialise(object data)
+
+{
+
+// Creates stream to handle data
+
+using (MemoryStream memory_stream = new MemoryStream())
+
+{
+
+// Binary formatter traverses object converting it all to binary
+
+BinaryFormatter binary_formatter = new BinaryFormatter();
+
+// Object is serialised into the stream of binary
+
+binary_formatter.Serialize(memory_stream, data);
+
+return memory_stream.ToArray();
+
+}
+
+}
+
+public static object Deserialise(byte\[\] data)
+
+{
+
+// Binary array converted into a Stream
+
+using (MemoryStream memory_stream = new MemoryStream(data))
+
+{
+
+// Creates formatter to handle Stream
+
+BinaryFormatter binary_formatter = new BinaryFormatter();
+
+// Stream is deserialised into an object
+
+object deserialised_object = binary_formatter.Deserialize(memory_stream);
+
+return deserialised_object;
+
+}
+
+}
+
+// Extracts and deserialises an object from an AsyncResult
+
+public static object GetObject(IAsyncResult asyncResult, byte\[\] buffer)
+
+{
+
+// Recreates socket to handle connection
+
+Socket socketHandler = (Socket)asyncResult.AsyncState;
+
+// Reads data to buffer, gets the number of bytes received
+
+int received_binary = socketHandler.EndReceive(asyncResult);
+
+// Creates array to hold the data received
+
+byte\[\] dataBuffer = new byte\[received_binary\];
+
+// Copy received bytes to actual binary array
+
+Array.Copy(buffer, dataBuffer, received_binary);
+
+// Deserialises object from binary
+
+return Deserialise(dataBuffer);
+
+}
+
+}
+
+}
+
+### SocketBase.cs
+
+using System.Net;
+
+using System.Net.Sockets;
+
+namespace MessengerAppShared
+
+{
+
+public abstract class SocketBase
+
+{
+
+protected IPEndPoint EndPoint;
+
+protected Socket Socket;
+
+// Buffer to hold read in data, maximum of 2048 bytes
+
+public byte\[\] Buffer = new byte\[4096\];
+
+// Constructor creates socket
+
+public SocketBase(int port = 31416)
+
+{
+
+// Endpoint on local interface (not open Internet)
+
+EndPoint = new IPEndPoint(IPAddress.Loopback, port);
+
+// New TCP socket
+
+Socket = new Socket(EndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+}
+
+// Close and dispose of socket
+
+public void Disconnect()
+
+{
+
+// Disables sending and receiving from the socket
+
+Socket.Shutdown(SocketShutdown.Both);
+
+// Closes the socket and releases all its resources
+
+Socket.Close();
+
+}
+
+}
+
+}
+
   [1 Analysis 4]: #analysis
   [1.1 Problem Identification 4]: #problem-identification
   [1.1.1 Problem and Proposed Solutions 4]: #problem-and-proposed-solutions
   [1.1.2 Computational Methods 5]: #computational-methods
-  [1.2 Stakeholders 6]: #_Toc96812414
+  [1.2 Stakeholders 6]: #_Toc96856154
   [1.2.1 Stakeholder Identification 6]: #stakeholder-identification
   [1.2.2 Interview with Ethan S 7]: #interview-with-ethan-s
   [1.2.3 General Stakeholder Survey 9]: #general-stakeholder-survey
@@ -2167,7 +5851,7 @@ The test that partially passed was ID 5, this was because the functionality to p
   [2.1.3 Interface 30]: #interface
   [2.1.4 Accounts 31]: #accounts
   [2.2 Solution Structure 32]: #solution-structure
-  [2.3 Algorithms 33]: #_Toc96812438
+  [2.3 Algorithms 33]: #_Toc96856178
   [2.3.1 Logging In 33]: #logging-in
   [2.3.2 Signing Up 34]: #signing-up
   [2.3.3 Validation and Keys 35]: #validation-and-keys
@@ -2226,7 +5910,29 @@ The test that partially passed was ID 5, this was because the functionality to p
   [4.4 (X) Maintenance Issues and Limitations 124]: #x-maintenance-issues-and-limitations
   [4.4.1 (X) Evaluation 124]: #x-evaluation-1
   [4.4.2 (X) Addressing Limitations 124]: #x-addressing-limitations
-  [5 References 125]: #_Toc96812497
+  [5 References 125]: #_Toc96856237
   [6 Appendix 126]: #appendix
   [6.1 LaTeX Source Code 126]: #latex-source-code
+  [6.2 Client Source Code 127]: #client-source-code
+  [6.2.1 Content/Messages/ 127]: #contentmessages
+  [6.2.2 Content/Models/ 128]: #contentmodels
+  [6.2.3 Content/ViewModels/ 131]: #contentviewmodels
+  [6.2.4 Content/Views/ 141]: #contentviews
+  [6.2.5 Login/Messages/ 149]: #loginmessages
+  [6.2.6 Login/ViewModels/ 150]: #loginviewmodels
+  [6.2.7 Login/Views/ 153]: #loginviews
+  [6.2.8 Shell/Messages/ 156]: #shellmessages
+  [6.2.9 Shell/Models/ 157]: #shellmodels
+  [6.2.10 Shell/ViewModels/ 158]: #shellviewmodels
+  [6.2.11 Shell/Views/ 162]: #shellviews
+  [6.2.12 Bootstrapper.cs 163]: #bootstrapper.cs
+  [6.3 Server Source Code 164]: #server-source-code
+  [6.3.1 CSVHelper.cs 164]: #csvhelper.cs
+  [6.3.2 Program.cs 166]: #program.cs
+  [6.3.3 ServerSocket.cs 167]: #serversocket.cs
+  [6.4 Shared Source Code 172]: #shared-source-code
+  [6.4.1 Messages/ 172]: #messages
+  [6.4.2 Models/ 174]: #models
+  [6.4.3 Protocol.cs 176]: #protocol.cs
+  [6.4.4 SocketBase.cs 177]: #socketbase.cs
   [WeeChat.org]: https://weechat.org/about/screenshots/
